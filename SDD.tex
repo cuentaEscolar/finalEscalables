@@ -1,4 +1,9 @@
+
 \documentclass{article}
+
+\usepackage{pgffor}
+\usepackage{tikz}
+\usetikzlibrary{fit,positioning}
 
 \title{SpeedCola SDD}
 \date{2025-09-01}
@@ -66,17 +71,50 @@
 
       Mensajes 
       
-\section{Disen~o General}
+\section{Dise\~no General}
   
   \subsection{Arquitectura del Sistema}
+    \begin{tikzpicture}
+
+    \begin{scope}[shift={(1,1)},local bounding box=A]
+    \draw (0,0) rectangle (11.3,1.5);
+    \draw (0.2,0.2) rectangle (3.2,1);
+    \draw (3.7,0.2) rectangle (6.7,1);
+    \draw (7.2,0.2) rectangle (10.2,1);
+    \node[scale=0.8] at (1.65,0.5) {$S_{x_{1}}$};
+    \node[scale=0.8] at (5.5,0.5) {$S_{x_{2}}$};
+    \node[scale=0.8] at (8.5,0.5) {$S_{x_{3}}$};
+    \node[scale=0.8] at (10.65,0.5) {$S_{x}$};
+    \end{scope}
+
+    \draw[->] (0,0) -- (A.west);
+    \end{tikzpicture}
   //todo diagrama de aws
   //todo diagrama de apis
   \subsection{Justificacion de la INfraestructura}
 
 \section{Consideraciones Tecnicas}
+\newpage
 
 \section{Arquitectura}
+\newpage
 
-\section{Detalles del Disen~o}
 
+\section{Detalles del Dise\~no}
+  \foreach \module in {autentificacion, chat, browser}
+  {
+    \subsection{Modulo: internals \module}
+    parse some yaml files with the methods etc
+    \newline
+    \begin{tabular}{ l l l l l  }
+      \hline
+      Metodo & Proposito & entrada & Salida & Status \\
+      \hline
+          GET & 2 & 3 & 3 & 200\\
+          GET & 2 & 3 & 3 & 200\\ 
+          GET & 2 & 3 & 3 & 200\\
+        
+      \hline
+    \end{tabular}
+  }
 \end{document}
