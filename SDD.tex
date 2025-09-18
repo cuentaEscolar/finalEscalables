@@ -2,9 +2,154 @@
 \documentclass{article}
 
 \usepackage{pgffor}
+
 \usepackage{tikz}
 \usetikzlibrary{fit,positioning}
+\usetikzlibrary{shapes.multipart}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shadows}
+\usetikzlibrary{calc}
+\usepackage{array}
+\renewcommand{\arraystretch}{1.1}
+\usepackage{tikz}
+\usetikzlibrary{shapes.multipart}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shadows}
+\usetikzlibrary{calc}
 
+\usepackage{pdflscape}
+
+\makeatletter
+\pgfarrowsdeclare{crow's foot}{crow's foot}
+{
+    \pgfarrowsleftextend{+-.5\pgflinewidth}%
+    \pgfarrowsrightextend{+.5\pgflinewidth}%
+}
+{
+    \pgfutil@tempdima=0.6pt%
+    \pgfsetdash{}{+0pt}%
+    \pgfsetmiterjoin%
+    \pgfpathmoveto{\pgfqpoint{0pt}{-9\pgfutil@tempdima}}%
+    \pgfpathlineto{\pgfqpoint{-13\pgfutil@tempdima}{0pt}}%
+    \pgfpathlineto{\pgfqpoint{0pt}{9\pgfutil@tempdima}}%
+    \pgfpathmoveto{\pgfqpoint{0\pgfutil@tempdima}{0\pgfutil@tempdima}}%
+    \pgfpathmoveto{\pgfqpoint{-8pt}{-6pt}}% 
+    \pgfpathlineto{\pgfqpoint{-8pt}{-6pt}}%  
+    \pgfpathlineto{\pgfqpoint{-8pt}{6pt}}% 
+    \pgfusepathqstroke%
+}
+
+\pgfarrowsdeclare{omany}{omany}
+{
+    \pgfarrowsleftextend{+-.5\pgflinewidth}%
+    \pgfarrowsrightextend{+.5\pgflinewidth}%
+}
+{
+    \pgfutil@tempdima=0.6pt%
+    \pgfsetdash{}{+0pt}%
+    \pgfsetmiterjoin%
+    \pgfpathmoveto{\pgfqpoint{0pt}{-9\pgfutil@tempdima}}%
+    \pgfpathlineto{\pgfqpoint{-13\pgfutil@tempdima}{0pt}}%
+    \pgfpathlineto{\pgfqpoint{0pt}{9\pgfutil@tempdima}}%
+    \pgfpathmoveto{\pgfqpoint{0\pgfutil@tempdima}{0\pgfutil@tempdima}}%  
+    \pgfpathmoveto{\pgfqpoint{0\pgfutil@tempdima}{0\pgfutil@tempdima}}%
+    \pgfpathmoveto{\pgfqpoint{-6pt}{-6pt}}% 
+    \pgfusepathqstroke%
+    \pgfsetfillcolor{white}
+    \pgfpathcircle{\pgfpoint{-11.5pt}{0}} {3.5pt}
+    \pgfusepathqfillstroke%
+}
+
+\pgfarrowsdeclare{one}{one}
+{
+    \pgfarrowsleftextend{+-.5\pgflinewidth}%
+    \pgfarrowsrightextend{+.5\pgflinewidth}%
+}
+{
+    \pgfutil@tempdima=0.6pt%
+    \pgfsetdash{}{+0pt}%
+    \pgfsetmiterjoin%
+    \pgfpathmoveto{\pgfqpoint{0\pgfutil@tempdima}{0\pgfutil@tempdima}}%
+    \pgfpathmoveto{\pgfqpoint{-6pt}{-6pt}}% 
+    \pgfpathlineto{\pgfqpoint{-6pt}{-6pt}}%  
+    \pgfpathlineto{\pgfqpoint{-6pt}{6pt}}% 
+    \pgfpathmoveto{\pgfqpoint{0\pgfutil@tempdima}{0\pgfutil@tempdima}}%
+    \pgfpathmoveto{\pgfqpoint{-8pt}{-6pt}}% 
+    \pgfpathlineto{\pgfqpoint{-8pt}{-6pt}}%  
+    \pgfpathlineto{\pgfqpoint{-8pt}{6pt}}%    
+    \pgfusepathqstroke%
+}
+
+\pgfarrowsdeclare{oone}{oone}
+{
+    \pgfarrowsleftextend{+-.5\pgflinewidth}%
+    \pgfarrowsrightextend{+.5\pgflinewidth}%
+}
+{
+    \pgfutil@tempdima=0.6pt%
+    %\advance\pgfutil@tempdima by.25\pgflinewidth%
+    \pgfsetdash{}{+0pt}%
+    \pgfsetmiterjoin%
+     \pgfpathmoveto{\pgfqpoint{0\pgfutil@tempdima}{0\pgfutil@tempdima}}%
+    \pgfpathmoveto{\pgfqpoint{-4pt}{-6pt}}% 
+    \pgfpathlineto{\pgfqpoint{-4pt}{-6pt}}%  
+    \pgfpathlineto{\pgfqpoint{-4pt}{6pt}}% 
+    \pgfsetfillcolor{white}
+    \pgfpathcircle{\pgfpoint{-11.5pt}{0}} {3.5pt}
+    \pgfusepathqfillstroke%
+}
+\makeatother
+
+\tikzset{%
+    mylabel/.style={font=\footnotesize},
+    pics/entity/.style n args={3}{code={%
+        \node[draw,
+        rectangle split,
+        rectangle split parts=2,
+        text height=1.5ex,
+        text width=8.5em,
+        text centered
+        ] (#1)
+        {#2 \nodepart[font=\scriptsize]{second}
+            \begin{tabular}{>{\raggedright\arraybackslash}p{9em}}
+                #3
+            \end{tabular}
+        };%
+    }},
+    pics/entitynoatt/.style n args={2}{code={%
+        \node[draw,
+        text height=1.5ex,
+        text width=8.5em,
+        text centered
+        ] (#1)
+        {#2};%
+    }},
+    zig zag to/.style={
+        to path={(\tikztostart) -| ($(\tikztostart)!#1!(\tikztotarget)$) |- (\tikztotarget)}
+    },
+    zig zag to/.default=0.5,   
+    one to one/.style={
+        one-one, zig zag to
+    },
+    one to oone/.style={% One to Optional-one
+        one-oone, zig zag to
+    },
+    oone to none/.style={% Optional-one to none
+        oone-, zig zag to
+    },
+    oone to oone/.style={% Optional one to Optional-one
+        oone-oone, zig zag to
+    },
+    one to many/.style={
+        one-crow's foot, zig zag to,
+    },
+    one to omany/.style={
+        one-omany, zig zag to
+    },
+    one to none/.style={
+        one-, zig zag to
+    },    
+}
 \title{SpeedCola SDD}
 \date{2025-09-01}
 \author{..}
@@ -14,7 +159,7 @@
 \newpage
 \pagenumbering{arabic}
 
-\section{Introduction}
+\section{Introducci\'on}
   \begin{enumerate}
     \item  \textbf{Descripcion General}
 
@@ -117,4 +262,54 @@
       \hline
     \end{tabular}
   }
+\newpage
+\section{Dise\~no de los Datos}
+  //poner las tablas
+
+  \begin{landscape}
+      \begin{center}
+          \begin{tikzpicture}
+              \pic {entity={A}{Citas}{%
+                  idCita(PK): int\\
+                  fecha  :date\\
+                  idCliente: int \\
+                  attribute 1 \\
+                  attribute 2 \\        
+                  ... \\
+                  attribute i
+              }};
+
+              \pic[right=7em of A] {entity={AB}{{Entity A \\ for \\ Entity B}}{%
+                  attribute 1 \\
+                  attribute 2
+              }};
+              \pic[right=7em of AB] {entity={B}{Servicios}{%
+                  attribute 1 \\
+                  attribute 2 \\        
+                  ... \\
+                  attribute i
+              }};
+              \pic[below=16ex of B] {entity={C}{Usuarios}{%
+                  attribute 1    
+              }};
+              \pic[below=15ex of AB] {entitynoatt={C1}{Entity C\textunderscore 1}};
+              \pic[below=9ex of C1] {entitynoatt={C2}{Entity C\textunderscore 2}};
+              \draw[one to omany] (A.east) -- (AB.west);
+              \node[mylabel, anchor=south east] at (A.north east) {is in};
+              \draw[one to omany] (B.west) -- (AB.east);
+              \node[mylabel, anchor=south west] at (B.north west) {is in};
+              \draw[one to one] (B.south) -- (C.north);
+              \node[mylabel, anchor=south west] at (B.south east) {is in};
+              \node[mylabel, anchor=north west] at (C.north east) {is in};
+              %From section 13.3 of the TikZ manual, (2,1 |- 3,4) and (3,4 -| 2,1) both yield the same as (2,4) 
+              \coordinate (mymiddle) at ($(C.west)!.5!(C1.east)$);
+              \coordinate (mylink) at (C.west -| mymiddle);
+              \draw[one to oone] (C.west) -| (mymiddle) node[mylabel, above=10pt]{is in} |- (C1.east);  % Make "oone" rel
+              \draw[oone to none] (C2.east) -|  node[mylabel, below=2pt]{is in} (mylink);
+              \end{tikzpicture}
+      \end{center}
+  \end{landscape}
+\section{Dise\~no de Interfaces}
+
+
 \end{document}
