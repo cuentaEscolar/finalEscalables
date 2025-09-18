@@ -5,8 +5,59 @@
 \author{..}
 
 \begin{document}
-  \maketitle
-  \newpage
+\maketitle
+\newpage
+\pagenumbering{arabic}
 
-  Hello World!
+\section{Introduction}
+\begin{enumerate}
+  \item  \textbf{Descripcion General}
+
+El proposito de este documento es describir tanto la arquitectura como la implementacion de 
+SpeedCola en aras de facilitar su uso, modificacion, prubeas y resolucion de errores.
+
+\item \textbf{Software's Scope}
+
+SpeedCola es una aplicacion web que facilita la conexion entre proveedores de servicio y consumidores.
+
+\end{enumerate}
+
+\subsection{In-Scope Funcitonalities}
+  \begin{enumerate}
+    \item \textbf{Registro y Autenticacion}
+      \begin{enumerate}
+        \item Los usuarios pueden crear cuentas
+        \item Los usuarios pueden validar sus cuentas mediante documentos
+        \item Las cuentas son autenticadas mediante correo electronico.
+      \end{enumerate}
+      Encargado el registro, inicio de sesión y validación de identidad de usuarios mediante documentos oficiales. 
+    \item \textbf{Manejo de Perfiles}
+    Permite la edición de perfiles tanto de consumidores como de proveedores, incluyendo información personal, experiencia y tarifas.  
+    \item \textbf{Oferta de Servicios}
+      Permite la creacion de 
+    \item \textbf{Busqueda de Servicios}
+    \item \textbf{Registro y Autenticacion}
+  \end{enumerate}
+
+    Gestiona la publicación, búsqueda y visualización de servicios disponibles. 
+
+    Módulo de comunicación  
+
+    Permite a los usuarios a interactuar y crear contratos mediante chats con proveedores. 
+
+    Módulo de calificaciones y reseñas   
+
+    Contiene la funcionalidad para la evaluación mutua entre consumidores y proveedores al finalizar un servicio.  
+
+    Módulo de notificaciones  
+
+    Crea y gestiona las notificaciones con un sistema basado en eventos tales como: 
+
+    Ofertas nuevas 
+
+    Confirmaciones de pago 
+
+    Reseñas recibidas  
+
+    Mensajes 
 \end{document}
