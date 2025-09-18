@@ -150,16 +150,25 @@
         one-, zig zag to
     },    
 }
-\title{SpeedCola SDD}
-\date{2025-09-01}
-\author{..}
-
+\title{SpeedCola Software Design Document}
+\date{\today}% Date of issue and status
+\author{SpeeCola inc}% Issuing organization
 \begin{document}
 \maketitle
 \newpage
 \pagenumbering{arabic}
 
 \section{Introducci\'on}
+Scope
+   Authorship (responsibility or copyright information)
+   References
+   Context
+   One or more design languages for each design viewpoint used
+   Body
+   Summary
+   Glossary
+   Change history
+
   \begin{enumerate}
     \item  \textbf{Descripcion General}
 
@@ -246,9 +255,16 @@
 
 
 \section{Detalles del Dise\~no}
-  \foreach \module in {autentificacion, chat, browser}
+  \foreach \module in {
+    internals\_sauth,
+    internals\_contract,
+    internals\_chat,
+    internals\_browser,
+    internals\_search,
+    internals\_events,
+    internals\_notifs }
   {
-    \subsection{Modulo: internals \module}
+    \subsection{Modulo: \module}
     parse some yaml files with the methods etc
     \newline
     \begin{tabular}{ l l l l l  }
@@ -273,10 +289,9 @@
                   idCita(PK): int\\
                   fecha  :date\\
                   idCliente: int \\
-                  attribute 1 \\
-                  attribute 2 \\        
-                  ... \\
-                  attribute i
+                  idProveedor: int \\
+                  estado: int \\
+                  idServicio: int
               }};
 
               \pic[right=7em of A] {entity={AB}{{Entity A \\ for \\ Entity B}}{%
@@ -284,10 +299,14 @@
                   attribute 2
               }};
               \pic[right=7em of AB] {entity={B}{Servicios}{%
-                  attribute 1 \\
-                  attribute 2 \\        
-                  ... \\
-                  attribute i
+                  idServicio(PK): int\\
+                  Nombre: str\\
+                  Descripcion: str\\
+                  Precio: str\\
+                  DuracionEstimada: str\\
+                  idUsuarioP: str\\
+                  idCategoria: str\\
+                  reseñas: 
               }};
               \pic[below=16ex of B] {entity={C}{Usuarios}{%
                   attribute 1    
