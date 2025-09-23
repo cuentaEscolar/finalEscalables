@@ -1,0 +1,3 @@
+route, method, input, output, status
+/search/categories/\{name\}, GET, uuid, redirects to \newline /search/categories/name/page/\{number\}, 200
+/search/categories/\{name\}/page/\{number\}, GET, 'name and page number', json array with servicios object , 200

@@ -1,0 +1,3 @@
+route, method, input, output, status
+/login/\{uuid\}, GET, uuid, token, 200
+/logout/\{uuid\}, POST, uuid, None, 200

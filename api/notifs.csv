@@ -1,0 +1,4 @@
+route, method, input, output, status
+/notifs/\{uuid\}, GET, uuid, token, 200
+/notifs/\{uuid\}/\{date\}, GET, uuid, token, 200
+/notifs/create/\{uuid\}, POST, uuid, token, 200
