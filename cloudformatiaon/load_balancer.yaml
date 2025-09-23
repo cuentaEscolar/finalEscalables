@@ -1,0 +1,101 @@
+
+Parameters:
+  FirstPublicSubnet:
+  SecondPublicSubnet:
+  ALBSecurityGroup:
+  c2LaunchTemplate:
+
+Resources:
+
+  ALBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable HTTP access to ALB
+      VpcId: !Ref MainVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: ALB Security Group for HTTP access
+
+  # NUEVO: Security Group para permitir tráfico HTTP desde el ALB a las instancias EC2
+  WebServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable HTTP access from ALB to EC2 instances
+      VpcId: !Ref MainVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          SourceSecurityGroupId: !Ref ALBSecurityGroup
+      Tags:
+        - Key: Name
+          Value: Web Server Security Group for HTTP access from ALB
+
+#------------------------------------------------RDS--------------------------------------
+  
+
+  # Bastion Host in Public Subnet A (AZ1)
+  IncomingTrafficLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      IpAddressType: ipv4
+      Name: IncomingTrafficLoadBalancer
+      Scheme: internet-facing
+      SecurityGroups:
+        - !Ref ALBSecurityGroup  # AQUÍ: Añadir referencia al Security Group nuevo
+      Subnets: 
+        - !Ref FirstPublicSubnet
+        - !Ref SecondPublicSubnet
+      Type: application
+
+
+#----- AutoScaling policy
+  TargetTrackingASP:
+    Type: AWS::AutoScaling::ScalingPolicy
+    Properties:
+      AdjustmentType: PercentChangeInCapacity
+      AutoScalingGroupName: !Ref WebServerASG
+      PolicyType: TargetTrackingScaling
+      TargetTrackingConfiguration: 
+        PredefinedMetricSpecification:
+          PredefinedMetricType: ALBRequestCountPerTarget
+          ResourceLabel: !Join 
+            - '/' 
+            - - !GetAtt IncomingTrafficLoadBalancer.LoadBalancerFullName
+              - !GetAtt IncomingTargetGroup.TargetGroupFullName
+        TargetValue: 1000
+            
+
+
+#--------------------------------------Auto Scaling Group-------------------------------
+  WebServerASG:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    DependsOn: LaunchTemplateEc2Micro
+    Properties:
+      AutoScalingGroupName: !Sub ${AWS::StackName}-ASG
+      AvailabilityZones: 
+        - "us-east-1a"
+        - "us-east-1b"
+      DefaultInstanceWarmup: 0
+      DesiredCapacity: 1
+      #DesiredCapacityType: vcpu
+      LaunchTemplate: 
+        LaunchTemplateId: !Ref LaunchTemplateEc2Micro
+        Version: !GetAtt LaunchTemplateEc2Micro.LatestVersionNumber
+      MaxSize: 1
+      MinSize: 1
+      NewInstancesProtectedFromScaleIn: false
+      #PlacementGroup: String
+      #ServiceLinkedRoleARN: String
+      #Tags: 
+        #- TagProperty
+      TargetGroupARNs: 
+        - !Ref IncomingTargetGroup
+      VPCZoneIdentifier:
+      - !Ref FirstPrivateSubnet
+      - !Ref SecondPrivateSubnet

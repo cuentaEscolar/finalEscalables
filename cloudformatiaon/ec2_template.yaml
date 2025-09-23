@@ -1,0 +1,47 @@
+        #
+Resources:
+
+  Ec2Role:
+  LaunchTemplateEc2Micro:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateName: !Sub ${AWS::StackName}-launch-template
+      LaunchTemplateData:
+        ImageId: ami-00ca32bbc84273381
+        InstanceType: t3.micro
+        KeyName: !Ref ImportedKeyPair
+        IamInstanceProfile: 
+          Arn: !Ref InstanceProfileArn
+
+        SecurityGroupIds:
+          - !Ref WebServerSecurityGroup
+          - !Ref PrivateInstanceSecurityGroup  # Add this to allow SSH from bastion hosts
+
+        UserData:
+          Fn::Base64: 
+            !Sub |
+              #!/bin/bash
+              yum update -y
+              yum install -y awscli jq mariadb105 php httpd php-mysqli unzip git
+
+              systemctl start httpd
+              systemctl enable httpd
+              
+              git clone https://github.com/danielarell/Frontend_SpeedCola /var/www/html/
+
+              chown -R apache:apache /var/www/html/
+              chmod -R 755 /var/www/html/
+
+              systemctl restart httpd
+        TagSpecifications:
+        - ResourceType: scaling_instance
+          Tags:
+          - Key: environment
+            Value: development
+        - ResourceType: volume
+          Tags:
+          - Key: environment
+            Value: development
+
+
+
