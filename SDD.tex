@@ -1,7 +1,8 @@
 
 \documentclass{article}
 \usepackage[a4paper,margin=1in,footskip=0.25in]{geometry}
-
+\usepackage{svg}
+\usepackage{listings}
 \usepackage{pgffor}
 \usepackage{csvsimple}
 \usepackage{tikz}
@@ -244,21 +245,7 @@ Scope
 \section{Dise\~no General}
   
   \subsection{Arquitectura del Sistema}
-    \begin{tikzpicture}
-
-    \begin{scope}[shift={(1,1)},local bounding box=A]
-    \draw (0,0) rectangle (11.3,1.5);
-    \draw (0.2,0.2) rectangle (3.2,1);
-    \draw (3.7,0.2) rectangle (6.7,1);
-    \draw (7.2,0.2) rectangle (10.2,1);
-    \node[scale=0.8] at (1.65,0.5) {$S_{x_{1}}$};
-    \node[scale=0.8] at (5.5,0.5) {$S_{x_{2}}$};
-    \node[scale=0.8] at (8.5,0.5) {$S_{x_{3}}$};
-    \node[scale=0.8] at (10.65,0.5) {$S_{x}$};
-    \end{scope}
-
-    \draw[->] (0,0) -- (A.west);
-    \end{tikzpicture}
+  \includesvg{archDiagram.svg}
   //todo diagrama de aws
   //todo diagrama de apis
   \subsection{Justificacion de la INfraestructura}
