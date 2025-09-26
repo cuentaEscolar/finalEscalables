@@ -21,6 +21,20 @@
 
 \usepackage{pdflscape}
 
+\newenvironment{localsize}[1]
+{%
+  \clearpage
+  \let\orignewcommand\newcommand
+  \let\newcommand\renewcommand
+  \makeatletter
+  \input{bk#1.clo}%
+  \makeatother
+  \let\newcommand\orignewcommand
+}
+{%
+  \clearpage
+}
+
 \makeatletter
 \pgfarrowsdeclare{crow's foot}{crow's foot}
 {
@@ -155,9 +169,12 @@
 \title{SpeedCola Software Design Document}
 \date{\today}% Date of issue and status
 \author{SpeeCola inc}% Issuing organization
+
 \begin{document}
+
 \maketitle
 IEEE Std 1016™-2009
+
 \newpage
 \pagenumbering{arabic}
 
@@ -207,6 +224,9 @@ Scope
           \item Los consumidores pueden buscar y filtrar servicios
         \end{enumerate}
       \item \textbf{Registro y Autenticacion}
+        \begin{enumerate}
+          \item Los usuarios pueden autenticarse con documentos oficiales
+        \end{enumerate}
       \item Módulo de comunicación  
         \begin{enumerate}
           \item Permite a los usuarios a interactuar y crear contratos mediante chats con proveedores. 
@@ -216,10 +236,17 @@ Scope
           \item Contiene la funcionalidad para la evaluación mutua entre consumidores y proveedores al finalizar un servicio.  
         \end{enumerate} 
       \item Módulo de notificaciones  
-      \begin{enumerate} \item Crea y gestiona las notificaciones con un sistema basado en eventos tales como: \end{enumerate} 
+      \begin{enumerate}
+        \item Crea y gestiona las notificaciones con un sistema basado en eventos tales como: 
+          \begin{enumerate}
+            \item Anuncio de servicios
+            \item Cancelacion de servicios
+            \item Confirmacion de servicios
+            \item Ofertas nuevas 
+            \item Confirmaciones de pago 
+          \end{enumerate}
+      \end{enumerate} 
 
-      \item Ofertas nuevas 
-      \item Confirmaciones de pago 
     \end{enumerate}
 
 
@@ -242,13 +269,43 @@ Scope
 
       \end{enumerate}
       
+
+
+\section{Punto de vista de Uso}
+  \subsection{ Usuarios Regulares}
+
+  \begin{figure}
+    \begin{center}
+      \includesvg[width=400pt]{Use Case.svg}
+    \end{center}
+    \caption{}\label{fig:}
+  \end{figure}
+  
+  awawa
+  \subsection{ Ofertores de Servicios }
+  \subsection{ Administradores}
+
+\section{Vista L\'ogica}
+\subsection{uml}
+
+\includesvg[width = 400pt]{./UML SpeedCola.drawio.svg}
+
 \section{Dise\~no General}
   
   \subsection{Arquitectura del Sistema}
-  \includesvg{archDiagram.svg}
   //todo diagrama de aws
+  \begin{figure}
+    \begin{center}
+      \includesvg[width=550pt]{archDiagram.svg}
+    \end{center}
+    \caption{}\label{fig: Arquitectura en la Nube}
+    Los usuarios regulares interactuan con el sistema a traves del Internet Gateway.
+    Los administradores ti
+
+  \end{figure}
+
   //todo diagrama de apis
-  \subsection{Justificacion de la INfraestructura}
+  \subsection{Justificacion de la Infraestructura}
 
 \section{Consideraciones Tecnicas}
 \newpage
