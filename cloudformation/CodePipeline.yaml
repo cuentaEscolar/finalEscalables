@@ -1,0 +1,180 @@
+Description: CodePipeline sample
+
+Resources:
+ 
+  S3Role:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument: 
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: s3.amazonaws.com
+
+      Description: Basic S3 role
+
+  PipelineArtifactBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "repo-bucket-${AWS::AccountId}-${AWS::Region}"
+
+  RepoBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref PipelineArtifactBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AllowPipelinePut
+            Effect: Allow
+            Principal:
+              AWS: !GetAtt PipelineRole.Arn
+            Action:
+              - s3:PutObject
+              - s3:PutObjectAcl
+              - s3:PutObjectVersionAcl
+            Resource: !Sub "${PipelineArtifactBucket.Arn}/*"
+
+  PipelinePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: AllowS3DeployAccess
+      Roles:
+        - !Ref PipelineRole
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action: 
+              - 's3:PutObject'
+              - 's3:PutObjectAcl'
+              - 's3:PutObjectVersionAcl'
+              - 's3:GetObject'
+              - 's3:ListBucket'
+            Resource:
+
+              - !Sub "arn:aws:s3:::repo-bucket-${AWS::AccountId}-${AWS::Region}"
+              - !Sub "arn:aws:s3:::repo-bucket-${AWS::AccountId}-${AWS::Region}/*"
+          - Effect: Allow 
+            Action:
+              - codestar-connections:UseConnection
+            Resource:
+              - arn:aws:codeconnections:us-east-1:013001369500:connection/749c9672-a6db-494c-b35c-a389e72e6e24
+              
+
+  PipelineRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: CodePipelineServiceRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - codepipeline.amazonaws.com
+                - codebuild.amazonaws.com
+
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSCodePipeline_FullAccess
+        - arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess
+        - arn:aws:iam::aws:policy/AWSCloudFormationFullAccess
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+
+
+  CodeBuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: UploadToS3
+      Source:
+        Type: CODEPIPELINE
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/standard:7.0
+        Type: LINUX_CONTAINER
+      ServiceRole: !GetAtt PipelineRole.Arn
+      TimeoutInMinutes: 10
+
+  S3Policy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: s3:PutObject
+            Effect: Allow
+            Resource: arn:aws:s3:::*/*
+          - Action: s3:PutObjectAcl
+            Effect: Allow
+            Resource: arn:aws:s3:::*/*
+          - Action: s3:PutObjectVersionAcl
+            Effect: Allow
+            Resource: arn:aws:s3:::*/*
+          - Action: s3:GetBucketVersioning
+            Effect: Allow
+            Resource: arn:aws:s3:::*/*
+          - Action: s3:getBucketAcl
+            Effect: Allow
+            Resource: arn:aws:s3:::*/*
+          - Action: s3:getBucketLocation
+            Effect: Allow
+            Resource: arn:aws:s3:::*/*
+
+        Version: "2012-10-17"
+      PolicyName: S3PolicyTest
+      Roles:
+        - Ref: S3Role 
+
+    
+  CodePipelineForIntegTest:
+    Type: 'AWS::CodePipeline::Pipeline'
+    Properties:
+      RoleArn: !GetAtt PipelineRole.Arn
+      ArtifactStore:
+        Type: S3
+        Location: !Ref PipelineArtifactBucket
+      Stages:
+        - Name: Source
+          Actions:
+            - Name: SourceAction
+              ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Provider: CodeStarSourceConnection
+                Version: 1
+              OutputArtifacts:
+                - Name: SourceOutput
+              Configuration:
+                ConnectionArn: arn:aws:codeconnections:us-east-1:013001369500:connection/749c9672-a6db-494c-b35c-a389e72e6e24
+                FullRepositoryId: cuentaEscolar/finalEscalables
+                BranchName: main
+              RunOrder: 1
+
+        - Name: LoadResources
+          Actions:
+
+            - Name: S3Deploy 
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: S3
+                Version: '1'
+
+              RunOrder: 2
+              Configuration:
+                BucketName: !Sub "repo-bucket-${AWS::AccountId}-${AWS::Region}"
+                Extract: 'true'
+                ObjectKey: MyWebsite
+              OutputArtifacts: []
+              InputArtifacts:
+                - Name: SourceOutput
+              Region: us-east-1
+              Namespace: DeployVariables
+
+Outputs:
+  Pipeline:
+    Description: codepipeline for s3 loading
+    Value: !Ref CodePipelineForIntegTest
