@@ -1,7 +1,6 @@
         #
 Resources:
 
-  Ec2Role:
   LaunchTemplateEc2Micro:
     Type: AWS::EC2::LaunchTemplate
     Properties:

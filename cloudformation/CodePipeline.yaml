@@ -1,3 +1,4 @@
+
 Description: CodePipeline sample
 
 Resources:
@@ -174,7 +175,17 @@ Resources:
               Region: us-east-1
               Namespace: DeployVariables
 
+  ChatLambdas:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "https://s3.amazonaws.com/repo-bucket-${AWS::AccountId}-${AWS::Region}/MyWebsite/cloudformation/lambda.yaml"
+    DependsOn: CodePipelineForIntegTest
+
 Outputs:
   Pipeline:
     Description: codepipeline for s3 loading
     Value: !Ref CodePipelineForIntegTest
+
+  S3Bucket:
+    Description: da bucket
+    Value: !Sub "repo-bucket-${AWS::AccountId}-${AWS::Region}"
