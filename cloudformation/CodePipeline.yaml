@@ -181,6 +181,12 @@ Resources:
       TemplateURL: !Sub "https://s3.amazonaws.com/repo-bucket-${AWS::AccountId}-${AWS::Region}/MyWebsite/cloudformation/lambda.yaml"
     DependsOn: CodePipelineForIntegTest
 
+  MainNetwork:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "https://s3.amazonaws.com/repo-bucket-${AWS::AccountId}-${AWS::Region}/MyWebsite/cloudformation/network.yaml"
+    DependsOn: CodePipelineForIntegTest
+
 Outputs:
   Pipeline:
     Description: codepipeline for s3 loading

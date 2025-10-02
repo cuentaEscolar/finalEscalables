@@ -1,0 +1,225 @@
+Resources:
+
+  MainVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: True
+      EnableDnsSupport: True
+      Tags:
+      - Key: Name
+        Value: VPC for the final project
+
+  # Creation and attaching of InternetGateway
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    DependsOn: MainVPC
+  AttachIGW:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref MainVPC
+      InternetGatewayId: !Ref InternetGateway
+
+  # Creation of Public subnet A in the Availability Zone One: us-east-1a
+  FirstPublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MainVPC
+      CidrBlock: 10.0.0.0/24
+      AvailabilityZone: !Select [ 0, !GetAZs 'us-east-1' ]
+      MapPublicIpOnLaunch: true
+      Tags:
+      - Key: Name
+        Value: Public Subnet A - From Availability Zone one
+        
+  # Creation of Public subnet B in the Availability Zone One: us-east-1b
+  SecondPublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MainVPC
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: !Select [ 1, !GetAZs 'us-east-1' ]
+      MapPublicIpOnLaunch: true
+      Tags:
+      - Key: Name
+        Value: Public Subnet B - From Availability Zone two
+
+  # Creation of Private subnet A in the Availability Zone One: us-east-1a
+  FirstPrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MainVPC
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: !Select [ 0, !GetAZs 'us-east-1' ]
+      Tags:
+      - Key: Name
+        Value: Private Subnet A - From Availability Zone one 
+
+  # Creation of Private subnet B in the Availability Zone One: us-east-1a
+  SecondPrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MainVPC
+      CidrBlock: 10.0.3.0/24
+      AvailabilityZone: !Select [ 1, !GetAZs 'us-east-1' ]
+      Tags:
+      - Key: Name
+        Value: Private Subnet B - From Availability Zone one 
+
+  # Creation of Private subnet C in the Availability Zone One: us-east-1b
+  ThirdPrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MainVPC
+      CidrBlock: 10.0.4.0/24
+      AvailabilityZone: !Select [ 2, !GetAZs 'us-east-1' ]
+      MapPublicIpOnLaunch: false
+      Tags:
+      - Key: Name
+        Value: Private Subnet C - From Availability Zone two
+
+  # Creation of Private subnet D in the Availability Zone One: us-east-1b
+  FourthPrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MainVPC
+      CidrBlock: 10.0.5.0/24
+      AvailabilityZone: !Select [ 0, !GetAZs 'us-east-1' ]
+      Tags:
+      - Key: Name
+        Value: Private Subnet D - From Availability Zone two
+
+  #Part of creating NatGateways an elastic ip addresses
+
+  # Elastic IP for NAT Gateway in AZ1 (us-east-1a)
+  NatEIPAZ1:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  # NAT Gateway in Public Subnet A (us-east-1a)
+  NatGatewayAZ1:
+    Type: AWS::EC2::NatGateway
+    DependsOn: AttachIGW
+    Properties:
+      AllocationId: !GetAtt NatEIPAZ1.AllocationId
+      SubnetId: !Ref FirstPublicSubnet
+      Tags:
+      - Key: Name
+        Value: NAT Gateway in the Availability Zone One
+
+  # Elastic IP for NAT Gateway in AZ2 (us-east-1b)
+  NatEIPAZ2:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  # NAT Gateway in Public Subnet B (us-east-1b)
+  NatGatewayAZ2:
+    Type: AWS::EC2::NatGateway
+    DependsOn: AttachIGW
+    Properties:
+      AllocationId: !GetAtt NatEIPAZ2.AllocationId
+      SubnetId: !Ref SecondPublicSubnet
+      Tags:
+      - Key: Name
+        Value: NAT Gateway in the Availability Zone two
+
+  #Creation of public route table and private route table
+
+  # Public Route Table
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MainVPC
+      Tags:
+      - Key: Name
+        Value: Public Route Table for Internet Gateway 
+
+  # Public Route (0.0.0.0/0 to Internet Gateway)
+  PublicRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0 #this allow access to internet
+      GatewayId: !Ref InternetGateway
+
+  # Associations for Public Subnet A and B
+  PublicSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref FirstPublicSubnet
+      RouteTableId: !Ref PublicRouteTable
+
+  PublicSubnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref SecondPublicSubnet
+      RouteTableId: !Ref PublicRouteTable
+
+  # Private Route Table for AZ1 (us-east-1a)
+  PrivateRouteTableAZ1:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MainVPC
+      Tags:
+      - Key: Name
+        Value: Private Route Table in the Availability Zone One
+
+  # Route to NAT Gateway AZ1
+  PrivateRouteToNATAZ1:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTableAZ1
+      DestinationCidrBlock: 0.0.0.0/0 #to anywhere
+      NatGatewayId: !Ref NatGatewayAZ1
+
+  # Associate Private Subnet A and B (AZ1) with Private Route Table AZ1
+  PrivateSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref FirstPrivateSubnet
+      RouteTableId: !Ref PrivateRouteTableAZ1
+
+  PrivateSubnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref SecondPrivateSubnet
+      RouteTableId: !Ref PrivateRouteTableAZ1
+
+  # Private Route Table for AZ2 (us-east-1b)
+  PrivateRouteTableAZ2:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MainVPC
+      Tags:
+      - Key: Name
+        Value: Private Route Table in the Availability Zone two
+
+  # Route to NAT Gateway AZ2
+  PrivateRouteToNATAZ2:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTableAZ2
+      DestinationCidrBlock: 0.0.0.0/0 #to anywhere
+      NatGatewayId: !Ref NatGatewayAZ2
+
+  # Associate Private Subnet C and D (AZ2) with Private Route Table AZ2
+  PrivateSubnetCRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref ThirdPrivateSubnet
+      RouteTableId: !Ref PrivateRouteTableAZ2
+
+
+Outputs:
+
+  MainVPC:
+    Description: MainVPC
+    Value: !Ref MainVPC
+  FirstPrivateSubnet:
+    Description: FirstPrivateSubnet
+    Value: !Ref FirstPrivateSubnet
+  SecondPrivateSubnet:
+    Description: SecondPrivateSubnet
+    Value: !Ref SecondPrivateSubnet
