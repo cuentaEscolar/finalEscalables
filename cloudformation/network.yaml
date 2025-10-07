@@ -66,30 +66,6 @@ Resources:
       - Key: Name
         Value: Private Subnet B - From Availability Zone one 
 
-  # Creation of Private subnet C in the Availability Zone One: us-east-1b
-  ThirdPrivateSubnet:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref MainVPC
-      CidrBlock: 10.0.4.0/24
-      AvailabilityZone: !Select [ 2, !GetAZs 'us-east-1' ]
-      MapPublicIpOnLaunch: false
-      Tags:
-      - Key: Name
-        Value: Private Subnet C - From Availability Zone two
-
-  # Creation of Private subnet D in the Availability Zone One: us-east-1b
-  FourthPrivateSubnet:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId: !Ref MainVPC
-      CidrBlock: 10.0.5.0/24
-      AvailabilityZone: !Select [ 0, !GetAZs 'us-east-1' ]
-      Tags:
-      - Key: Name
-        Value: Private Subnet D - From Availability Zone two
-
-  #Part of creating NatGateways an elastic ip addresses
 
   # Elastic IP for NAT Gateway in AZ1 (us-east-1a)
   NatEIPAZ1:
@@ -109,8 +85,6 @@ Resources:
         Value: NAT Gateway in the Availability Zone One
 
 
-  # NAT Gateway in Public Subnet B (us-east-1b)
-  #Creation of public route table and private route table
 
   # Public Route Table
   PublicRouteTable:
