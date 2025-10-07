@@ -150,12 +150,23 @@ Resources:
 
 Outputs:
 
-  MainNestedVPC:
-    Description: MainVPC
-    Value: !Ref MainNestedVPC
+Outputs:
+  VPCId:
+    Value: !Ref MainVPC
+    Export:
+      Name: !Sub "${AWS::StackName}-MainVPC"
+  IGWId:
+    Value: !Ref InternetGateway
+    Export:
+      Name: !Sub "${AWS::StackName}-IGW"
+
   FirstPrivateSubnet:
     Description: FirstPrivateSubnet
     Value: !Ref FirstPrivateSubnet
+    Export:
+      Name: !Sub "${AWS::StackName}-FirstPrivateSubnet"
   SecondPrivateSubnet:
     Description: SecondPrivateSubnet
     Value: !Ref SecondPrivateSubnet
+    Export:
+      Name: !Sub "${AWS::StackName}-SecondPrivateSubnet"
