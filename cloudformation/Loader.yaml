@@ -9,7 +9,7 @@ Resources:
 
   
   SecretsStack:
-    Type: AWS::EC2::KeyPair
+    Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: !Sub "${S3Url}/cloudformation/secrets.yaml"
 
@@ -115,7 +115,8 @@ Resources:
 #
 Outputs:
   ImportedKeyPair:
-    Value: !Ref ImportedKeyPair
+    Value: 
+      Fn::GetAtt: [SecretsStack, Outputs.ImportedKeyPair]
 
   
 

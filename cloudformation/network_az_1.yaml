@@ -13,7 +13,9 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref MainNestedVPC
-      CidrBlock: 10.0.0.0/24
+      CidrBlock: 
+        !Sub 10.${AccessZone}.0.0/24
+
       AvailabilityZone: 
         Fn::Select:
           - !Ref AccessZone
@@ -28,7 +30,8 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref MainNestedVPC
-      CidrBlock: 10.0.2.0/24
+      CidrBlock: 
+        !Sub 10.${AccessZone}.1.0/24
       AvailabilityZone: 
         Fn::Select:
           - !Ref AccessZone
@@ -42,7 +45,8 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref MainNestedVPC
-      CidrBlock: 10.0.3.0/24
+      CidrBlock: 
+        !Sub 10.${AccessZone}.2.0/24
       AvailabilityZone: 
         Fn::Select:
           - !Ref AccessZone
@@ -55,7 +59,8 @@ Resources:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref MainNestedVPC
-      CidrBlock: 10.0.4.0/24
+      CidrBlock: 
+        !Sub 10.${AccessZone}.3.0/24
       AvailabilityZone:
         Fn::Select:
           - !Ref AccessZone
