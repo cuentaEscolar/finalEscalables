@@ -8,25 +8,10 @@ Parameters:
 Resources:
 
   
-  DBSecret:
-      Type: AWS::SecretsManager::Secret
-      Properties:
-        Name: !Sub ${AWS::StackName}-db-credentials
-        GenerateSecretString:
-          SecretStringTemplate: '{"username": "admin"}'
-          GenerateStringKey: "password"
-          PasswordLength: 16
-          ExcludeCharacters: '"@/\'
-
-
-  ImportedKeyPair:
+  SecretsStack:
     Type: AWS::EC2::KeyPair
     Properties:
-      KeyName: "public_key"  # Nombre del key pair en AWS
-      PublicKeyMaterial: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCLy2dHptMDN94jchLc3Nr1HFLlNxmlenk+/fotuUvr/RQ/XZG3RmOSLiJZD0a/Xn+rirFgxT/Hy3Qhv2KfR1VYkIGB6IJhoWE+fTi92yZlUOln4E9fPl5tLWHRuTrDwPf8FoFciyJ0+JJpu0qzK+1EEzs+YKRMM1gnM+yihVnnIV3A5ymfp73ysPmwJf7Tsyx30QpkY2Fgck6XLj39X/69MYWIWldYEv3oS+ZtpHXwt6GljoQDb6snGiUbjP7Ib2FcLME5Yjy16kgv0G4ok0tMR81QkOTp8lgexOullQIvpu8BhJODyf8SESOLMmX5t4Xd9KD9vliuinXshgxwkPbR"
-      Tags:
-        - Key: Name
-          Value: "public_key"
+      TemplateURL: !Sub "${S3Url}/cloudformation/secrets.yaml"
 
   NetworkStack:
     Type: AWS::CloudFormation::Stack
@@ -53,7 +38,7 @@ Resources:
         MainVPC: 
           Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
         ImportedKeyPair: 
-          !Ref ImportedKeyPair
+          Fn::GetAtt: [SecretsStack, Outputs.ImportedKeyPair]
         InstanceProfileArn:
           arn:aws:iam::013001369500:instance-profile/ec2testrole
 
@@ -79,6 +64,7 @@ Resources:
 #
         #ImportedKeyPair:
           #!Ref ImportedKeyPair
+      # Fn::GetAtt: [SecretsStack, Outputs.ImportedKeyPair]
 #
         #BastionSecurityGroup:
           #Type: String
@@ -88,20 +74,20 @@ Resources:
 #
           #!GetAtt NetworkStack.Outputs.FirstPublicSubnet
 
-  RDSstack:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: !Sub "${S3Url}/cloudformation/rds_template.yaml"
-      Parameters:
-        DBSecret:
-          !Ref DBSecret
-
-        MyDatabaseSecurityGroup:
-          Fn::GetAtt: [SecurityGroups, Outputs.MyDatabaseSecurityGroup]
-
-        SecondPrivateSubnet:
-          Fn::GetAtt: [NetworkStack, Outputs.SecondPrivateSubnet]
-
+  #RDSstack:
+    #Type: AWS::CloudFormation::Stack
+    #Properties:
+      #TemplateURL: !Sub "${S3Url}/cloudformation/rds_template.yaml"
+      #Parameters:
+        #DBSecret:
+          #!Ref DBSecret
+#
+        #MyDatabaseSecurityGroup:
+          #Fn::GetAtt: [SecurityGroups, Outputs.MyDatabaseSecurityGroup]
+#
+        #SecondPrivateSubnet:
+          #Fn::GetAtt: [NetworkStack, Outputs.SecondPrivateSubnet]
+#
 
 #
   #LoadBalancer:
