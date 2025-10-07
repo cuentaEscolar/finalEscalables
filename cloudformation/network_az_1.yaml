@@ -6,15 +6,28 @@ Parameters:
   AccessZone:
     Type: Number
 
+Mappings:
+  SubnetCidrs:
+    "0":
+      Subnet1: 10.0.0.0/24
+      Subnet2: 10.0.1.0/24
+      Subnet3: 10.0.2.0/24
+      Subnet4: 10.0.3.0/24
+    "1":
+      Subnet1: 10.0.4.0/24
+      Subnet2: 10.0.5.0/24
+      Subnet3: 10.0.7.0/24
+      Subnet4: 10.0.7.0/24
 
 Resources:
+
 
   FirstPublicSubnet:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref MainNestedVPC
       CidrBlock: 
-        !Sub 10.${AccessZone}.0.0/24
+        !FindInMap [SubnetCidrs, !Ref AccessZone, Subnet1]
 
       AvailabilityZone: 
         Fn::Select:
@@ -31,7 +44,7 @@ Resources:
     Properties:
       VpcId: !Ref MainNestedVPC
       CidrBlock: 
-        !Sub 10.${AccessZone}.1.0/24
+        !FindInMap [SubnetCidrs, !Ref AccessZone, Subnet1]
       AvailabilityZone: 
         Fn::Select:
           - !Ref AccessZone
@@ -46,7 +59,7 @@ Resources:
     Properties:
       VpcId: !Ref MainNestedVPC
       CidrBlock: 
-        !Sub 10.${AccessZone}.2.0/24
+        !FindInMap [SubnetCidrs, !Ref AccessZone, Subnet1]
       AvailabilityZone: 
         Fn::Select:
           - !Ref AccessZone
@@ -60,7 +73,7 @@ Resources:
     Properties:
       VpcId: !Ref MainNestedVPC
       CidrBlock: 
-        !Sub 10.${AccessZone}.3.0/24
+        !FindInMap [SubnetCidrs, !Ref AccessZone, Subnet1]
       AvailabilityZone:
         Fn::Select:
           - !Ref AccessZone
