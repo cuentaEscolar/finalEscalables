@@ -38,5 +38,5 @@ Resources:
         - !Ref MyDatabaseSecurityGroup
       DBSubnetGroupName: !Ref DBSubnetGroup
       BackupRetentionPeriod: 7
-      MultiAZ: true # Alta disponibilidad en múltiples AZ
+      MultiAZ: false # Alta disponibilidad en múltiples AZ
       PubliclyAccessible: false  # Solo accesible en subredes privadas
