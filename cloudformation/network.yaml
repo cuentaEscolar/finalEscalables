@@ -14,6 +14,7 @@ Resources:
   InternetGateway:
     Type: AWS::EC2::InternetGateway
     DependsOn: MainNestedVPC
+
   AttachIGW:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
@@ -72,6 +73,8 @@ Resources:
     Type: AWS::EC2::EIP
     Properties:
       Domain: vpc
+    DependsOn:
+      MainNestedVPC
 
   # NAT Gateway in Public Subnet A (us-east-1a)
   NatGatewayAZ1:
@@ -102,6 +105,9 @@ Resources:
       RouteTableId: !Ref PublicRouteTable
       DestinationCidrBlock: 0.0.0.0/0 #this allow access to internet
       GatewayId: !Ref InternetGateway
+
+    DependsOn:
+      - InternetGateway
 
   # Associations for Public Subnet A and B
   PublicSubnetARouteTableAssociation:
@@ -150,23 +156,12 @@ Resources:
 
 Outputs:
 
-Outputs:
-  VPCId:
-    Value: !Ref MainVPC
-    Export:
-      Name: !Sub "${AWS::StackName}-MainVPC"
-  IGWId:
-    Value: !Ref InternetGateway
-    Export:
-      Name: !Sub "${AWS::StackName}-IGW"
-
+  MainNestedVPC:
+    Description: MainVPC
+    Value: !Ref MainNestedVPC
   FirstPrivateSubnet:
     Description: FirstPrivateSubnet
     Value: !Ref FirstPrivateSubnet
-    Export:
-      Name: !Sub "${AWS::StackName}-FirstPrivateSubnet"
   SecondPrivateSubnet:
     Description: SecondPrivateSubnet
     Value: !Ref SecondPrivateSubnet
-    Export:
-      Name: !Sub "${AWS::StackName}-SecondPrivateSubnet"
