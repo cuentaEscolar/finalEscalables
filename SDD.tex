@@ -5,6 +5,7 @@
 \usepackage{listings}
 \usepackage{pgffor}
 \usepackage{csvsimple}
+\usepackage{adjustbox} 
 \usepackage{tikz}
 \usepackage{ragged2e}
 \usetikzlibrary{fit,positioning}
@@ -202,7 +203,7 @@ IEEE Std 1016™-2009
 
   \end{figure}
   \subsection{temp fix}
-  \paragraph{ Entidades }
+  \textbf{ Entidades }
       \iffalse{
     NOTE 1—Design attributes can be thought of as questions about design elements. The answers to those questions are
     the values of the attributes. All the questions can be answered, but the content of the answer will depend upon the
@@ -218,10 +219,16 @@ IEEE Std 1016™-2009
     endif
       } \fi 
 
-  \foreach \module in { cloudformation}
-  {
-    \csvautotabular {./designElements/\module.csv}
+  
+      \begin{table}[htbp]
+        \caption{Entities}\label{tab:}
+\adjustbox{max width=\textwidth}{
+    \csvautotabular {./designElements/cloudformation.csv}
   }
+      \end{table}
+      
+
+  
 
   \subsection{Justificacion de la Infraestructura}
   La Arquitectura fue diens\~ada para facilitar la separaci\'on de necesidades, escalabilidad y seguridad.
