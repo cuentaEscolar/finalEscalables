@@ -1,9 +1,8 @@
 
 Parameters:
-  
   S3Url:
-    Description: Link with Repo
     Type: String
+    Description: Link with Repo
 
 Resources:
 
@@ -27,9 +26,9 @@ Resources:
     Properties:
       TemplateURL: !Sub "${S3Url}/cloudformation/security_groups.yaml"
 
-    Parameters:
-      MainVPC: 
-        Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
+      Parameters:
+        MainVPC: 
+          Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
 
     DependsOn: NetworkStack
 
