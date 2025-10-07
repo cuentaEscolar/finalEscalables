@@ -1,38 +1,30 @@
-Parameters:
-  MainNestedVPC:
-    Type: String
-  PublicRouteTable:
-    Type: String
-  AccessZone:
-    Type: Number
-
 
 Resources:
-
-  FirstPublicSubnet:
+  # Creation of Public subnet B in the Availability Zone One: us-east-1b
+  SecondPublicSubnet:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref MainNestedVPC
-      CidrBlock: 10.0.0.0/24
-      AvailabilityZone: 
-        Fn::Select:
-          - !Ref AccessZone
-          - !GetAZs 'us-east-1' 
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: !Select [ 1, !GetAZs 'us-east-1' ]
       MapPublicIpOnLaunch: true
       Tags:
       - Key: Name
-        Value: Public Subnet A - From Availability Zone one
-        
+        Value: Public Subnet B - From Availability Zone two
+
+  PublicSubnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref SecondPublicSubnet
+      RouteTableId: !Ref PublicRouteTable
+
   # Creation of Private subnet A in the Availability Zone One: us-east-1a
   FirstPrivateSubnet:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId: !Ref MainNestedVPC
       CidrBlock: 10.0.2.0/24
-      AvailabilityZone: 
-        Fn::Select:
-          - !Ref AccessZone
-          - !GetAZs 'us-east-1' 
+      AvailabilityZone: !Select [ 0, !GetAZs 'us-east-1' ]
       Tags:
       - Key: Name
         Value: Private Subnet A - From Availability Zone one 
@@ -43,11 +35,7 @@ Resources:
     Properties:
       VpcId: !Ref MainNestedVPC
       CidrBlock: 10.0.3.0/24
-      AvailabilityZone: 
-        Fn::Select:
-          - !Ref AccessZone
-          - !GetAZs 'us-east-1' 
-
+      AvailabilityZone: !Select [ 0, !GetAZs 'us-east-1' ]
       Tags:
       - Key: Name
         Value: Private Subnet B - From Availability Zone one 
@@ -56,10 +44,7 @@ Resources:
     Properties:
       VpcId: !Ref MainNestedVPC
       CidrBlock: 10.0.4.0/24
-      AvailabilityZone:
-        Fn::Select:
-          - !Ref AccessZone
-          - !GetAZs 'us-east-1' 
+      AvailabilityZone: !Select [ 0, !GetAZs 'us-east-1' ]
       Tags:
       - Key: Name
         Value: Private Subnet C - From Availability Zone one 
@@ -72,6 +57,8 @@ Resources:
     Type: AWS::EC2::EIP
     Properties:
       Domain: vpc
+    DependsOn:
+      MainNestedVPC
 
   # NAT Gateway in Public Subnet A (us-east-1a)
   NatGatewayAZ1:
