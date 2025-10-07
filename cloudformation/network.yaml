@@ -108,23 +108,8 @@ Resources:
       - Key: Name
         Value: NAT Gateway in the Availability Zone One
 
-  # Elastic IP for NAT Gateway in AZ2 (us-east-1b)
-  NatEIPAZ2:
-    Type: AWS::EC2::EIP
-    Properties:
-      Domain: vpc
 
   # NAT Gateway in Public Subnet B (us-east-1b)
-  NatGatewayAZ2:
-    Type: AWS::EC2::NatGateway
-    DependsOn: AttachIGW
-    Properties:
-      AllocationId: !GetAtt NatEIPAZ2.AllocationId
-      SubnetId: !Ref SecondPublicSubnet
-      Tags:
-      - Key: Name
-        Value: NAT Gateway in the Availability Zone two
-
   #Creation of public route table and private route table
 
   # Public Route Table
@@ -186,30 +171,6 @@ Resources:
     Properties:
       SubnetId: !Ref SecondPrivateSubnet
       RouteTableId: !Ref PrivateRouteTableAZ1
-
-  # Private Route Table for AZ2 (us-east-1b)
-  PrivateRouteTableAZ2:
-    Type: AWS::EC2::RouteTable
-    Properties:
-      VpcId: !Ref MainVPC
-      Tags:
-      - Key: Name
-        Value: Private Route Table in the Availability Zone two
-
-  # Route to NAT Gateway AZ2
-  PrivateRouteToNATAZ2:
-    Type: AWS::EC2::Route
-    Properties:
-      RouteTableId: !Ref PrivateRouteTableAZ2
-      DestinationCidrBlock: 0.0.0.0/0 #to anywhere
-      NatGatewayId: !Ref NatGatewayAZ2
-
-  # Associate Private Subnet C and D (AZ2) with Private Route Table AZ2
-  PrivateSubnetCRouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      SubnetId: !Ref ThirdPrivateSubnet
-      RouteTableId: !Ref PrivateRouteTableAZ2
 
 
 Outputs:

@@ -1,0 +1,34 @@
+
+Parameters:
+  
+  S3Url:
+    Description: Link with Repo
+    Type: String
+
+Resources:
+  NetworkStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "${S3Url}/cloudformation/network.yaml"
+
+  Ec2TemplateStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "${S3Url}/cloudformation/ec2_template.yaml"
+
+  LoadBalancerStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "${S3Url}/cloudformation/ec2_template.yaml"
+      Parameters:
+        FirstPublicSubnet: 
+
+    DependsOn:
+      - NetworkStack
+      - Ec2TemplateStack
+  
+
+
+  
+
+
