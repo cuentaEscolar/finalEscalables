@@ -1,0 +1,118 @@
+Parameters:
+  MainNestedVPC:
+    Type: String
+  PublicRouteTable:
+    Type: String
+  AccessZone:
+    Type: Number
+
+
+Resources:
+
+  FirstPublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MainNestedVPC
+      CidrBlock: 10.0.0.0/24
+      AvailabilityZone: !Select [ AccessZone, !GetAZs 'us-east-1' ]
+      MapPublicIpOnLaunch: true
+      Tags:
+      - Key: Name
+        Value: Public Subnet A - From Availability Zone one
+        
+  # Creation of Private subnet A in the Availability Zone One: us-east-1a
+  FirstPrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MainNestedVPC
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: !Select [ AccessZone, !GetAZs 'us-east-1' ]
+      Tags:
+      - Key: Name
+        Value: Private Subnet A - From Availability Zone one 
+
+  # Creation of Private subnet B in the Availability Zone One: us-east-1a
+  SecondPrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MainNestedVPC
+      CidrBlock: 10.0.3.0/24
+      AvailabilityZone: !Select [ AccessZone, !GetAZs 'us-east-1' ]
+      Tags:
+      - Key: Name
+        Value: Private Subnet B - From Availability Zone one 
+  ThirdPrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MainNestedVPC
+      CidrBlock: 10.0.4.0/24
+      AvailabilityZone: !Select [ AccessZone, !GetAZs 'us-east-1' ]
+      Tags:
+      - Key: Name
+        Value: Private Subnet C - From Availability Zone one 
+
+
+  # Elastic IP for NAT Gateway in AZ1 (us-east-1a)
+  #
+  #
+  NatEIPAZ1:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+
+  # NAT Gateway in Public Subnet A (us-east-1a)
+  NatGatewayAZ1:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt NatEIPAZ1.AllocationId
+      SubnetId: !Ref FirstPublicSubnet
+      Tags:
+      - Key: Name
+        Value: NAT Gateway in the Availability Zone One
+
+
+
+  # Public Route Table
+  #
+  # Private Route Table for AZ1 (us-east-1a)
+  PrivateRouteTableAZ1:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref MainNestedVPC
+      Tags:
+      - Key: Name
+        Value: Private Route Table in the Availability Zone One
+
+  # Route to NAT Gateway AZ1
+  PrivateRouteToNATAZ1:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTableAZ1
+      DestinationCidrBlock: 0.0.0.0/0 #to anywhere
+      NatGatewayId: !Ref NatGatewayAZ1
+
+  # Associate Private Subnet A and B (AZ1) with Private Route Table AZ1
+  PrivateSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref FirstPrivateSubnet
+      RouteTableId: !Ref PrivateRouteTableAZ1
+
+  PrivateSubnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref SecondPrivateSubnet
+      RouteTableId: !Ref PrivateRouteTableAZ1
+
+  PrivateSubnetCRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref ThirdPrivateSubnet
+      RouteTableId: !Ref PrivateRouteTableAZ1
+
+  PublicSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref FirstPublicSubnet
+      RouteTableId: !Ref PublicRouteTable
+
