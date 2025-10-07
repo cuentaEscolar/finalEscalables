@@ -1,0 +1,3 @@
+ID, name, type, purpose, author
+ASP, Politica de Escalado, Servicio de AWS: AWS::AutoScaling::ScalingPolicy, L,aws
+Internet Gateway, Internet Gateway, AWS::EC2::InternetGateway, Permitir entrada a la red, aws

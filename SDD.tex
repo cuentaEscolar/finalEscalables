@@ -179,12 +179,13 @@ IEEE Std 1016™-2009
 
 \section{Dise\~no General}
   
+\section{Arquitectura}
   \subsection{Arquitectura del Sistema}
-  \begin{figure}
+  \begin{figure}[!htb]
     \begin{center}
       \includesvg[width=500pt]{BasicArch.svg}
     \end{center}
-    \caption{}\label{fig: Arquitectura Basica}
+    \caption{Arquitectura Basica}\label{fig: }
   Dise\~no basico de la Arquitectura.
   \end{figure}
 
@@ -197,9 +198,30 @@ IEEE Std 1016™-2009
     Los Usuarios regulares no tienen semejantes privilegios.
     Tanto el Administrador como los Usuarios Regulares interactuan a traves del Internet Gateway.
     El Network Load Balancer recibe el trafico del Internet Gateway y lo redirige a la tabla de routeo privada. La direccion a la que la redirija depende de la VPC en la que se esta.
-    La tabla de routeo privada
+    La tabla de routeo privada 
 
   \end{figure}
+  \subsection{temp fix}
+  \paragraph{ Entidades }
+      \iffalse{
+    NOTE 1—Design attributes can be thought of as questions about design elements. The answers to those questions are
+    the values of the attributes. All the questions can be answered, but the content of the answer will depend upon the
+    nature of the entity. The collection of answers provides a complete description of an entity. Attribute descriptions
+    should include references and design considerations such as tradeoffs and assumptions when appropriate. In some
+    cases, attribute descriptions may have the value none.
+    NOTE 2—Design attributes have been generalized from the concept of design entity attribute (which appeared in
+    IEEE Std 1016-1998 and applied only to design entities) to apply to design entities, design relationships, and design
+    constraints.
+    NOTE 3—Use of the design attributes in 4.6.2.1 through 4.6.2.3 ensures compatibility with IEEE Std 1016-1998. Other
+    design attributes required as a part of specific design viewpoints are defined with those viewpoints in Clause 5. Some
+    design attributes [such as subordinates (see 5.3.2.2)] can be more usefully represented as design relationships. This was
+    endif
+      } \fi 
+
+  \foreach \module in { cloudformation}
+  {
+    \csvautotabular {./designElements/\module.csv}
+  }
 
   \subsection{Justificacion de la Infraestructura}
   La Arquitectura fue diens\~ada para facilitar la separaci\'on de necesidades, escalabilidad y seguridad.
@@ -208,7 +230,6 @@ IEEE Std 1016™-2009
 \section{Consideraciones Tecnicas}
 \newpage
 
-\section{Arquitectura}
 \newpage
 
 
