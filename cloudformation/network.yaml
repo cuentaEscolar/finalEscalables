@@ -1,6 +1,6 @@
 Resources:
 
-  MainVPC:
+  MainNestedVPC:
     Type: AWS::EC2::VPC
     Properties:
       CidrBlock: 10.0.0.0/16
@@ -13,18 +13,18 @@ Resources:
   # Creation and attaching of InternetGateway
   InternetGateway:
     Type: AWS::EC2::InternetGateway
-    DependsOn: MainVPC
+    DependsOn: MainNestedVPC
   AttachIGW:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
-      VpcId: !Ref MainVPC
+      VpcId: !Ref MainNestedVPC
       InternetGatewayId: !Ref InternetGateway
 
   # Creation of Public subnet A in the Availability Zone One: us-east-1a
   FirstPublicSubnet:
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId: !Ref MainVPC
+      VpcId: !Ref MainNestedVPC
       CidrBlock: 10.0.0.0/24
       AvailabilityZone: !Select [ 0, !GetAZs 'us-east-1' ]
       MapPublicIpOnLaunch: true
@@ -36,7 +36,7 @@ Resources:
   SecondPublicSubnet:
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId: !Ref MainVPC
+      VpcId: !Ref MainNestedVPC
       CidrBlock: 10.0.1.0/24
       AvailabilityZone: !Select [ 1, !GetAZs 'us-east-1' ]
       MapPublicIpOnLaunch: true
@@ -48,7 +48,7 @@ Resources:
   FirstPrivateSubnet:
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId: !Ref MainVPC
+      VpcId: !Ref MainNestedVPC
       CidrBlock: 10.0.2.0/24
       AvailabilityZone: !Select [ 0, !GetAZs 'us-east-1' ]
       Tags:
@@ -59,7 +59,7 @@ Resources:
   SecondPrivateSubnet:
     Type: AWS::EC2::Subnet
     Properties:
-      VpcId: !Ref MainVPC
+      VpcId: !Ref MainNestedVPC
       CidrBlock: 10.0.3.0/24
       AvailabilityZone: !Select [ 1, !GetAZs 'us-east-1' ]
       Tags:
@@ -90,7 +90,7 @@ Resources:
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId: !Ref MainVPC
+      VpcId: !Ref MainNestedVPC
       Tags:
       - Key: Name
         Value: Public Route Table for Internet Gateway 
@@ -120,7 +120,7 @@ Resources:
   PrivateRouteTableAZ1:
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId: !Ref MainVPC
+      VpcId: !Ref MainNestedVPC
       Tags:
       - Key: Name
         Value: Private Route Table in the Availability Zone One
@@ -150,9 +150,9 @@ Resources:
 
 Outputs:
 
-  MainVPC:
+  MainNestedVPC:
     Description: MainVPC
-    Value: !Ref MainVPC
+    Value: !Ref MainNestedVPC
   FirstPrivateSubnet:
     Description: FirstPrivateSubnet
     Value: !Ref FirstPrivateSubnet
