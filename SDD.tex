@@ -6,6 +6,7 @@
 \usepackage{pgffor}
 \usepackage{csvsimple}
 \usepackage{tikz}
+\usepackage{ragged2e}
 \usetikzlibrary{fit,positioning}
 \usetikzlibrary{shapes.multipart}
 \usetikzlibrary{positioning}
@@ -49,14 +50,22 @@ IEEE Std 1016™-2009
 \pagenumbering{arabic}
 
 \section{Introducci\'on}
+  \iffalse  
+  ⎯ Date of issue and status
+  ⎯ Scope
+  ⎯ Issuing organization
+  ⎯ Authorship (responsibility or copyright information)
+  ⎯ References
+  \fi
   \subsection{Identificaci\'on}
-  Redactado el \today.
-  El siguiente documento fue redactado for el equipo de dise\~no SpeedCola el \today . 
+  \paragraph {Fecha de Redaccion} Redactado el \today \space por SpeedCola S.A de C.V.\newline
 
-  SpeedCola es una aplicacion web que facilita la conexion entre proveedores de servicio y consumidores.
+  SpeedCola es una aplicacion web que facilita la conexion entre proveedores de servicio y consumidores. 
+  %context y Summary
+  Este documento estipula la arquitectura, el dise\~no y 
+    las decisiones sobre que se compremetera y su porque. Este es de interes para los accionistas de SpeedCola, asi como a todos los equipos de desarrollo. Su proposito es describir tanto la arquitectura como la implementacion del sitio web de  
+  SpeedCola en aras de facilitar su uso, modificacion, pruebas y resolucion de errores.
 
-  estipula la arquitectura, el dise\~no y 
-    las decisiones sobre que se compremetera y su porque. Este documento es de interes para los accionistas de SpeedCola, asi como a todos los equipos de desarrollo. 
     En este mismo se incluyen las siguientes vistas del sistema:
     \begin{multicols}{2}
     \begin{enumerate}
@@ -70,17 +79,8 @@ IEEE Std 1016™-2009
     \end{enumerate}
   \end{multicols}
 
-  \begin{enumerate}
-    \item  \textbf{Descripcion General}
+  \paragraph{Las funcionalidades siguientes se consideran dentro del alcance del proyecto.}
 
-  El proposito de este documento es describir tanto la arquitectura como la implementacion de 
-  SpeedCola en aras de facilitar su uso, modificacion, pruebas y resolucion de errores.
-
-
-
-  \end{enumerate}
-
-  \subsection{In-Scope Funcitonalities}
   \begin {multicols}{2}
     \begin{enumerate}
       \item \textbf{Registro y Autenticacion}
