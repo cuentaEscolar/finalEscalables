@@ -44,7 +44,7 @@ Resources:
     Properties:
       VpcId: !Ref MainNestedVPC
       CidrBlock: 
-        !FindInMap [SubnetCidrs, !Ref AccessZone, Subnet1]
+        !FindInMap [SubnetCidrs, !Ref AccessZone, Subnet2]
       AvailabilityZone: 
         Fn::Select:
           - !Ref AccessZone
@@ -59,7 +59,7 @@ Resources:
     Properties:
       VpcId: !Ref MainNestedVPC
       CidrBlock: 
-        !FindInMap [SubnetCidrs, !Ref AccessZone, Subnet1]
+        !FindInMap [SubnetCidrs, !Ref AccessZone, Subnet3]
       AvailabilityZone: 
         Fn::Select:
           - !Ref AccessZone
@@ -73,7 +73,7 @@ Resources:
     Properties:
       VpcId: !Ref MainNestedVPC
       CidrBlock: 
-        !FindInMap [SubnetCidrs, !Ref AccessZone, Subnet1]
+        !FindInMap [SubnetCidrs, !Ref AccessZone, Subnet4]
       AvailabilityZone:
         Fn::Select:
           - !Ref AccessZone
