@@ -1,3 +1,16 @@
-ID, name, type, purpose, author
-ASP, Politica de Escalado, Servicio de AWS: AWS::AutoScaling::ScalingPolicy, L,aws
-Internet Gateway, Internet Gateway, AWS::EC2::InternetGateway, Permitir entrada a la red, aws
+ID,name,type,purpose,author
+PK, Llave privada del Administrador, AWS::EC2:: KeyPair, Permitir el acceso del administrador a la infraestructura, aws
+Internet Gateway,Internet Gateway,AWS::EC2:: InternetGateway,Permitir entrada a la red,aws
+ASP,Politica de Escalado,AWS::AutoScaling:: ScalingPolicy,L,aws
+Private Route Table,Private Route Table,AWS::EC2:: RouteTable,l,aws
+MainVPC, MainVPC, AWS::EC2::VPC, Tener un espacio de red seguro en el cual trabajar, aws
+PubS A, Public Subnet A , AWS::EC2::VPC, Tener un espacio de red seguro en el cual trabajar, aws
+ITLB,Incoming Traffic Load Balancer,awa,awa ,aws
+PriS A, Private Subnet A , AWS::EC2::VPC, Permitir el acceso al sistema a traves de una subnet regulada y controlada,  aws
+PriS B, Private Subnet B , AWS::EC2::VPC, Tener un espacio de red seguro en el cual trabajar, aws
+PriS C, Private Subnet C , AWS::EC2::VPC, Tener un espacio de red seguro en el cual trabajar, aws
+connect,connect route, AWS::Lambda:: Function, redirigir requests de tipo connect automaticamente desde la api a la base de datos, aws
+disconnect,disconnect route, AWS::Lambda:: Function, redirigir requests de tipo disconnect automaticamente desde la api a la base de datos, aws
+send message,send message route, AWS::Lambda:: Function, redirigir requests de tipo send message automaticamente desde la api a la base de datos, aws
+default,default route, AWS::Lambda:: Function, redirigir requests de tipo default automaticamente desde la api a la base de datos, aws
+

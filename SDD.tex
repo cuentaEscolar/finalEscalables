@@ -6,6 +6,7 @@
 \usepackage{pgffor}
 \usepackage{csvsimple}
 \usepackage{adjustbox} 
+\usepackage{tabularx}
 \usepackage{tikz}
 \usepackage{ragged2e}
 \usetikzlibrary{fit,positioning}
@@ -172,7 +173,9 @@ IEEE Std 1016™-2009
 
 \begin{figure}[!htb]
   \begin{center}
-    \includesvg[width = 400pt]{./UML SpeedCola.drawio.svg}
+    \scalebox{1.0 }{
+      \includesvg[width = \textwidth,inkscapelatex=false]{./UML SpeedCola.drawio.svg}
+    }
   \end{center}
   \caption{}\label{fig:}
 \end{figure}
@@ -192,8 +195,7 @@ IEEE Std 1016™-2009
 
   \begin{figure}[!htb]
     \begin{center}
-      \includesvg[width=550pt]{archDiagram.svg}
-    \end{center}
+      \includesvg[width=\textwidth,  inkscapelatex=false]{archDiagram.svg} \end{center}
     \caption{Arquitectura en la nube.}\label{fig: Implementacion en la Nube}
     El Administrador es una entidad que tiene permisos especiales para inspeccionar el funcionamiento de la Infraestructura.
     Los Usuarios regulares no tienen semejantes privilegios.
@@ -220,12 +222,21 @@ IEEE Std 1016™-2009
       } \fi 
 
   
-      \begin{table}[htbp]
-        \caption{Entities}\label{tab:}
-\adjustbox{max width=\textwidth}{
-    \csvautotabular {./designElements/cloudformation.csv}
-  }
-      \end{table}
+  \begin{table}[htbp]
+    \caption{Entities}\label{tab:}
+    \renewcommand{\arraystretch}{1.3}
+  \begin{tabularx}{\linewidth}{|X|X|X|X|l|}
+    \hline
+    \textbf{ID} & \textbf{Name} & \textbf{Type} & \textbf{Purpose} & \textbf{Author} \\
+    \hline
+    \csvreader[
+      head to column names,
+      late after line=\\\hline,
+      respect all
+    ]{./designElements/cloudformation.csv}{}%
+    {\ID & \name & \type & \purpose & \author}
+  \end{tabularx}
+  \end{table}
       
 
   
