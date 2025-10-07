@@ -165,11 +165,18 @@ Resources:
       SubnetId: !Ref SecondPrivateSubnet
       RouteTableId: !Ref PrivateRouteTableAZ1
 
+  PrivateSubnetCRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref ThirdPrivateSubnet
+      RouteTableId: !Ref PrivateRouteTableAZ1
+
+
 
 
 Outputs:
 
-  MainNestedVPC:
+  MainVPC:
     Description: MainVPC
     Value: !Ref MainNestedVPC
   FirstPrivateSubnet:
