@@ -1,4 +1,20 @@
-        #
+Parameters:
+  MainVPC:
+    Type: String
+
+  ImportedKeyPair:
+    Type: String
+
+  InstanceProfileArn:
+    Type: String
+
+  PrivateInstanceSecurityGroup:
+    Type: String
+
+
+  WebServerSecurityGroup:
+    Type: String
+
 Resources:
 
   LaunchTemplateEc2Micro:

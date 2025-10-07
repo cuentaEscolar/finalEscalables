@@ -1,8 +1,9 @@
 
 Parameters:
+  
   S3Url:
-    Type: String
     Description: Link with Repo
+    Type: String
 
 Resources:
 
@@ -30,7 +31,26 @@ Resources:
         MainVPC: 
           Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
 
-    DependsOn: NetworkStack
+
+  #Ec2Template:
+    #Type: AWS::CloudFormation::Stack
+    #Properties:
+      #TemplateURL: !Sub "${S3Url}/cloudformation/ec2_template.yaml"
+#
+      #Parameters:
+        #MainVPC: 
+          #Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
+        #ImportedKeyPair: 
+          #!Ref ImportedKeyPair
+          #
+#
+    #DependsOn: 
+      #- NetworkStack
+      #- SecurityGroups
+
+Outputs:
+  ImportedKeyPair:
+    Value: !Ref ImportedKeyPair
 
 
   

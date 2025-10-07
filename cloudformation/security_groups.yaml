@@ -67,3 +67,13 @@ Resources:
         - Key: Name
           Value: Bastion Host Security Group
 
+Outputs:
+  PrivateInstanceSecurityGroup:
+    Description: PrivateInstanceSecurityGroup arn
+    Value: !Ref PrivateInstanceSecurityGroup
+
+  WebServerSecurityGroup:
+    Value: !Ref WebServerSecurityGroup
+
+  BastionSecurityGroup:
+    Value: !Ref BastionSecurityGroup
