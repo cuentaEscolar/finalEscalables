@@ -1,3 +1,7 @@
+Parameters:
+  S3Url:
+    Type: String
+
 Resources:
 
   MainNestedVPC:
@@ -32,8 +36,7 @@ Resources:
           !Ref PublicRouteTable
         AccessZone:
           0
-    DependsOn:
-      - AttachIGW
+    DependsOn: AttachIGW
 
   AZ2Network:
     Type: AWS::CloudFormation::Stack
@@ -46,8 +49,7 @@ Resources:
           !Ref PublicRouteTable
         AccessZone:
           1
-    DependsOn:
-      - AttachIGW
+    DependsOn: AttachIGW
 
   # Creation of Public subnet A in the Availability Zone One: us-east-1a
   PublicRouteTable:
@@ -57,8 +59,7 @@ Resources:
       Tags:
       - Key: Name
         Value: Public Route Table for Internet Gateway 
-    DependsOn:
-      -AttachIGW
+    DependsOn: AttachIGW
 
   # Public Route (0.0.0.0/0 to Internet Gateway)
   PublicRoute:

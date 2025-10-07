@@ -14,7 +14,7 @@ Resources:
     Properties:
       VpcId: !Ref MainNestedVPC
       CidrBlock: 10.0.0.0/24
-      AvailabilityZone: !Select [ AccessZone, !GetAZs 'us-east-1' ]
+      AvailabilityZone: !Select [ !Ref AccessZone, !GetAZs 'us-east-1' ]
       MapPublicIpOnLaunch: true
       Tags:
       - Key: Name
