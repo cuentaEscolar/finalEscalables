@@ -173,6 +173,7 @@ Resources:
       RouteTableId: !Ref PrivateRouteTableAZ1
 
 
+
 Outputs:
 
   MainVPC:

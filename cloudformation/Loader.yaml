@@ -6,27 +6,32 @@ Parameters:
     Type: String
 
 Resources:
+
+  ImportedKeyPair:
+    Type: AWS::EC2::KeyPair
+    Properties:
+      KeyName: "public_key"  # Nombre del key pair en AWS
+      PublicKeyMaterial: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCLy2dHptMDN94jchLc3Nr1HFLlNxmlenk+/fotuUvr/RQ/XZG3RmOSLiJZD0a/Xn+rirFgxT/Hy3Qhv2KfR1VYkIGB6IJhoWE+fTi92yZlUOln4E9fPl5tLWHRuTrDwPf8FoFciyJ0+JJpu0qzK+1EEzs+YKRMM1gnM+yihVnnIV3A5ymfp73ysPmwJf7Tsyx30QpkY2Fgck6XLj39X/69MYWIWldYEv3oS+ZtpHXwt6GljoQDb6snGiUbjP7Ib2FcLME5Yjy16kgv0G4ok0tMR81QkOTp8lgexOullQIvpu8BhJODyf8SESOLMmX5t4Xd9KD9vliuinXshgxwkPbR"
+      Tags:
+        - Key: Name
+          Value: "public_key"
+
   NetworkStack:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: !Sub "${S3Url}/cloudformation/network.yaml"
 
-  Ec2TemplateStack:
+
+  SecurityGroups:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "${S3Url}/cloudformation/ec2_template.yaml"
+      TemplateURL: !Sub "${S3Url}/cloudformation/security_groups.yaml"
 
-  LoadBalancerStack:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: !Sub "${S3Url}/cloudformation/ec2_template.yaml"
-      Parameters:
-        FirstPublicSubnet: 
+    Parameters:
+      MainVPC: 
+        Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
 
-    DependsOn:
-      - NetworkStack
-      - Ec2TemplateStack
-  
+    DependsOn: NetworkStack
 
 
   
