@@ -3,6 +3,24 @@ Parameters:
     Type: String
 
 Resources:
+
+
+  MyDatabaseSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      Name: databasesecurity_group
+      GroupDescription: Enable MySQL access
+      VpcId: !Ref MainVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          CidrIp: 10.0.0.0/16
+
+      Tags:
+        - Key: Name
+          Value: !Ref BastionSecurityGroup
+
   ALBSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -68,6 +86,11 @@ Resources:
           Value: Bastion Host Security Group
 
 Outputs:
+
+  MyDatabaseSecurityGroup:
+    Description: arn
+    Value: !Ref MyDatabaseSecurityGroup
+
   PrivateInstanceSecurityGroup:
     Description: PrivateInstanceSecurityGroup arn
     Value: !Ref PrivateInstanceSecurityGroup

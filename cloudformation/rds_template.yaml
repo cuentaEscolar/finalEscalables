@@ -1,0 +1,43 @@
+Parameters:
+  MainVPC:
+    Type: String
+
+  DBSecret:
+    Type: String
+
+  MyDatabaseSecurityGroup:
+    Type: String
+
+  SecondPrivateSubnet:
+    Type: String
+
+
+
+Resources:
+
+  DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: "Subredes privadas para la base de datos"
+      SubnetIds: SecondPrivateSubnet #subnet B
+      Tags:
+        - Key: Name
+          Value: !Sub ${AWS::StackName}-db-subnet-group
+
+  MyDatabase:
+    Type: AWS::RDS::DBInstance
+    DeletionPolicy: 'Delete'
+    UpdateReplacePolicy: 'Delete'
+    Properties:
+      DBInstanceIdentifier: countries
+      AllocatedStorage: 20
+      DBInstanceClass: db.t3.micro
+      Engine: mysql
+      MasterUsername: !Sub '{{resolve:secretsmanager:${DBSecret}::username}}'
+      MasterUserPassword: !Sub '{{resolve:secretsmanager:${DBSecret}::password}}'
+      VPCSecurityGroups:
+        - !Ref MyDatabaseSecurityGroup
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      BackupRetentionPeriod: 7
+      MultiAZ: true # Alta disponibilidad en múltiples AZ
+      PubliclyAccessible: false  # Solo accesible en subredes privadas

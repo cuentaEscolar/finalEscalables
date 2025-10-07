@@ -1,0 +1,63 @@
+Parameters:
+  BastionInstanceType:
+    Type: String
+    Default: t3.micro
+    Description: EC2 instance type for the bastion hosts
+
+  MainVPC:
+    Type: String
+
+  ImportedKeyPair:
+    Type: String
+
+  BastionSecurityGroup:
+    Type: String
+
+  FirstPublicSubnet:
+    Type: String
+
+
+
+Resources:
+  #security group creation to allow via SSH connection to the EC2's, Aquí  quitaré el SSH SG
+  
+  # Security Group for Bastion Hosts
+  # NUEVO: Security Group para permitir tráfico HTTP al Load Balancer
+  BastionHostAZ1:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref BastionInstanceType
+      ImageId:  ami-00ca32bbc84273381
+      KeyName: !Ref ImportedKeyPair
+      SubnetId: !Ref FirstPublicSubnet
+      SecurityGroupIds:
+        - !Ref BastionSecurityGroup
+      Tags:
+        - Key: Name
+          Value: Bastion Host - AZ1
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+          yum update -y
+          # Install useful tools for the bastion host
+          yum install -y htop tmux vim
+          
+          # Configure SSH to hold connections open
+          echo "ClientAliveInterval 60" >> /etc/ssh/sshd_config
+          echo "ClientAliveCountMax 120" >> /etc/ssh/sshd_config
+          
+          # Restart SSH service
+          systemctl restart sshd
+          
+          # Create SSH config for easier access to private instances
+          mkdir -p /home/ec2-user/.ssh
+          cat > /home/ec2-user/.ssh/config << 'EOF'
+          Host private-*
+              User ec2-user
+              IdentityFile ~/.ssh/id_rsa
+              StrictHostKeyChecking no
+              UserKnownHostsFile /dev/null
+          EOF
+          
+          chown -R ec2-user:ec2-user /home/ec2-user/.ssh
+          chmod 600 /home/ec2-user/.ssh/config

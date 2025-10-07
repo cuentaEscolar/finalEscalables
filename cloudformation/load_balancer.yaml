@@ -7,36 +7,23 @@ Parameters:
 
 Resources:
 
-  ALBSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
+  IncomingTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-      GroupDescription: Enable HTTP access to ALB
+      Name: incoming-target-group
+      Port: 80
+      Protocol: HTTP
       VpcId: !Ref MainVPC
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          CidrIp: 0.0.0.0/0
-      Tags:
-        - Key: Name
-          Value: ALB Security Group for HTTP access
+      TargetType: instance
+      HealthCheckProtocol: HTTP
+      HealthCheckPath: /health.html  # 
+      HealthCheckIntervalSeconds: 30  #
+      HealthCheckTimeoutSeconds: 5   #
+      HealthyThresholdCount: 2       #
+      UnhealthyThresholdCount: 2     #
+      Matcher:
+        HttpCode: 200
 
-  # NUEVO: Security Group para permitir tráfico HTTP desde el ALB a las instancias EC2
-  WebServerSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: Enable HTTP access from ALB to EC2 instances
-      VpcId: !Ref MainVPC
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
-          SourceSecurityGroupId: !Ref ALBSecurityGroup
-      Tags:
-        - Key: Name
-          Value: Web Server Security Group for HTTP access from ALB
-
-#------------------------------------------------RDS--------------------------------------
   
 
   # Bastion Host in Public Subnet A (AZ1)
