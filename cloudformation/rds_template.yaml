@@ -1,6 +1,4 @@
 Parameters:
-  MainVPC:
-    Type: String
 
   DBSecret:
     Type: String

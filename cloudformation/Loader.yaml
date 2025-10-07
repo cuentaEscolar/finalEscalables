@@ -66,25 +66,44 @@ Resources:
     DependsOn: 
       - NetworkStack
       - SecurityGroups
+#
+  #BastionHostStack:
+    #Type: AWS::CloudFormation::Stack
+    #Properties:
+      #TemplateURL: !Sub "${S3Url}/cloudformation/bastion_host.yaml"
+      #Parameters:
+        #BastionInstanceType:
+          #t3.micro
+        #MainVPC:
+          #Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
+#
+        #ImportedKeyPair:
+          #!Ref ImportedKeyPair
+#
+        #BastionSecurityGroup:
+          #Type: String
+          #Fn::GetAtt: [SecurityGroups, Outputs.BastionSecurityGroup]
+#
+        #FirstPublicSubnet:
+#
+          #!GetAtt NetworkStack.Outputs.FirstPublicSubnet
 
-  BastionHostStack:
+  RDSstack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      Parameters:
-        BastionInstanceType:
-          t3.micro
-        MainVPC:
+      TemplateURL: !Sub "${S3Url}/cloudformation/rds_template.yaml"
+
+      MainVPC:
           Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
 
-        ImportedKeyPair:
-          !Ref ImportedKeyPair
+      DBSecret:
+        !Ref DBSecret
 
-        BastionSecurityGroup:
-          Type: String
-          Fn::GetAtt: [SecurityGroups, Outputs.BastionSecurityGroup]
+      MyDatabaseSecurityGroup:
+        Fn::GetAtt: [SecurityGroups, Outputs.MyDatabaseSecurityGroup]
 
-        FirstPublicSubnet:
-          Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnet]
+      SecondPrivateSubnet:
+        Fn::GetAtt: [NetworkStack, Outputs.SecondPrivateSubnet]
 
 
 #
