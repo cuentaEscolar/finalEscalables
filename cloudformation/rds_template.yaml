@@ -17,7 +17,8 @@ Resources:
     Type: AWS::RDS::DBSubnetGroup
     Properties:
       DBSubnetGroupDescription: "Subredes privadas para la base de datos"
-      SubnetIds: SecondPrivateSubnet #subnet B
+      SubnetIds: 
+        - !Ref SecondPrivateSubnet #subnet B
       Tags:
         - Key: Name
           Value: !Sub ${AWS::StackName}-db-subnet-group

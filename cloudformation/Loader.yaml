@@ -92,18 +92,15 @@ Resources:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: !Sub "${S3Url}/cloudformation/rds_template.yaml"
+      Parameters:
+        DBSecret:
+          !Ref DBSecret
 
-      MainVPC:
-          Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
+        MyDatabaseSecurityGroup:
+          Fn::GetAtt: [SecurityGroups, Outputs.MyDatabaseSecurityGroup]
 
-      DBSecret:
-        !Ref DBSecret
-
-      MyDatabaseSecurityGroup:
-        Fn::GetAtt: [SecurityGroups, Outputs.MyDatabaseSecurityGroup]
-
-      SecondPrivateSubnet:
-        Fn::GetAtt: [NetworkStack, Outputs.SecondPrivateSubnet]
+        SecondPrivateSubnet:
+          Fn::GetAtt: [NetworkStack, Outputs.SecondPrivateSubnet]
 
 
 #
