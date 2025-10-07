@@ -120,6 +120,7 @@ Resources:
 
     DependsOn:
       - InternetGateway
+      - AttachIGW
 
   # Associations for Public Subnet A and B
   PublicSubnetARouteTableAssociation:
