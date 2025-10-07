@@ -49,7 +49,6 @@ IEEE Std 1016™-2009
 \newpage
 \pagenumbering{arabic}
 
-\section{Introducci\'on}
   \iffalse  
   ⎯ Date of issue and status
   ⎯ Scope
@@ -57,17 +56,17 @@ IEEE Std 1016™-2009
   ⎯ Authorship (responsibility or copyright information)
   ⎯ References
   \fi
-  \subsection{Identificaci\'on}
+  \section{Identificaci\'on del SDD}
   \paragraph {Fecha de Redaccion} Redactado el \today \space por SpeedCola S.A de C.V.\newline
 
   SpeedCola es una aplicacion web que facilita la conexion entre proveedores de servicio y consumidores. 
   %context y Summary
   Este documento estipula la arquitectura, el dise\~no y 
-    las decisiones sobre que se compremetera y su porque. Este es de interes para los accionistas de SpeedCola, asi como a todos los equipos de desarrollo. Su proposito es describir tanto la arquitectura como la implementacion del sitio web de  
+    las decisiones sobre que se compremetera y su porque. Su proposito es describir tanto la arquitectura como la implementacion del sitio web de  
   SpeedCola en aras de facilitar su uso, modificacion, pruebas y resolucion de errores.
 
     En este mismo se incluyen las siguientes vistas del sistema:
-    \begin{multicols}{2}
+    \begin{multicols}{3}
     \begin{enumerate}
 
       \item Contexto
@@ -79,7 +78,7 @@ IEEE Std 1016™-2009
     \end{enumerate}
   \end{multicols}
 
-  \paragraph{Las funcionalidades siguientes se consideran dentro del alcance del proyecto.}
+  \subsection{Alcance del proyecto}
 
   \begin {multicols}{2}
     \begin{enumerate}
@@ -133,36 +132,37 @@ IEEE Std 1016™-2009
 
     \end{enumerate}
   \end{multicols}
+  Los siguientes terminos seran utilizados a traves del documento.
+
+  \paragraph{Glosario}
+  \begin{enumerate}
+    \item AWS: Amazon Web Services
+    \item VPC: Virtual Private Connection
+  \end{enumerate}
+
+  \section{Stakeholders del dise\~no}
+    Los posibles interesados son los due\~nos del producto, los miembros del equipo de desarrollo y el director del proyecto. Al 
+    due\~no del proyecto le interesa que el sitio web sea atractivo, que sea replicable en multiples zonas geograficas , sea 
+    resiliente a cambios intempestivos en la carga de trabajo, y que minimize su costo. Por el otro lado, al equipo de desarrollo le interesa tener Interfaces consistentes para poder trabajar en un producto fconsistente. 
+    Finalmente, al administrador del proyecto le interesa un dise\~no modular para poder paralelizar el trabajo. En este documento, se respondera a todas estas necesidades.
+  \section{Vistas de dise\~no}
+
+  \begin{enumerate}
+      \item Composici\'on 
+      \item Logica
+      \item De Interacci\'on
+      \item Recursos
+  \end{enumerate}
 
 
-
-
-
-      \begin{enumerate}
-        \item [x] vista logica
-        \item vista de procesos
-        \item vista de despliegue
-            (logico)
-            (modulos)
-            (cloudformation etc.)
-        \item vista fisica
-          despliegue fisico
-        \item vista de escenarios
-
-      \end{enumerate}
-      
-
-
-\section{Contexto}
-awawawa
-
-\subsection{Punto de vista de Uso}
+\subsection{Contexto}
+  El siguiente punto de vista concierne el punto de vista de los dos tipos de usuarios.
 
   \begin{figure}[!htb]
     \begin{center}
       \includesvg[width=400pt]{Use Case.svg}
     \end{center}
-    \caption{Ejemplo de Uso}\label{fig:}
+    \caption{Los usuarios se muestran con figuras de palos, y muestran los "servicios" esperados que cada respectivo tipo de cliente pudiese utilizar.}\label{fig:}
   \end{figure}
   
 
@@ -188,13 +188,16 @@ awawawa
   Dise\~no basico de la Arquitectura.
   \end{figure}
 
-  \begin{figure}
+  \begin{figure}[!htb]
     \begin{center}
       \includesvg[width=550pt]{archDiagram.svg}
     \end{center}
-    \caption{}\label{fig: Implementacion en la Nube}
-    Los usuarios regulares interactuan con el sistema a traves del Internet Gateway.
-    Los administradores ti
+    \caption{Arquitectura en la nube.}\label{fig: Implementacion en la Nube}
+    El Administrador es una entidad que tiene permisos especiales para inspeccionar el funcionamiento de la Infraestructura.
+    Los Usuarios regulares no tienen semejantes privilegios.
+    Tanto el Administrador como los Usuarios Regulares interactuan a traves del Internet Gateway.
+    El Network Load Balancer recibe el trafico del Internet Gateway y lo redirige a la tabla de routeo privada. La direccion a la que la redirija depende de la VPC en la que se esta.
+    La tabla de routeo privada
 
   \end{figure}
 
