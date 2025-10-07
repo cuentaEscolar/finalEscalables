@@ -62,13 +62,25 @@ Resources:
     Properties:
       VpcId: !Ref MainNestedVPC
       CidrBlock: 10.0.3.0/24
-      AvailabilityZone: !Select [ 1, !GetAZs 'us-east-1' ]
+      AvailabilityZone: !Select [ 0, !GetAZs 'us-east-1' ]
       Tags:
       - Key: Name
         Value: Private Subnet B - From Availability Zone one 
 
 
+  ThirdPrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MainNestedVPC
+      CidrBlock: 10.0.4.0/24
+      AvailabilityZone: !Select [ 0, !GetAZs 'us-east-1' ]
+      Tags:
+      - Key: Name
+        Value: Private Subnet C - From Availability Zone one 
+
+
   # Elastic IP for NAT Gateway in AZ1 (us-east-1a)
+  #
   NatEIPAZ1:
     Type: AWS::EC2::EIP
     Properties:
@@ -165,3 +177,7 @@ Outputs:
   SecondPrivateSubnet:
     Description: SecondPrivateSubnet
     Value: !Ref SecondPrivateSubnet
+
+  ThirdPrivateSubnet:
+    Description: ThirdPrivateSubnet
+    Value: !Ref ThirdPrivateSubnet
