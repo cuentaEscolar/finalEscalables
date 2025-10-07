@@ -18,7 +18,7 @@
 \usetikzlibrary{positioning}
 \usetikzlibrary{shadows}
 \usetikzlibrary{calc}
-
+\usepackage{multicol}
 \usepackage{pdflscape}
 
 \newenvironment{localsize}[1]
@@ -36,136 +36,6 @@
 }
 
 \makeatletter
-\pgfarrowsdeclare{crow's foot}{crow's foot}
-{
-    \pgfarrowsleftextend{+-.5\pgflinewidth}%
-    \pgfarrowsrightextend{+.5\pgflinewidth}%
-}
-{
-    \pgfutil@tempdima=0.6pt%
-    \pgfsetdash{}{+0pt}%
-    \pgfsetmiterjoin%
-    \pgfpathmoveto{\pgfqpoint{0pt}{-9\pgfutil@tempdima}}%
-    \pgfpathlineto{\pgfqpoint{-13\pgfutil@tempdima}{0pt}}%
-    \pgfpathlineto{\pgfqpoint{0pt}{9\pgfutil@tempdima}}%
-    \pgfpathmoveto{\pgfqpoint{0\pgfutil@tempdima}{0\pgfutil@tempdima}}%
-    \pgfpathmoveto{\pgfqpoint{-8pt}{-6pt}}% 
-    \pgfpathlineto{\pgfqpoint{-8pt}{-6pt}}%  
-    \pgfpathlineto{\pgfqpoint{-8pt}{6pt}}% 
-    \pgfusepathqstroke%
-}
-
-\pgfarrowsdeclare{omany}{omany}
-{
-    \pgfarrowsleftextend{+-.5\pgflinewidth}%
-    \pgfarrowsrightextend{+.5\pgflinewidth}%
-}
-{
-    \pgfutil@tempdima=0.6pt%
-    \pgfsetdash{}{+0pt}%
-    \pgfsetmiterjoin%
-    \pgfpathmoveto{\pgfqpoint{0pt}{-9\pgfutil@tempdima}}%
-    \pgfpathlineto{\pgfqpoint{-13\pgfutil@tempdima}{0pt}}%
-    \pgfpathlineto{\pgfqpoint{0pt}{9\pgfutil@tempdima}}%
-    \pgfpathmoveto{\pgfqpoint{0\pgfutil@tempdima}{0\pgfutil@tempdima}}%  
-    \pgfpathmoveto{\pgfqpoint{0\pgfutil@tempdima}{0\pgfutil@tempdima}}%
-    \pgfpathmoveto{\pgfqpoint{-6pt}{-6pt}}% 
-    \pgfusepathqstroke%
-    \pgfsetfillcolor{white}
-    \pgfpathcircle{\pgfpoint{-11.5pt}{0}} {3.5pt}
-    \pgfusepathqfillstroke%
-}
-
-\pgfarrowsdeclare{one}{one}
-{
-    \pgfarrowsleftextend{+-.5\pgflinewidth}%
-    \pgfarrowsrightextend{+.5\pgflinewidth}%
-}
-{
-    \pgfutil@tempdima=0.6pt%
-    \pgfsetdash{}{+0pt}%
-    \pgfsetmiterjoin%
-    \pgfpathmoveto{\pgfqpoint{0\pgfutil@tempdima}{0\pgfutil@tempdima}}%
-    \pgfpathmoveto{\pgfqpoint{-6pt}{-6pt}}% 
-    \pgfpathlineto{\pgfqpoint{-6pt}{-6pt}}%  
-    \pgfpathlineto{\pgfqpoint{-6pt}{6pt}}% 
-    \pgfpathmoveto{\pgfqpoint{0\pgfutil@tempdima}{0\pgfutil@tempdima}}%
-    \pgfpathmoveto{\pgfqpoint{-8pt}{-6pt}}% 
-    \pgfpathlineto{\pgfqpoint{-8pt}{-6pt}}%  
-    \pgfpathlineto{\pgfqpoint{-8pt}{6pt}}%    
-    \pgfusepathqstroke%
-}
-
-\pgfarrowsdeclare{oone}{oone}
-{
-    \pgfarrowsleftextend{+-.5\pgflinewidth}%
-    \pgfarrowsrightextend{+.5\pgflinewidth}%
-}
-{
-    \pgfutil@tempdima=0.6pt%
-    %\advance\pgfutil@tempdima by.25\pgflinewidth%
-    \pgfsetdash{}{+0pt}%
-    \pgfsetmiterjoin%
-     \pgfpathmoveto{\pgfqpoint{0\pgfutil@tempdima}{0\pgfutil@tempdima}}%
-    \pgfpathmoveto{\pgfqpoint{-4pt}{-6pt}}% 
-    \pgfpathlineto{\pgfqpoint{-4pt}{-6pt}}%  
-    \pgfpathlineto{\pgfqpoint{-4pt}{6pt}}% 
-    \pgfsetfillcolor{white}
-    \pgfpathcircle{\pgfpoint{-11.5pt}{0}} {3.5pt}
-    \pgfusepathqfillstroke%
-}
-\makeatother
-
-\tikzset{%
-    mylabel/.style={font=\footnotesize},
-    pics/entity/.style n args={3}{code={%
-        \node[draw,
-        rectangle split,
-        rectangle split parts=2,
-        text height=1.5ex,
-        text width=8.5em,
-        text centered
-        ] (#1)
-        {#2 \nodepart[font=\scriptsize]{second}
-            \begin{tabular}{>{\raggedright\arraybackslash}p{9em}}
-                #3
-            \end{tabular}
-        };%
-    }},
-    pics/entitynoatt/.style n args={2}{code={%
-        \node[draw,
-        text height=1.5ex,
-        text width=8.5em,
-        text centered
-        ] (#1)
-        {#2};%
-    }},
-    zig zag to/.style={
-        to path={(\tikztostart) -| ($(\tikztostart)!#1!(\tikztotarget)$) |- (\tikztotarget)}
-    },
-    zig zag to/.default=0.5,   
-    one to one/.style={
-        one-one, zig zag to
-    },
-    one to oone/.style={% One to Optional-one
-        one-oone, zig zag to
-    },
-    oone to none/.style={% Optional-one to none
-        oone-, zig zag to
-    },
-    oone to oone/.style={% Optional one to Optional-one
-        oone-oone, zig zag to
-    },
-    one to many/.style={
-        one-crow's foot, zig zag to,
-    },
-    one to omany/.style={
-        one-omany, zig zag to
-    },
-    one to none/.style={
-        one-, zig zag to
-    },    
-}
 \title{SpeedCola Software Design Document}
 \date{\today}% Date of issue and status
 \author{SpeeCola inc}% Issuing organization
@@ -179,29 +49,39 @@ IEEE Std 1016™-2009
 \pagenumbering{arabic}
 
 \section{Introducci\'on}
-Scope
-   Authorship (responsibility or copyright information)
-   References
-   Context
-   One or more design languages for each design viewpoint used
-   Body
-   Summary
-   Glossary
-   Change history
+  \subsection{Identificaci\'on}
+  Redactado el \today.
+  El siguiente documento fue redactado for el equipo de dise\~no SpeedCola el \today . 
+
+  SpeedCola es una aplicacion web que facilita la conexion entre proveedores de servicio y consumidores.
+
+  estipula la arquitectura, el dise\~no y 
+    las decisiones sobre que se compremetera y su porque. Este documento es de interes para los accionistas de SpeedCola, asi como a todos los equipos de desarrollo. 
+    En este mismo se incluyen las siguientes vistas del sistema:
+    \begin{multicols}{2}
+    \begin{enumerate}
+
+      \item Contexto
+      \item Composici\'on 
+      \item Logica
+      \item De Interacci\'on
+      \item Recursos
+
+    \end{enumerate}
+  \end{multicols}
 
   \begin{enumerate}
     \item  \textbf{Descripcion General}
 
   El proposito de este documento es describir tanto la arquitectura como la implementacion de 
-  SpeedCola en aras de facilitar su uso, modificacion, prubeas y resolucion de errores.
+  SpeedCola en aras de facilitar su uso, modificacion, pruebas y resolucion de errores.
 
-  \item \textbf{Software's Scope}
 
-  SpeedCola es una aplicacion web que facilita la conexion entre proveedores de servicio y consumidores.
 
   \end{enumerate}
 
   \subsection{In-Scope Funcitonalities}
+  \begin {multicols}{2}
     \begin{enumerate}
       \item \textbf{Registro y Autenticacion}
         \begin{enumerate}
@@ -227,15 +107,17 @@ Scope
         \begin{enumerate}
           \item Los usuarios pueden autenticarse con documentos oficiales
         \end{enumerate}
-      \item Módulo de comunicación  
+      \item \textbf{Módulo de comunicación } 
         \begin{enumerate}
           \item Permite a los usuarios a interactuar y crear contratos mediante chats con proveedores. 
         \end{enumerate}
-      \item Módulo de calificaciones y reseñas   
+      \item \textbf{Módulo de calificaciones y reseñas   }
         \begin{enumerate} 
-          \item Contiene la funcionalidad para la evaluación mutua entre consumidores y proveedores al finalizar un servicio.  
+          \item Permite a los usuarios pueden evaluar los servicios
+          \item Permite a los oferentes de servicios evaluar a los usuarios
+          \item Mantiene restricciones sobre las situaciones en las que se puede evaluar un servicio
         \end{enumerate} 
-      \item Módulo de notificaciones  
+      \item \textbf{Módulo de notificaciones}
       \begin{enumerate}
         \item Crea y gestiona las notificaciones con un sistema basado en eventos tales como: 
           \begin{enumerate}
@@ -244,20 +126,20 @@ Scope
             \item Confirmacion de servicios
             \item Ofertas nuevas 
             \item Confirmaciones de pago 
+            \item Reseñas recibidas  
+            \item Mensajes 
           \end{enumerate}
       \end{enumerate} 
 
     \end{enumerate}
+  \end{multicols}
 
 
 
 
-      Reseñas recibidas  
-
-      Mensajes 
 
       \begin{enumerate}
-        \item vista logica
+        \item [x] vista logica
         \item vista de procesos
         \item vista de despliegue
             (logico)
@@ -271,41 +153,54 @@ Scope
       
 
 
-\section{Punto de vista de Uso}
-  \subsection{ Usuarios Regulares}
+\section{Contexto}
+awawawa
 
-  \begin{figure}
+\subsection{Punto de vista de Uso}
+
+  \begin{figure}[!htb]
     \begin{center}
       \includesvg[width=400pt]{Use Case.svg}
     \end{center}
-    \caption{}\label{fig:}
+    \caption{Ejemplo de Uso}\label{fig:}
   \end{figure}
   
-  awawa
-  \subsection{ Ofertores de Servicios }
-  \subsection{ Administradores}
 
 \section{Vista L\'ogica}
 \subsection{uml}
 
-\includesvg[width = 400pt]{./UML SpeedCola.drawio.svg}
+\begin{figure}[!htb]
+  \begin{center}
+    \includesvg[width = 400pt]{./UML SpeedCola.drawio.svg}
+  \end{center}
+  \caption{}\label{fig:}
+\end{figure}
+
 
 \section{Dise\~no General}
   
   \subsection{Arquitectura del Sistema}
-  //todo diagrama de aws
+  \begin{figure}
+    \begin{center}
+      \includesvg[width=500pt]{BasicArch.svg}
+    \end{center}
+    \caption{}\label{fig: Arquitectura Basica}
+  Dise\~no basico de la Arquitectura.
+  \end{figure}
+
   \begin{figure}
     \begin{center}
       \includesvg[width=550pt]{archDiagram.svg}
     \end{center}
-    \caption{}\label{fig: Arquitectura en la Nube}
+    \caption{}\label{fig: Implementacion en la Nube}
     Los usuarios regulares interactuan con el sistema a traves del Internet Gateway.
     Los administradores ti
 
   \end{figure}
 
-  //todo diagrama de apis
   \subsection{Justificacion de la Infraestructura}
+  La Arquitectura fue diens\~ada para facilitar la separaci\'on de necesidades, escalabilidad y seguridad.
+    El modulo de entrada y salida es practicamente el buscador, y solo se asegura de gg
 
 \section{Consideraciones Tecnicas}
 \newpage
@@ -327,48 +222,6 @@ Scope
 
   \begin{landscape}
       \begin{center}
-          \begin{tikzpicture}
-              \pic {entity={A}{Citas}{%
-                  idCita(PK): int\\
-                  fecha  :date\\
-                  idCliente: int \\
-                  idProveedor: int \\
-                  estado: int \\
-                  idServicio: int
-              }};
-
-              \pic[right=7em of A] {entity={AB}{{Entity A \\ for \\ Entity B}}{%
-                  attribute 1 \\
-                  attribute 2
-              }};
-              \pic[right=7em of AB] {entity={B}{Servicios}{%
-                  idServicio(PK): int\\
-                  Nombre: str\\
-                  Descripcion: str\\
-                  Precio: str\\
-                  DuracionEstimada: str\\
-                  idUsuarioP: str\\
-                  idCategoria: str\\
-                  reseñas: 
-              }};
-              \pic[below=16ex of B] {entity={C}{Usuarios}{%
-                  attribute 1    
-              }};
-              \pic[below=15ex of AB] {entitynoatt={C1}{Entity C\textunderscore 1}};
-              \pic[below=9ex of C1] {entitynoatt={C2}{Entity C\textunderscore 2}};
-              \draw[one to omany] (A.east) -- (AB.west);
-              \node[mylabel, anchor=south east] at (A.north east) {is in};
-              \draw[one to omany] (B.west) -- (AB.east);
-              \node[mylabel, anchor=south west] at (B.north west) {is in};
-              \draw[one to one] (B.south) -- (C.north);
-              \node[mylabel, anchor=south west] at (B.south east) {is in};
-              \node[mylabel, anchor=north west] at (C.north east) {is in};
-              %From section 13.3 of the TikZ manual, (2,1 |- 3,4) and (3,4 -| 2,1) both yield the same as (2,4) 
-              \coordinate (mymiddle) at ($(C.west)!.5!(C1.east)$);
-              \coordinate (mylink) at (C.west -| mymiddle);
-              \draw[one to oone] (C.west) -| (mymiddle) node[mylabel, above=10pt]{is in} |- (C1.east);  % Make "oone" rel
-              \draw[oone to none] (C2.east) -|  node[mylabel, below=2pt]{is in} (mylink);
-              \end{tikzpicture}
       \end{center}
   \end{landscape}
 \section{Dise\~no de Interfaces}
