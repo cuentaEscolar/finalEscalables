@@ -82,40 +82,54 @@ Resources:
       TemplateURL: !Sub "${S3Url}/cloudformation/rds_template.yaml"
       Parameters:
         DBSecret:
-          !Ref DBSecret
+          Fn::GetAtt: [SecretsStack, Outputs.DBSecret]
 
         MyDatabaseSecurityGroup:
           Fn::GetAtt: [SecurityGroups, Outputs.MyDatabaseSecurityGroup]
 
-        SecondPrivateSubnet:
+        SecondPrivateSubnetA:
           Fn::GetAtt: [NetworkStack, Outputs.SecondPrivateSubnetA]
+        SecondPrivateSubnetB:
           Fn::GetAtt: [NetworkStack, Outputs.SecondPrivateSubnetB]
 
+  AutoScalingGroup:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "${S3Url}/cloudformation/auto_scaling_group.yaml"
+      Parameters:
+        MainVPC: 
+          Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
+        LaunchTemplateEc2Micro:
+          Fn::GetAtt: [Ec2Template, Outputs.MainVPC]
 
-#
-  #LoadBalancer:
-    #Type: AWS::CloudFormation::Stack
-    #Properties:
-      #TemplateURL: !Sub "${S3Url}/cloudformation/ec2_template.yaml"
-#
-      #Parameters:
-        #MainVPC: 
-          #Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
-        #ImportedKeyPair: 
-          #!Ref ImportedKeyPair
-        #InstanceProfileArn:
-          #arn:aws:iam::013001369500:instance-profile/ec2testrole
-#
-        #PrivateInstanceSecurityGroup:
-          #Fn::GetAtt: [SecurityGroups, Outputs.PrivateInstanceSecurityGroup]
-#
-        #WebServerSecurityGroup:
-          #Fn::GetAtt: [SecurityGroups, Outputs.WebServerSecurityGroup]
-#
-    #DependsOn: 
-      #- NetworkStack
-      #- SecurityGroups
-#
+        TargetSubnets:
+          - Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetA] 
+          - Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetB] 
+
+  LoadBalancerAZ1:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "${S3Url}/cloudformation/ec2_template.yaml"
+
+      Parameters:
+        MainVPC: 
+          Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
+        ImportedKeyPair: 
+          !Ref ImportedKeyPair
+        InstanceProfileArn:
+          arn:aws:iam::013001369500:instance-profile/ec2testrole
+
+        PrivateInstanceSecurityGroup:
+          Fn::GetAtt: [SecurityGroups, Outputs.PrivateInstanceSecurityGroup]
+
+        WebServerSecurityGroup:
+          Fn::GetAtt: [SecurityGroups, Outputs.WebServerSecurityGroup]
+
+
+    DependsOn: 
+      - NetworkStack
+      - SecurityGroups
+
 Outputs:
   ImportedKeyPair:
     Value: 
