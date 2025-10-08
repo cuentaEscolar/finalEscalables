@@ -6,7 +6,9 @@ Parameters:
   MyDatabaseSecurityGroup:
     Type: String
 
-  SecondPrivateSubnet:
+  SecondPrivateSubnetA:
+    Type: String
+  SecondPrivateSubnetB:
     Type: String
 
 
@@ -18,7 +20,8 @@ Resources:
     Properties:
       DBSubnetGroupDescription: "Subredes privadas para la base de datos"
       SubnetIds: 
-        - !Ref SecondPrivateSubnet #subnet B
+        - !Ref SecondPrivateSubnetA #subnet B
+        - !Ref SecondPrivateSubnetB #subnet B
       Tags:
         - Key: Name
           Value: !Sub ${AWS::StackName}-db-subnet-group
