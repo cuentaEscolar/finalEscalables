@@ -102,8 +102,9 @@ Resources:
         LaunchTemplateEc2Micro:
           Fn::GetAtt: [Ec2Template, Outputs.LaunchTemplateEc2Micro]
 
-        TargetSubnets:
+        TargetSubnetA:
           - Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetA] 
+        TargetSubnetB:
           - Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetB] 
 
   LoadBalancerAZ1:
