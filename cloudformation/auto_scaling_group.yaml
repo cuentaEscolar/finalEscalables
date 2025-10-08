@@ -42,8 +42,8 @@ Resources:
       DesiredCapacity: 1
       #DesiredCapacityType: vcpu
       LaunchTemplate: 
-        LaunchTemplateName: 
-          Fn::GetAtt: [LaunchTemplateEc2Micro ,LaunchTemplateName]
+
+        LaunchTemplateId: !Ref LaunchTemplateEc2Micro
         Version: "1" #!GetAtt LaunchTemplateEc2Micro.LatestVersionNumber
       MaxSize: 1
       MinSize: 1
