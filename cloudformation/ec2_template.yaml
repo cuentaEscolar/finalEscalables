@@ -51,7 +51,7 @@ Resources:
 
               systemctl restart httpd
         TagSpecifications:
-        - ResourceType: scaling_instance
+        - ResourceType: instance
           Tags:
           - Key: environment
             Value: development
