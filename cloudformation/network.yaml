@@ -83,24 +83,31 @@ Outputs:
   MainVPC:
     Description: MainVPC
     Value: 
-      Fn::GetAtt: [AZ1Network, Outputs.MainNestedVPC]
+      !Ref MainNestedVPC
 
-  FirstPublicSubnet:
-    Description: FirstPublicSubnet
-    Value: 
-      Fn::GetAtt: [AZ1Network, Outputs.FirstPublicSubnet]
+  FirstPublicSubnetA:
+    Value:
+      Fn::GetAtt: [AZ1Network,Outputs.FirstPublicSubnet]
+  FirstPrivateSubnetA :
+    Value:
+      Fn::GetAtt: [AZ1Network,Outputs.FirstPrivateSubnet]
+  SecondPrivateSubnetA: 
+    Value:
+      Fn::GetAtt: [AZ1Network,Outputs.SecondPrivateSubnet]
+  ThirdPrivateSubnetA:
+    Value:
+      Fn::GetAtt: [AZ1Network,Outputs.ThirdPrivateSubnet]
 
-  FirstPrivateSubnet:
-    Description: FirstPrivateSubnet
-    Value: 
-      Fn::GetAtt: [AZ1Network, Outputs.FirstPrivateSubnet]
 
-  SecondPrivateSubnet:
-    Description: SecondPrivateSubnet
-    Value: 
-      Fn::GetAtt: [AZ1Network, Outputs.SecondPrivateSubnet]
-
-  ThirdPrivateSubnet:
-    Description: ThirdPrivateSubnet
-    Value: 
-      Fn::GetAtt: [AZ1Network, Outputs.ThirdPrivateSubnet]
+  FirstPublicSubnetB:
+    Value:
+      Fn::GetAtt: [AZ2Network,Outputs.FirstPublicSubnet]
+  FirstPrivateSubnetB:
+    Value:
+      Fn::GetAtt: [AZ2Network,Outputs.FirstPrivateSubnet]
+  SecondPrivateSubnetB: 
+    Value:
+      Fn::GetAtt: [AZ2Network,Outputs.SecondPrivateSubnet]
+  ThirdPrivateSubnetB:
+    Value:
+      Fn::GetAtt: [AZ2Network,Outputs.ThirdPrivateSubnet]

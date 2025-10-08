@@ -147,3 +147,13 @@ Resources:
       SubnetId: !Ref FirstPublicSubnet
       RouteTableId: !Ref PublicRouteTable
 
+Outputs:
+  
+  FirstPublicSubnet:
+   Value: !Ref FirstPublicSubnet
+  FirstPrivateSubnet:
+   Value: !Ref FirstPrivateSubnet
+  SecondPrivateSubnet:
+   Value: !Ref SecondPrivateSubnet
+  ThirdPrivateSubnet:
+   Value: !Ref ThirdPrivateSubnet
