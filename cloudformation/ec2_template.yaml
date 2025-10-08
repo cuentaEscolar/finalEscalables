@@ -62,3 +62,6 @@ Resources:
 
 
 
+Outputs:
+  LaunchTemplateEc2Micro:
+    Value: !Ref LaunchTemplateEc2Micro
