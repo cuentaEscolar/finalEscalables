@@ -5,8 +5,10 @@ Parameters:
   LaunchTemplateEc2Micro:
     Type: String
 
-  TargetSubnets:
-    Type: CommaDelimitedList
+  TargetSubnetA:
+    Type: String
+  TargetSubnetB:
+    Type: String
 
 Resources:
 #--------------------------------------Auto Scaling Group-------------------------------
@@ -52,7 +54,8 @@ Resources:
       TargetGroupARNs: 
         - !Ref IncomingTargetGroup
       VPCZoneIdentifier:
-        !Ref TargetSubnets
+        - !Ref TargetSubnetA
+        - !Ref TargetSubnetB
 
 
 Outputs:
