@@ -1,30 +1,21 @@
 
 Parameters:
+  MainVPC:
+    Type: String
+
   FirstPublicSubnet:
-  SecondPublicSubnet:
+    Type: String
+  FirstPrivateSubnet:
+    Type: String
+  SecondPrivateSubnet:
+    Type: String
   ALBSecurityGroup:
-  c2LaunchTemplate:
+    Type: String
+  LaunchTemplateEc2Micro:
+    Type: String
 
 Resources:
 
-  IncomingTargetGroup:
-    Type: AWS::ElasticLoadBalancingV2::TargetGroup
-    Properties:
-      Name: incoming-target-group
-      Port: 80
-      Protocol: HTTP
-      VpcId: !Ref MainVPC
-      TargetType: instance
-      HealthCheckProtocol: HTTP
-      HealthCheckPath: /health.html  # 
-      HealthCheckIntervalSeconds: 30  #
-      HealthCheckTimeoutSeconds: 5   #
-      HealthyThresholdCount: 2       #
-      UnhealthyThresholdCount: 2     #
-      Matcher:
-        HttpCode: 200
-
-  
 
   # Bastion Host in Public Subnet A (AZ1)
   IncomingTrafficLoadBalancer:
@@ -32,12 +23,10 @@ Resources:
     Properties:
       IpAddressType: ipv4
       Name: IncomingTrafficLoadBalancer
-      Scheme: internet-facing
       SecurityGroups:
         - !Ref ALBSecurityGroup  # AQUÍ: Añadir referencia al Security Group nuevo
       Subnets: 
         - !Ref FirstPublicSubnet
-        - !Ref SecondPublicSubnet
       Type: application
 
 
@@ -59,30 +48,3 @@ Resources:
             
 
 
-#--------------------------------------Auto Scaling Group-------------------------------
-  WebServerASG:
-    Type: AWS::AutoScaling::AutoScalingGroup
-    DependsOn: LaunchTemplateEc2Micro
-    Properties:
-      AutoScalingGroupName: !Sub ${AWS::StackName}-ASG
-      AvailabilityZones: 
-        - "us-east-1a"
-        - "us-east-1b"
-      DefaultInstanceWarmup: 0
-      DesiredCapacity: 1
-      #DesiredCapacityType: vcpu
-      LaunchTemplate: 
-        LaunchTemplateId: !Ref LaunchTemplateEc2Micro
-        Version: !GetAtt LaunchTemplateEc2Micro.LatestVersionNumber
-      MaxSize: 1
-      MinSize: 1
-      NewInstancesProtectedFromScaleIn: false
-      #PlacementGroup: String
-      #ServiceLinkedRoleARN: String
-      #Tags: 
-        #- TagProperty
-      TargetGroupARNs: 
-        - !Ref IncomingTargetGroup
-      VPCZoneIdentifier:
-      - !Ref FirstPrivateSubnet
-      - !Ref SecondPrivateSubnet
