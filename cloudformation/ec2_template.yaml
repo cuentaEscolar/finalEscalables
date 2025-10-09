@@ -44,9 +44,9 @@ Resources:
               systemctl start httpd
               systemctl enable httpd
 
-              DB_USER=${DBUsernameParameter.Value}
+              DB_USER=${DBUsernameParameter}
               echo "Using DB_USER=$DB_USER" >> /var/log/init.log 
-              DB_PASS="${DBPasswordParameter.Value}"
+              DB_PASS="${DBPasswordParameter}"
               DB_ENDPOINT="${DatabaseEndpoint}";
               #port 3000
               

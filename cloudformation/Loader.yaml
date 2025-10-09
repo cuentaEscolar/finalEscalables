@@ -31,28 +31,35 @@ Resources:
           Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
 
 
- # Ec2Template:
- #   Type: AWS::CloudFormation::Stack
- #   Properties:
- #     TemplateURL: !Sub "${S3Url}/cloudformation/ec2_template.yaml"
+  Ec2Template:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "${S3Url}/cloudformation/ec2_template.yaml"
 
- #     Parameters:
- #       MainVPC: 
- #         Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
- #       ImportedKeyPair: 
- #         Fn::GetAtt: [SecretsStack, Outputs.ImportedKeyPair]
- #       InstanceProfileArn:
- #         arn:aws:iam::013001369500:instance-profile/ec2testrole
+      Parameters:
+        MainVPC: 
+          Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
+        ImportedKeyPair: 
+          Fn::GetAtt: [SecretsStack, Outputs.ImportedKeyPair]
+        InstanceProfileArn:
+          arn:aws:iam::013001369500:instance-profile/ec2testrole
 
- #       PrivateInstanceSecurityGroup:
- #         Fn::GetAtt: [SecurityGroups, Outputs.PrivateInstanceSecurityGroup]
+        PrivateInstanceSecurityGroup:
+          Fn::GetAtt: [SecurityGroups, Outputs.PrivateInstanceSecurityGroup]
 
- #       WebServerSecurityGroup:
- #         Fn::GetAtt: [SecurityGroups, Outputs.WebServerSecurityGroup]
+        WebServerSecurityGroup:
+          Fn::GetAtt: [SecurityGroups, Outputs.WebServerSecurityGroup]
 
- #   DependsOn: 
- #     - NetworkStack
- #     - SecurityGroups
+        DBUsernameParameter:
+          Fn::GetAtt: [SecretsStack, Outputs.DBPasswordParameter.Value]
+        DBPasswordParameter:
+          Fn::GetAtt: [SecretsStack, Outputs.DBPasswordParameter.Value]
+        DatabaseEndpoint:
+          Fn::GetAtt: [RDSstack, Outputs.DatabaseEndpoint]
+
+    DependsOn: 
+      - NetworkStack
+      - SecurityGroups
 #
   #BastionHostStack:
     #Type: AWS::CloudFormation::Stack
@@ -92,20 +99,20 @@ Resources:
         SecondPrivateSubnetB:
           Fn::GetAtt: [NetworkStack, Outputs.SecondPrivateSubnetB]
 
-  AutoScalingGroup:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: !Sub "${S3Url}/cloudformation/auto_scaling_group.yaml"
-      Parameters:
-        MainVPC: 
-          Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
-        LaunchTemplateEc2Micro:
-          Fn::GetAtt: [Ec2Template, Outputs.LaunchTemplateEc2Micro]
+  #AutoScalingGroup:
+  #  Type: AWS::CloudFormation::Stack
+  #  Properties:
+  #    TemplateURL: !Sub "${S3Url}/cloudformation/auto_scaling_group.yaml"
+  #    Parameters:
+  #      MainVPC: 
+  #        Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
+  #      LaunchTemplateEc2Micro:
+  #        Fn::GetAtt: [Ec2Template, Outputs.LaunchTemplateEc2Micro]
 
-        TargetSubnetA:
-          Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetA] 
-        TargetSubnetB:
-          Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetB] 
+  #      TargetSubnetA:
+  #        Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetA] 
+  #      TargetSubnetB:
+  #        Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetB] 
 
   #LoadBalancerAZ1:
   #  Type: AWS::CloudFormation::Stack
@@ -130,12 +137,10 @@ Resources:
   #      WebServerASG:
   #        Fn::GetAtt: [AutoScalingGroup, Outputs.WebServerASG]
   #        
-
-
-    DependsOn: 
-      - NetworkStack
-      - SecurityGroups
-      - AutoScalingGroup
+  #  DependsOn: 
+  #    - NetworkStack
+  #    - SecurityGroups
+  #    - AutoScalingGroup
 
 Outputs:
   ImportedKeyPair:
