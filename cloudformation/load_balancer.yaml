@@ -29,6 +29,19 @@ Resources:
         - !Ref FirstPublicSubnet
       Type: application
 
+  LoadBalancerListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref IncomingTargetGroup
+      LoadBalancerArn: !Ref IncomingTrafficLoadBalancer
+      Port: 80
+      Protocol: HTTP
+      DependsOn:
+        -IncomingTrafficLoadBalancer
+
+
 
 #----- AutoScaling policy
   TargetTrackingASP:
@@ -47,4 +60,8 @@ Resources:
         TargetValue: 1000
             
 
+Outputs:
+  IncomingTrafficLoadBalancer:
+    Value: 
+      !Ref IncomingTrafficLoadBalancer
 

@@ -103,9 +103,9 @@ Resources:
           Fn::GetAtt: [Ec2Template, Outputs.LaunchTemplateEc2Micro]
 
         TargetSubnetA:
-          - Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetA] 
+          Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetA] 
         TargetSubnetB:
-          - Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetB] 
+          Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetB] 
 
   LoadBalancerAZ1:
     Type: AWS::CloudFormation::Stack
@@ -136,6 +136,8 @@ Outputs:
     Value: 
       Fn::GetAtt: [SecretsStack, Outputs.ImportedKeyPair]
 
-  
 
-
+  LoadBalancerDNS:
+    Description: "DNS del Load Balancer para acceder a la aplicación web"
+    Value: 
+      Fn::GetAtt: [LoadBalancerAZ1,  Outputs.IncomingTrafficLoadBalancer.DNSName]
