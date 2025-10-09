@@ -30,6 +30,7 @@ Resources:
         - !Ref ALBSecurityGroup  # AQUÍ: Añadir referencia al Security Group nuevo
       Subnets: 
         - !Ref FirstPublicSubnet
+        - !Ref SecondPublicSubnet
       Type: application
 
   LoadBalancerListener:

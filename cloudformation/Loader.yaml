@@ -117,6 +117,8 @@ Resources:
           Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
         FirstPublicSubnet:
           Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetA]
+        SecondPublicSubnet:
+          Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetB]
         FirstPrivateSubnet:
           Fn::GetAtt: [NetworkStack, Outputs.FirstPrivateSubnetA]
         SecondPrivateSubnet:
