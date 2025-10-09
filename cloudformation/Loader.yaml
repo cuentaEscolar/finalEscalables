@@ -115,16 +115,15 @@ Resources:
       Parameters:
         MainVPC: 
           Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
-        ImportedKeyPair: 
-          Fn::GetAtt: [SecretsStack, Outputs.ImportedKeyPair]
-        InstanceProfileArn:
-          arn:aws:iam::013001369500:instance-profile/ec2testrole
+        FirstPublicSubnet:
+          Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetA]
+        FirstPrivateSubnet:
+          Fn::GetAtt: [NetworkStack, Outputs.FirstPrivateSubnetA]
+        SecondPrivateSubnet:
+          Fn::GetAtt: [NetworkStack, Outputs.SecondPrivateSubnetA]
+        ALBSecurityGroup:
+          Fn::GetAtt: [SecurityGroups, Outputs.ALBSecurityGroup]
 
-        PrivateInstanceSecurityGroup:
-          Fn::GetAtt: [SecurityGroups, Outputs.PrivateInstanceSecurityGroup]
-
-        WebServerSecurityGroup:
-          Fn::GetAtt: [SecurityGroups, Outputs.WebServerSecurityGroup]
 
 
     DependsOn: 
@@ -136,8 +135,3 @@ Outputs:
     Value: 
       Fn::GetAtt: [SecretsStack, Outputs.ImportedKeyPair]
 
-
-  LoadBalancerDNS:
-    Description: "DNS del Load Balancer para acceder a la aplicación web"
-    Value: 
-      Fn::GetAtt: [LoadBalancerAZ1,  Outputs.IncomingTrafficLoadBalancer.DNSName]

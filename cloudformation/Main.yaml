@@ -11,78 +11,6 @@ Resources:
   #-- database:
 
   
-  DBSecret:
-      Type: AWS::SecretsManager::Secret
-      Properties:
-        Name: !Sub ${AWS::StackName}-db-credentials
-        GenerateSecretString:
-          SecretStringTemplate: '{"username": "admin"}'
-          GenerateStringKey: "password"
-          PasswordLength: 16
-          ExcludeCharacters: '"@/\'
-
-  DBUsernameParameter:
-    Type: AWS::SSM::Parameter
-    DependsOn: DBSecret
-    Properties:
-      Name: "/myapp/db/username"
-      Type: String
-      Value: !Sub "{{resolve:secretsmanager:${DBSecret}::username}}"
-
-  DBPasswordParameter:
-    Type: AWS::SSM::Parameter
-    DependsOn: DBSecret
-    Properties:
-      Name: "/myapp/db/password"
-      Type: String
-      Value: !Sub "{{resolve:secretsmanager:${DBSecret}::password}}"
-
-  MyDatabaseSecurityGroup:
-      Type: AWS::EC2::SecurityGroup
-      Properties:
-        GroupDescription: Enable MySQL access
-        VpcId: !Ref MainVPC
-        SecurityGroupIngress:
-          - IpProtocol: tcp
-            FromPort: 3306
-            ToPort: 3306
-            CidrIp: 10.0.0.0/16
-        Tags:
-          - Key: Name
-            Value: !Ref BastionSecurityGroup
-
-  DBSubnetGroup:
-    Type: AWS::RDS::DBSubnetGroup
-    Properties:
-      DBSubnetGroupDescription: "Subredes privadas para la base de datos"
-      SubnetIds:
-        - !Ref SecondPrivateSubnet #subnet B
-        - !Ref FourthPrivateSubnet #subnet D
-      Tags:
-        - Key: Name
-          Value: !Sub ${AWS::StackName}-db-subnet-group
-
-  MyDatabase:
-    Type: AWS::RDS::DBInstance
-    DependsOn: 
-      - MyDatabaseSecurityGroup
-      - DBSecret
-    DeletionPolicy: 'Delete'
-    UpdateReplacePolicy: 'Delete'
-    Properties:
-      DBInstanceIdentifier: countries
-      AllocatedStorage: 20
-      DBInstanceClass: db.t3.micro
-      Engine: mysql
-      MasterUsername: !Sub '{{resolve:secretsmanager:${DBSecret}::username}}'
-      MasterUserPassword: !Sub '{{resolve:secretsmanager:${DBSecret}::password}}'
-      VPCSecurityGroups:
-        - !Ref MyDatabaseSecurityGroup
-      DBSubnetGroupName: !Ref DBSubnetGroup
-      BackupRetentionPeriod: 7
-      MultiAZ: true # Alta disponibilidad en múltiples AZ
-      PubliclyAccessible: false  # Solo accesible en subredes privadas
-
   # NUEVO: Security Group para permitir tráfico HTTP al Load Balancer
 #------------------------------------------------EC2_TEMPLATE-----------------------------------------------
 
@@ -90,18 +18,6 @@ Resources:
 
 
 #---------------------------------  LoadBalancerListener --------------------------
-  LoadBalancerListener:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    Properties:
-      DefaultActions:
-        - Type: forward
-          TargetGroupArn: !Ref IncomingTargetGroup
-      LoadBalancerArn: !Ref IncomingTrafficLoadBalancer
-      Port: 80
-      Protocol: HTTP
-      DependsOn:
-        -IncomingTrafficLoadBalancer
-
 #---------------------------------  Application Load Balancer --------------------------
 
 Outputs:

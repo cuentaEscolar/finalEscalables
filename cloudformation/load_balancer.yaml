@@ -11,8 +11,6 @@ Parameters:
     Type: String
   ALBSecurityGroup:
     Type: String
-  LaunchTemplateEc2Micro:
-    Type: String
 
 Resources:
 

@@ -100,3 +100,6 @@ Outputs:
 
   BastionSecurityGroup:
     Value: !Ref BastionSecurityGroup
+
+  ALBSecurityGroup:
+    Value: !Ref ALBSecurityGroup
