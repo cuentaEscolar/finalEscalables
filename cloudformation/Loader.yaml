@@ -125,7 +125,9 @@ Resources:
           Fn::GetAtt: [SecurityGroups, Outputs.ALBSecurityGroup]
         IncomingTargetGroup:
           Fn::GetAtt: [AutoScalingGroup, Outputs.IncomingTargetGroup]
-
+        WebServerASG:
+          Fn::GetAtt: [AutoScalingGroup, Outputs.WebServerASG]
+          
 
 
     DependsOn: 

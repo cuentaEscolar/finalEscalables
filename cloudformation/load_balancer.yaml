@@ -14,6 +14,9 @@ Parameters:
   IncomingTargetGroup:
     Type: String
 
+  WebServerASG:
+    Type: String
+
 Resources:
 
 
@@ -39,7 +42,7 @@ Resources:
       Port: 80
       Protocol: HTTP
       DependsOn:
-        -IncomingTrafficLoadBalancer
+        - IncomingTrafficLoadBalancer
 
 
 
@@ -53,11 +56,10 @@ Resources:
       TargetTrackingConfiguration: 
         PredefinedMetricSpecification:
           PredefinedMetricType: ALBRequestCountPerTarget
-          ResourceLabel: !Join 
-            - '/' 
-            - - !GetAtt IncomingTrafficLoadBalancer.LoadBalancerFullName
-              - !GetAtt IncomingTargetGroup.TargetGroupFullName
+          ResourceLabel: !Sub "${IncomingTrafficLoadBalancer}/${IncomingTargetGroup}"
         TargetValue: 1000
+    DependsOn:
+      - IncomingTrafficLoadBalancer
             
 
 Outputs:
