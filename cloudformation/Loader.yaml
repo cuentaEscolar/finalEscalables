@@ -110,7 +110,7 @@ Resources:
   LoadBalancerAZ1:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "${S3Url}/cloudformation/ec2_template.yaml"
+      TemplateURL: !Sub "${S3Url}/cloudformation/load_balancer.yaml"
 
       Parameters:
         MainVPC: 
@@ -123,12 +123,15 @@ Resources:
           Fn::GetAtt: [NetworkStack, Outputs.SecondPrivateSubnetA]
         ALBSecurityGroup:
           Fn::GetAtt: [SecurityGroups, Outputs.ALBSecurityGroup]
+        IncomingTargetGroup:
+          Fn::GetAtt: [AutoScalingGroup, Outputs.IncomingTargetGroup]
 
 
 
     DependsOn: 
       - NetworkStack
       - SecurityGroups
+      - AutoScalingGroup
 
 Outputs:
   ImportedKeyPair:
