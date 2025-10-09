@@ -43,3 +43,11 @@ Resources:
       BackupRetentionPeriod: 7
       MultiAZ: false # Alta disponibilidad en múltiples AZ
       PubliclyAccessible: false  # Solo accesible en subredes privadas
+
+Outputs:
+  MyDatabase:
+    Value: !Ref MyDatabase
+
+  DatabaseEndpoint:
+    Value: 
+      Fn::GetAtt: MyDatabase.Endpoint.Address

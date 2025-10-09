@@ -31,28 +31,28 @@ Resources:
           Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
 
 
-  Ec2Template:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: !Sub "${S3Url}/cloudformation/ec2_template.yaml"
+ # Ec2Template:
+ #   Type: AWS::CloudFormation::Stack
+ #   Properties:
+ #     TemplateURL: !Sub "${S3Url}/cloudformation/ec2_template.yaml"
 
-      Parameters:
-        MainVPC: 
-          Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
-        ImportedKeyPair: 
-          Fn::GetAtt: [SecretsStack, Outputs.ImportedKeyPair]
-        InstanceProfileArn:
-          arn:aws:iam::013001369500:instance-profile/ec2testrole
+ #     Parameters:
+ #       MainVPC: 
+ #         Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
+ #       ImportedKeyPair: 
+ #         Fn::GetAtt: [SecretsStack, Outputs.ImportedKeyPair]
+ #       InstanceProfileArn:
+ #         arn:aws:iam::013001369500:instance-profile/ec2testrole
 
-        PrivateInstanceSecurityGroup:
-          Fn::GetAtt: [SecurityGroups, Outputs.PrivateInstanceSecurityGroup]
+ #       PrivateInstanceSecurityGroup:
+ #         Fn::GetAtt: [SecurityGroups, Outputs.PrivateInstanceSecurityGroup]
 
-        WebServerSecurityGroup:
-          Fn::GetAtt: [SecurityGroups, Outputs.WebServerSecurityGroup]
+ #       WebServerSecurityGroup:
+ #         Fn::GetAtt: [SecurityGroups, Outputs.WebServerSecurityGroup]
 
-    DependsOn: 
-      - NetworkStack
-      - SecurityGroups
+ #   DependsOn: 
+ #     - NetworkStack
+ #     - SecurityGroups
 #
   #BastionHostStack:
     #Type: AWS::CloudFormation::Stack
@@ -107,29 +107,29 @@ Resources:
         TargetSubnetB:
           Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetB] 
 
-  LoadBalancerAZ1:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: !Sub "${S3Url}/cloudformation/load_balancer.yaml"
-
-      Parameters:
-        MainVPC: 
-          Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
-        FirstPublicSubnet:
-          Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetA]
-        SecondPublicSubnet:
-          Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetB]
-        FirstPrivateSubnet:
-          Fn::GetAtt: [NetworkStack, Outputs.FirstPrivateSubnetA]
-        SecondPrivateSubnet:
-          Fn::GetAtt: [NetworkStack, Outputs.SecondPrivateSubnetA]
-        ALBSecurityGroup:
-          Fn::GetAtt: [SecurityGroups, Outputs.ALBSecurityGroup]
-        IncomingTargetGroup:
-          Fn::GetAtt: [AutoScalingGroup, Outputs.IncomingTargetGroup]
-        WebServerASG:
-          Fn::GetAtt: [AutoScalingGroup, Outputs.WebServerASG]
-          
+  #LoadBalancerAZ1:
+  #  Type: AWS::CloudFormation::Stack
+  #  Properties:
+  #    TemplateURL: !Sub "${S3Url}/cloudformation/load_balancer.yaml"
+  #
+  #    Parameters:
+  #      MainVPC: 
+  #        Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
+  #      FirstPublicSubnet:
+  #        Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetA]
+  #      SecondPublicSubnet:
+  #        Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetB]
+  #      FirstPrivateSubnet:
+  #        Fn::GetAtt: [NetworkStack, Outputs.FirstPrivateSubnetA]
+  #      SecondPrivateSubnet:
+  #        Fn::GetAtt: [NetworkStack, Outputs.SecondPrivateSubnetA]
+  #      ALBSecurityGroup:
+  #        Fn::GetAtt: [SecurityGroups, Outputs.ALBSecurityGroup]
+  #      IncomingTargetGroup:
+  #        Fn::GetAtt: [AutoScalingGroup, Outputs.IncomingTargetGroup]
+  #      WebServerASG:
+  #        Fn::GetAtt: [AutoScalingGroup, Outputs.WebServerASG]
+  #        
 
 
     DependsOn: 
