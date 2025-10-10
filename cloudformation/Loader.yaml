@@ -4,6 +4,9 @@ Parameters:
   S3Url:
     Description: Link with Repo
     Type: String
+  PublicKey:
+    Description: Secret PublicKey
+    Type: String
 
 Resources:
 
@@ -12,6 +15,8 @@ Resources:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: !Sub "${S3Url}/cloudformation/secrets.yaml"
+      Parameters:
+        PublicKey: !Ref PublicKey
 
   NetworkStack:
     Type: AWS::CloudFormation::Stack
@@ -51,9 +56,9 @@ Resources:
           Fn::GetAtt: [SecurityGroups, Outputs.WebServerSecurityGroup]
 
         DBUsernameParameter:
-          Fn::GetAtt: [SecretsStack, Outputs.DBPasswordParameter.Value]
+          Fn::GetAtt: [SecretsStack, Outputs.DBPasswordParameter]
         DBPasswordParameter:
-          Fn::GetAtt: [SecretsStack, Outputs.DBPasswordParameter.Value]
+          Fn::GetAtt: [SecretsStack, Outputs.DBPasswordParameter]
         DatabaseEndpoint:
           Fn::GetAtt: [RDSstack, Outputs.DatabaseEndpoint]
 
@@ -61,27 +66,24 @@ Resources:
       - NetworkStack
       - SecurityGroups
 #
-  #BastionHostStack:
-    #Type: AWS::CloudFormation::Stack
-    #Properties:
-      #TemplateURL: !Sub "${S3Url}/cloudformation/bastion_host.yaml"
-      #Parameters:
-        #BastionInstanceType:
-          #t3.micro
-        #MainVPC:
-          #Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
-#
-        #ImportedKeyPair:
-          #!Ref ImportedKeyPair
-      # Fn::GetAtt: [SecretsStack, Outputs.ImportedKeyPair]
-#
-        #BastionSecurityGroup:
-          #Type: String
-          #Fn::GetAtt: [SecurityGroups, Outputs.BastionSecurityGroup]
-#
-        #FirstPublicSubnet:
-#
-          #!GetAtt NetworkStack.Outputs.FirstPublicSubnet
+  BastionHostStackAZ1:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "${S3Url}/cloudformation/bastion_host.yaml"
+      Parameters:
+        BastionInstanceType:
+          t3.micro
+        MainVPC:
+          Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
+
+        ImportedKeyPair:
+          Fn::GetAtt: [SecretsStack, Outputs.ImportedKeyPair]
+
+        BastionSecurityGroup:
+          Fn::GetAtt: [SecurityGroups, Outputs.BastionSecurityGroup]
+
+        FirstPublicSubnet:
+          Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetA]
 
   RDSstack:
     Type: AWS::CloudFormation::Stack
@@ -99,20 +101,20 @@ Resources:
         SecondPrivateSubnetB:
           Fn::GetAtt: [NetworkStack, Outputs.SecondPrivateSubnetB]
 
-  #AutoScalingGroup:
-  #  Type: AWS::CloudFormation::Stack
-  #  Properties:
-  #    TemplateURL: !Sub "${S3Url}/cloudformation/auto_scaling_group.yaml"
-  #    Parameters:
-  #      MainVPC: 
-  #        Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
-  #      LaunchTemplateEc2Micro:
-  #        Fn::GetAtt: [Ec2Template, Outputs.LaunchTemplateEc2Micro]
+  AutoScalingGroup:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "${S3Url}/cloudformation/auto_scaling_group.yaml"
+      Parameters:
+        MainVPC: 
+          Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
+        LaunchTemplateEc2Micro:
+          Fn::GetAtt: [Ec2Template, Outputs.LaunchTemplateEc2Micro]
 
-  #      TargetSubnetA:
-  #        Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetA] 
-  #      TargetSubnetB:
-  #        Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetB] 
+        TargetSubnetA:
+          Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetA] 
+        TargetSubnetB:
+          Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetB] 
 
   #LoadBalancerAZ1:
   #  Type: AWS::CloudFormation::Stack
