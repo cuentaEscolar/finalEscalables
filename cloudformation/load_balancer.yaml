@@ -65,7 +65,7 @@ Resources:
           ResourceLabel: !Join 
             - '/' 
             - - !GetAtt IncomingTrafficLoadBalancer.LoadBalancerFullName
-              - !GetAtt IncomingTargetGroupFullName
+              - !Ref IncomingTargetGroupFullName
 
         TargetValue: 1000
     DependsOn:
