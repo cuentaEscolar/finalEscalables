@@ -59,7 +59,12 @@ Resources:
       TargetTrackingConfiguration: 
         PredefinedMetricSpecification:
           PredefinedMetricType: ALBRequestCountPerTarget
-          ResourceLabel: !Sub "${IncomingTrafficLoadBalancer}/${IncomingTargetGroup}"
+          ResourceLabel: !Join 
+            - /
+            - - "app"
+              - !Select [1, !Split ["/app/", !Ref IncomingTrafficLoadBalancer]]
+              - "targetgroup"
+              - !Select [1, !Split ["/targetgroup/", !Ref IncomingTargetGroup]]
         TargetValue: 1000
     DependsOn:
       - IncomingTrafficLoadBalancer
