@@ -16,6 +16,9 @@ Parameters:
   IncomingTargetGroup:
     Type: String
 
+  IncomingTargetGroupFullName:
+    Type: String
+
   WebServerASG:
     Type: String
 
@@ -62,7 +65,7 @@ Resources:
           ResourceLabel: !Join 
             - '/' 
             - - !GetAtt IncomingTrafficLoadBalancer.LoadBalancerFullName
-              - !GetAtt IncomingTargetGroup.TargetGroupFullName
+              - !GetAtt IncomingTargetGroupFullName
 
         TargetValue: 1000
     DependsOn:

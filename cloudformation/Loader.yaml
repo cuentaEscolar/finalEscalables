@@ -138,6 +138,8 @@ Resources:
           Fn::GetAtt: [AutoScalingGroup, Outputs.IncomingTargetGroup]
         WebServerASG:
           Fn::GetAtt: [AutoScalingGroup, Outputs.WebServerASG]
+        IncomingTargetGroupFullName:
+          Fn::GetAtt: [AutoScalingGroup, Outputs.IncomingTargetGroupFullName]
           
     DependsOn: 
       - NetworkStack

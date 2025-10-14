@@ -69,3 +69,6 @@ Outputs:
 
   IncomingTargetGroup:
     Value: !Ref IncomingTargetGroup
+
+  IncomingTargetGroupFullName:
+    Value: !GetAtt IncomingTargetGroup.TargetGroupFullName
