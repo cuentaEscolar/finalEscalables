@@ -38,14 +38,14 @@ Resources:
       AvailabilityZones: 
         - "us-east-1a"
         - "us-east-1b"
-      DefaultInstanceWarmup: 0
+      DefaultInstanceWarmup: 1
       DesiredCapacity: 1
       #DesiredCapacityType: vcpu
       LaunchTemplate: 
 
         LaunchTemplateId: !Ref LaunchTemplateEc2Micro
         Version: "1" #!GetAtt LaunchTemplateEc2Micro.LatestVersionNumber
-      MaxSize: 1
+      MaxSize: 3
       MinSize: 1
       NewInstancesProtectedFromScaleIn: false
       #PlacementGroup: String
