@@ -52,9 +52,11 @@ Resources:
               
               git clone https://github.com/danielarell/Frontend_SpeedCola /var/www/html/
               echo  "-h" $DB_ENDPOINT "-u" "$DB_USER" "-p" "$DB_PASS" ;
-              sed -i "s/DB_USER=admin/DB_USER=$DB_USER/g" ~/.env
-              sed -i "s/DB_HOST=.*/DB_HOST=$DB_HOST/g" ~/.env
-              sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=$DB_PASS/g" ~/.env
+              #sed -i "s/DB_USER=admin/DB_USER=$DB_USER/g" ~/.env
+              #sed -i "s/DB_HOST=.*/DB_HOST=$DB_HOST/g" ~/.env
+              #sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=$DB_PASS/g" ~/.env
+            
+              echo "DB_USER=$DB_USER\nDB_HOST=$DB_HOST\nDB_PASSWORD=$DB_PASS" > ~/.env
 
               chown -R apache:apache /var/www/html/
               chmod -R 755 /var/www/html/
