@@ -72,3 +72,4 @@ Outputs:
 
   IncomingTargetGroupFullName:
     Value: !GetAtt IncomingTargetGroup.TargetGroupFullName
+    Description:  Its name
