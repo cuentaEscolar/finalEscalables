@@ -5,6 +5,8 @@ Parameters:
 
   FirstPublicSubnet:
     Type: String
+  SecondPublicSubnet:
+    Type: String
   FirstPrivateSubnet:
     Type: String
   SecondPrivateSubnet:

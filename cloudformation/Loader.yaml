@@ -116,33 +116,33 @@ Resources:
         TargetSubnetB:
           Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetB] 
 
-  #LoadBalancerAZ1:
-  #  Type: AWS::CloudFormation::Stack
-  #  Properties:
-  #    TemplateURL: !Sub "${S3Url}/cloudformation/load_balancer.yaml"
-  #
-  #    Parameters:
-  #      MainVPC: 
-  #        Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
-  #      FirstPublicSubnet:
-  #        Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetA]
-  #      SecondPublicSubnet:
-  #        Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetB]
-  #      FirstPrivateSubnet:
-  #        Fn::GetAtt: [NetworkStack, Outputs.FirstPrivateSubnetA]
-  #      SecondPrivateSubnet:
-  #        Fn::GetAtt: [NetworkStack, Outputs.SecondPrivateSubnetA]
-  #      ALBSecurityGroup:
-  #        Fn::GetAtt: [SecurityGroups, Outputs.ALBSecurityGroup]
-  #      IncomingTargetGroup:
-  #        Fn::GetAtt: [AutoScalingGroup, Outputs.IncomingTargetGroup]
-  #      WebServerASG:
-  #        Fn::GetAtt: [AutoScalingGroup, Outputs.WebServerASG]
-  #        
-  #  DependsOn: 
-  #    - NetworkStack
-  #    - SecurityGroups
-  #    - AutoScalingGroup
+  LoadBalancerAZ1:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "${S3Url}/cloudformation/load_balancer.yaml"
+  
+      Parameters:
+        MainVPC: 
+          Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
+        FirstPublicSubnet:
+          Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetA]
+        SecondPublicSubnet:
+          Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetB]
+        FirstPrivateSubnet:
+          Fn::GetAtt: [NetworkStack, Outputs.FirstPrivateSubnetA]
+        SecondPrivateSubnet:
+          Fn::GetAtt: [NetworkStack, Outputs.SecondPrivateSubnetA]
+        ALBSecurityGroup:
+          Fn::GetAtt: [SecurityGroups, Outputs.ALBSecurityGroup]
+        IncomingTargetGroup:
+          Fn::GetAtt: [AutoScalingGroup, Outputs.IncomingTargetGroup]
+        WebServerASG:
+          Fn::GetAtt: [AutoScalingGroup, Outputs.WebServerASG]
+          
+    DependsOn: 
+      - NetworkStack
+      - SecurityGroups
+      - AutoScalingGroup
 
 Outputs:
   ImportedKeyPair:
