@@ -33,7 +33,9 @@ Resources:
             Resource:
               - !Sub arn:aws:ssm:us-east-1:013001369500:parameter/${DBUsernameParameter}
               - !Sub arn:aws:ssm:us-east-1:013001369500:parameter/${DBPasswordParameter}
-              
+    DependsOn:
+      - EC2Role
+  
   EC2Role:
     Type: AWS::IAM::Role
     Properties:
