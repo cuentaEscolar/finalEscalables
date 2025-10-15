@@ -51,6 +51,12 @@ Resources:
         - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore  # Required for SSM agent
         - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy    # Optional for monitoring
 
+  InstanceProfileArn:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref EC2Role
+
   LaunchTemplateEc2Micro:
     Type: AWS::EC2::LaunchTemplate
     Properties:
