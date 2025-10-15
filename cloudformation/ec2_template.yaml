@@ -21,7 +21,7 @@ Resources:
     Properties:
       PolicyName: AllowSSMParameterAccess
       Roles:
-        - ec2testrole  # Replace with the name of your IAM role
+        - ec2properrole # Replace with the name of your IAM role
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -37,7 +37,7 @@ Resources:
   EC2Role:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: ec2testrole  
+      RoleName: ec2properrole 
       AssumeRolePolicyDocument: 
         Statement:
           - Action: sts:AssumeRole
