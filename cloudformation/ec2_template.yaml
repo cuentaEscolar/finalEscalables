@@ -24,7 +24,7 @@ Resources:
     Properties:
       LaunchTemplateName: !Sub ${AWS::StackName}-launch-template
       LaunchTemplateData:
-        ImageId: ami-014dcf9390a1891fe
+        ImageId: ami-052064a798f08f0d3
         InstanceType: t3.micro
         KeyName: !Ref ImportedKeyPair
         IamInstanceProfile: 
@@ -38,25 +38,38 @@ Resources:
           Fn::Base64: 
             !Sub |
               #!/bin/bash
-              yum update -y
-              yum install -y awscli jq mariadb105 php httpd php-mysqli unzip git
-
-              systemctl start httpd
-              systemctl enable httpd
-
+            
               DB_USER=${DBUsernameParameter}
-              echo "Using DB_USER=$DB_USER" >> /var/log/init.log 
               DB_PASS="${DBPasswordParameter}"
               DB_ENDPOINT="${DatabaseEndpoint}";
+              echo "Using DB_USER=$DB_USER" >> /var/log/init.log 
               #port 3000
-              
+
+              yum update -y
+              yum install -y awscli mariadb105 httpd unzip git
+
+              sudo yum install docker -y
+
+              sudo systemctl start docker
+              sudo systemctl enable docker
+
+              sudo usermod -a -G docker ec2-user
+
+              sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+              sudo chmod +x /usr/local/bin/docker-compose
+
+              git clone https://github.com/danielarell/speedcola.git
+
               git clone https://github.com/danielarell/Frontend_SpeedCola /var/www/html/
-              echo  "-h" $DB_ENDPOINT "-u" "$DB_USER" "-p" "$DB_PASS" ;
-              #sed -i "s/DB_USER=admin/DB_USER=$DB_USER/g" ~/.env
-              #sed -i "s/DB_HOST=.*/DB_HOST=$DB_HOST/g" ~/.env
-              #sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=$DB_PASS/g" ~/.env
+              echo '<!DOCTYPE html><html><head><title>Health Check</title></head><body>OK</body></html>' > /var/www/html/health.html
+              echo "DB_USER=$DB_USER\nDB_HOST=$DB_ENDPOINT\nDB_PASSWORD=$DB_PASS" > /var/www/html/.env
+              echo "CREATE DATABASE facturas;" |  mysql -h $DB_ENDPOINT -u "$DB_USER" -p"$DB_PASS" ;
+
+              #docker-compose up -d --build
+
+
+              
             
-              echo "DB_USER=$DB_USER\nDB_HOST=$DB_HOST\nDB_PASSWORD=$DB_PASS" > ~/.env
 
               chown -R apache:apache /var/www/html/
               chmod -R 755 /var/www/html/

@@ -56,7 +56,7 @@ Resources:
           Fn::GetAtt: [SecurityGroups, Outputs.WebServerSecurityGroup]
 
         DBUsernameParameter:
-          Fn::GetAtt: [SecretsStack, Outputs.DBPasswordParameter]
+          Fn::GetAtt: [SecretsStack, Outputs.DBUsernameParameter]
         DBPasswordParameter:
           Fn::GetAtt: [SecretsStack, Outputs.DBPasswordParameter]
         DatabaseEndpoint:
@@ -150,4 +150,13 @@ Outputs:
   ImportedKeyPair:
     Value: 
       Fn::GetAtt: [SecretsStack, Outputs.ImportedKeyPair]
+
+  LoadBalancerAZ1:
+    Value: !Ref LoadBalancerAZ1
+  WebServerASG:
+    Value:
+      Fn::GetAtt: [AutoScalingGroup, Outputs.WebServerASG]
+    Description: 
+      We need it
+
 
