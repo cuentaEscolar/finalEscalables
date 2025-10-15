@@ -4,8 +4,6 @@ Parameters:
     Type: String
   ImportedKeyPair:
     Type: String
-  InstanceProfileArn:
-    Type: String
   PrivateInstanceSecurityGroup:
     Type: String
   WebServerSecurityGroup:
@@ -18,6 +16,40 @@ Parameters:
     Type: String
 
 Resources:
+  EC2InstanceRolePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: AllowSSMParameterAccess
+      Roles:
+        - ec2testrole  # Replace with the name of your IAM role
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: AllowReadDBSecretsFromSSM
+            Effect: Allow
+            Action:
+              - ssm:GetParameter
+              - ssm:GetParameters
+            Resource:
+              - !Sub arn:aws:ssm:us-east-1:013001369500:parameter/${DBUsernameParameter}
+              - !Sub arn:aws:ssm:us-east-1:013001369500:parameter/${DBPasswordParameter}
+              
+  EC2Role:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: ec2testrole  
+      AssumeRolePolicyDocument: 
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+
+      Description: Basic ec2
+
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore  # Required for SSM agent
+        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy    # Optional for monitoring
 
   LaunchTemplateEc2Micro:
     Type: AWS::EC2::LaunchTemplate
@@ -38,15 +70,19 @@ Resources:
           Fn::Base64: 
             !Sub |
               #!/bin/bash
-            
-              DB_USER=${DBUsernameParameter}
-              DB_PASS="${DBPasswordParameter}"
-              DB_ENDPOINT="${DatabaseEndpoint}";
-              echo "Using DB_USER=$DB_USER" >> /var/log/init.log 
-              #port 3000
 
               yum update -y
               yum install -y awscli mariadb105 httpd unzip git
+
+            
+              DB_USER=${DBUsernameParameter}
+              DB_PASS="${DBPasswordParameter}"
+
+              echo "Using DB_USER=$DB_USER" >> /var/log/init.log 
+              #port 3000
+              DB_USER=$(aws ssm get-parameter --name ${DBUsernameParameter} --with-decryption --query "Parameter.Value" --output text --region us-east-1)
+              DB_PASS=$(aws ssm get-parameter --name ${DBPasswordParameter} --with-decryption --query "Parameter.Value" --output text --region us-east-1)
+              DB_ENDPOINT="${DatabaseEndpoint}";
 
               sudo yum install docker -y
 
@@ -67,9 +103,6 @@ Resources:
 
               #docker-compose up -d --build
 
-
-              
-            
 
               chown -R apache:apache /var/www/html/
               chmod -R 755 /var/www/html/

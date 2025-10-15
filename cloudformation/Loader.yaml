@@ -46,8 +46,8 @@ Resources:
           Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
         ImportedKeyPair: 
           Fn::GetAtt: [SecretsStack, Outputs.ImportedKeyPair]
-        InstanceProfileArn:
-          arn:aws:iam::013001369500:instance-profile/ec2testrole
+        #InstanceProfileArn:
+        #  arn:aws:iam::013001369500:instance-profile/ec2testrole
 
         PrivateInstanceSecurityGroup:
           Fn::GetAtt: [SecurityGroups, Outputs.PrivateInstanceSecurityGroup]
