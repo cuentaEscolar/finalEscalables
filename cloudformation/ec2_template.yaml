@@ -53,7 +53,7 @@ Resources:
         - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore  # Required for SSM agent
         - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy    # Optional for monitoring
 
-  InstanceProfileArn:
+  Ec2InstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
       Roles:
@@ -68,7 +68,7 @@ Resources:
         InstanceType: t3.micro
         KeyName: !Ref ImportedKeyPair
         IamInstanceProfile: 
-          Arn: !Ref InstanceProfileArn
+          Arn: !GetAtt Ec2InstanceProfile.Arn
 
         SecurityGroupIds:
           - !Ref WebServerSecurityGroup
@@ -131,3 +131,6 @@ Resources:
 Outputs:
   LaunchTemplateEc2Micro:
     Value: !Ref LaunchTemplateEc2Micro
+
+  LatestTemplateVersion:
+    Value: !GetAtt LaunchTemplateEc2Micro.LatestVersionNumber

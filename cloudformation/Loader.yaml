@@ -46,8 +46,6 @@ Resources:
           Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
         ImportedKeyPair: 
           Fn::GetAtt: [SecretsStack, Outputs.ImportedKeyPair]
-        #InstanceProfileArn:
-        #  arn:aws:iam::013001369500:instance-profile/ec2testrole
 
         PrivateInstanceSecurityGroup:
           Fn::GetAtt: [SecurityGroups, Outputs.PrivateInstanceSecurityGroup]
@@ -110,6 +108,8 @@ Resources:
           Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
         LaunchTemplateEc2Micro:
           Fn::GetAtt: [Ec2Template, Outputs.LaunchTemplateEc2Micro]
+        LatestTemplateVersion:
+          Fn::GetAtt: [Ec2Template, Outputs.LatestTemplateVersion]
 
         TargetSubnetA:
           Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetA] 

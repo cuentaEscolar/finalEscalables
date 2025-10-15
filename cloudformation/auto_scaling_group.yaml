@@ -2,6 +2,9 @@ Parameters:
   MainVPC:
     Type: String
 
+  LatestTemplateVersion:
+    Type: String
+
   LaunchTemplateEc2Micro:
     Type: String
 
@@ -44,7 +47,8 @@ Resources:
       LaunchTemplate: 
 
         LaunchTemplateId: !Ref LaunchTemplateEc2Micro
-        Version: "1" #!GetAtt LaunchTemplateEc2Micro.LatestVersionNumber
+        Version: !Ref LatestTemplateVersion 
+
       MaxSize: 3
       MinSize: 1
       NewInstancesProtectedFromScaleIn: false
