@@ -105,7 +105,7 @@ Resources:
               git clone https://github.com/danielarell/speedcola.git /var/www/html/
 
               echo '<!DOCTYPE html><html><head><title>Health Check</title></head><body>OK</body></html>' > /var/www/html/health.html
-              echo "DB_USER=$DB_USER\nDB_HOST=$DB_ENDPOINT\nDB_PASSWORD=$DB_PASS" > /var/www/html/.env
+              printf "DB_USER=$DB_USER\nDB_HOST=$DB_ENDPOINT\nDB_PASSWORD=$DB_PASS\nDB_NAME=speedColaDB" > /var/www/html/.env
               echo "CREATE DATABASE facturas;" |  mysql -h $DB_ENDPOINT -u "$DB_USER" -p"$DB_PASS" ;
               git clone https://github.com/cuentaEscolar/finalEscalables /tmp/src/
 
