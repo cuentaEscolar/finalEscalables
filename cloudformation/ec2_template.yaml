@@ -109,15 +109,18 @@ Resources:
               echo "CREATE DATABASE facturas;" |  mysql -h $DB_ENDPOINT -u "$DB_USER" -p"$DB_PASS" ;
               git clone https://github.com/cuentaEscolar/finalEscalables /tmp/src/
 
-              #docker-compose up -d --build
               cat - /tmp/src/Tables.sql | mysql -h $DB_ENDPOINT -u "$DB_USER" -p"$DB_PASS" ;
               rm -rf /tmp/src
 
 
-              chown -R apache:apache /var/www/html/
-              chmod -R 755 /var/www/html/
+              #chown -R apache:apache /var/www/html/
+              #chmod -R 755 /var/www/html/
 
-              systemctl restart httpd
+              #systemctl restart httpd
+              cd /var/www/html/
+              docker build
+              docker compose up -d
+              #npm start
         TagSpecifications:
         - ResourceType: instance
           Tags:
