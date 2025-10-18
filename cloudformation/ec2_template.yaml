@@ -111,12 +111,10 @@ Resources:
 
               cat - /tmp/src/Tables.sql | mysql -h $DB_ENDPOINT -u "$DB_USER" -p"$DB_PASS" ;
               rm -rf /tmp/src
-
-
-              #chown -R apache:apache /var/www/html/
-              #chmod -R 755 /var/www/html/
-
               #systemctl restart httpd
+              mkdir -p ~/.docker/cli-plugins/
+              curl -SL https://github.com/docker/compose/releases/download/v2.23.3/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
+              chmod +x ~/.docker/cli-plugins/docker-compose
               cd /var/www/html/
               docker build
               docker compose up -d
