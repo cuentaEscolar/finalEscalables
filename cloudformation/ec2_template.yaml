@@ -64,7 +64,7 @@ Resources:
     Properties:
       LaunchTemplateName: !Sub ${AWS::StackName}-launch-template
       LaunchTemplateData:
-        ImageId: ami-052064a798f08f0d3
+        ImageId: ami-0341d95f75f311023
         InstanceType: t3.micro
         KeyName: !Ref ImportedKeyPair
         IamInstanceProfile: 
