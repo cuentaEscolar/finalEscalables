@@ -39,6 +39,8 @@ Resources:
   Ec2Template:
     Type: AWS::CloudFormation::Stack
     Properties:
+      Capabilities:
+        - CAPABILITY_IAM
       TemplateURL: !Sub "${S3Url}/cloudformation/ec2_template.yaml"
 
       Parameters:
