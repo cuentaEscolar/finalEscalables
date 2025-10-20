@@ -1,6 +1,6 @@
 Resources:
 
-  MainGateWay:
+  MainGateway:
     Type: AWS::ApiGatewayV2::Api
     Properties:
       #ApiKeySelectionExpression: String
@@ -22,6 +22,7 @@ Resources:
       ApiId: !Ref MainGateway
       RouteKey: $default
       #Target: !Sub integrations/${LambdaIntegration}
+    
 
   ConnectRoute:
     Type: AWS::ApiGatewayV2::Route
