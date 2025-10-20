@@ -11,11 +11,30 @@ Resources:
       IpAddressType: ipv4
       Name: websocket-chat
       ProtocolType: WEBSOCKET
-      RouteKey: String
       RouteSelectionExpression: request.body.action
       #Tags: 
       #  Key: Value
       Version: 1
+
+  DefaultRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref WebSocketApi
+      RouteKey: $default
+      #Target: !Sub integrations/${LambdaIntegration}
+
+  ConnectRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref WebSocketApi
+      RouteKey: $connect
+      #Target: !Sub integrations/${LambdaIntegration}
+
+  DisconnectRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref WebSocketApi
+      RouteKey: $disconnect
 
 Outputs:
   MainGateWay:
