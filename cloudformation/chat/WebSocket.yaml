@@ -20,6 +20,6 @@ Resources:
 
 Outputs:
   MainGateWay:
-    !Ref MainGateWay
+    Value: !Ref MainGateWay
 
 
