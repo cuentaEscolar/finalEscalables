@@ -1,0 +1,23 @@
+
+Parameters:
+  
+  S3Url:
+    Description: Link with Repo
+    Type: String
+  PublicKey:
+    Description: Secret PublicKey
+    Type: String
+
+  
+
+Resources:
+
+  LambdaStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "${S3Url}/cloudformation/chat/lambda.yaml"
+      Parameters:
+        PublicKey: !Ref PublicKey
+
+
+
