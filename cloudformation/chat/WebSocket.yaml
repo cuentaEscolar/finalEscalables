@@ -19,21 +19,21 @@ Resources:
   DefaultRoute:
     Type: AWS::ApiGatewayV2::Route
     Properties:
-      ApiId: !Ref WebSocketApi
+      ApiId: !Ref MainGateway
       RouteKey: $default
       #Target: !Sub integrations/${LambdaIntegration}
 
   ConnectRoute:
     Type: AWS::ApiGatewayV2::Route
     Properties:
-      ApiId: !Ref WebSocketApi
+      ApiId: !Ref MainGateway
       RouteKey: $connect
       #Target: !Sub integrations/${LambdaIntegration}
 
   DisconnectRoute:
     Type: AWS::ApiGatewayV2::Route
     Properties:
-      ApiId: !Ref WebSocketApi
+      ApiId: !Ref MainGateway
       RouteKey: $disconnect
 
 Outputs:
