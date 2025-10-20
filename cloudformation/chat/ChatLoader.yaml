@@ -15,7 +15,7 @@ Resources:
   LambdaStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "${S3Url}/cloudformation/chat/lambda.yaml"
+      TemplateURL: !Sub "${S3Url}/cloudformation/chat/LambdaStarter.yaml"
       Parameters:
         PublicKey: !Ref PublicKey
 

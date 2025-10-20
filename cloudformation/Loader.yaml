@@ -39,8 +39,8 @@ Resources:
   Ec2Template:
     Type: AWS::CloudFormation::Stack
     Properties:
-      Capabilities:
-        - CAPABILITY_IAM
+      #Capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM
+
       TemplateURL: !Sub "${S3Url}/cloudformation/ec2_template.yaml"
 
       Parameters:
@@ -142,6 +142,16 @@ Resources:
           Fn::GetAtt: [AutoScalingGroup, Outputs.WebServerASG]
         IncomingTargetGroupFullName:
           Fn::GetAtt: [AutoScalingGroup, Outputs.IncomingTargetGroupFullName]
+
+
+  ChatStacK:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "${S3Url}/cloudformation/chat/ChatLoader.yaml"
+      S3Url:
+        !Ref : S3Url
+      PublicKey: !Ref PublicKey
+      
           
     DependsOn: 
       - NetworkStack
