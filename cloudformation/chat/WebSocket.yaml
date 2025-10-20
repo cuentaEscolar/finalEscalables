@@ -8,7 +8,6 @@ Resources:
       #enabled for test
       DisableExecuteApiEndpoint: true
       DisableSchemaValidation: false
-      FailOnWarnings: false
       IpAddressType: ipv4
       Name: websocket-chat
       ProtocolType: WEBSOCKET
