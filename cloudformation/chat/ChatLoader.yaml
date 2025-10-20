@@ -18,4 +18,10 @@ Resources:
       TemplateURL: !Sub "${S3Url}/cloudformation/chat/LambdaStarter.yaml"
 
 
+  WebApi:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "${S3Url}/cloudformation/chat/WebSocket.yaml"
+
+
 
