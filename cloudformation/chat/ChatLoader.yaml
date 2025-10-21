@@ -68,7 +68,6 @@ Resources:
     Properties:
       ApiId: 
           Fn::GetAtt: [WebSocketApi, Outputs.SocketApi]
-      !Ref MyApi
 
   Stage:
     Type: AWS::ApiGatewayV2::Stage
