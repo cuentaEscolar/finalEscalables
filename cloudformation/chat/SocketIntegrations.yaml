@@ -31,7 +31,6 @@ Resources:
       IntegrationType: AWS_PROXY
       IntegrationUri: !Ref DefaultLambda
 
-      PassthroughBehavior: String
 
   ConnectIntegration:
     Type: AWS::ApiGatewayV2::Integration
@@ -46,7 +45,6 @@ Resources:
       IntegrationType: AWS_PROXY
       IntegrationUri: !Ref ConnectLambda
 
-      PassthroughBehavior: String
 
 
   DisconnectIntegration:
@@ -62,7 +60,6 @@ Resources:
       IntegrationType: AWS_PROXY
       IntegrationUri: !Ref DisconnectLambda
 
-      PassthroughBehavior: String
 
 
   SendMessageIntegration:
@@ -77,7 +74,6 @@ Resources:
       IntegrationMethod: POST #required by cloudformation
       IntegrationType: AWS_PROXY
       IntegrationUri: !Ref SendMessageLambda
-      PassthroughBehavior: String
 
 Outputs:
   ConnectIntegration:
