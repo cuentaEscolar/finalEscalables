@@ -34,13 +34,13 @@ Resources:
           Fn::GetAtt: [WebSocketApi, Outputs.SocketApi]
 
         DefaultLambda:
-          Fn:GetAtt: [LambdaStack,Outputs.DefaultLambda]
+          Fn::GetAtt: [LambdaStack,Outputs.DefaultLambda]
         ConnectLambda:
-          Fn:GetAtt: [LambdaStack,Outputs.ConnectLambda]
+          Fn::GetAtt: [LambdaStack,Outputs.ConnectLambda]
         DisconnectLambda:
-          Fn:GetAtt: [LambdaStack,Outputs.DisconnectLambda]
+          Fn::GetAtt: [LambdaStack,Outputs.DisconnectLambda]
         SendMessageLambda:
-          Fn:GetAtt: [LambdaStack,Outputs.SendMessageLambda]
+          Fn::GetAtt: [LambdaStack,Outputs.SendMessageLambda]
 
     DependsOn:
       - WebSocketApi
