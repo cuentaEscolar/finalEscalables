@@ -51,7 +51,7 @@ Resources:
       RouteKey: $connect
       AuthorizationType: NONE
       Target: !Join
-      Target: !Sub "integrations/${ConnectRoute}"
+      Target: !Sub "integrations/${ConnectLambda}"
 
   ConnectAPIInvokeLambdaPermission:
     Type: AWS::Lambda::Permission
@@ -66,7 +66,7 @@ Resources:
     Properties:
       ApiId: !Ref SocketApi
       RouteKey: $disconnect
-      Target: !Sub "integrations/${DisconnectRoute}"
+      Target: !Sub "integrations/${DisconnectLambda}"
 
   DisconnectAPIInvokeLambdaPermission:
     Type: AWS::Lambda::Permission
@@ -82,7 +82,7 @@ Resources:
     Properties:
       ApiId: !Ref SocketApi
       RouteKey: sendmessage
-      Target: !Sub "integrations/${SendMessageRoute}"
+      Target: !Sub "integrations/${SendMessageLambda}"
 
   SendMessageAPIInvokeLambdaPermission:
     Type: AWS::Lambda::Permission
