@@ -1,4 +1,8 @@
 Parameters:
+
+  SocketApi:
+    Type: String
+    Description: WebSocketApi string arn
   ConnectLambda:
     Type: String
     Description: Lambda for the connect Route but I need an uri
@@ -19,16 +23,9 @@ Resources:
       IntegrationMethod: POST #required by cloudformation
       IntegrationType: AWS_PROXY
       IntegrationUri: !Ref ConnectLambda
-      PassthroughBehavior: String
-      PayloadFormatVersion: String
-      RequestParameters: 
-        Key: Value
-      RequestTemplates: 
-        Key: Value
-      ResponseParameters: 
-        Key: Value
-      TemplateSelectionExpression: String
-      TimeoutInMillis: Integer
-      TlsConfig: 
-        TlsConfig
 
+      PassthroughBehavior: String
+
+Outputs:
+  ConnectIntegration:
+    Value: !Ref ConnectIntegration
