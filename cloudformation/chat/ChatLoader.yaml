@@ -54,13 +54,13 @@ Resources:
         SocketApi:
           Fn::GetAtt: [WebSocketApi, Outputs.SocketApi]
         DefaultIntegration:
-          Fn:GetAtt: [SocketIntegrations,Outputs.DefaultIntegration]
+          Fn::GetAtt: [SocketIntegrations,Outputs.DefaultIntegration]
         ConnectIntegration:
-          Fn:GetAtt: [SocketIntegrations,Outputs.ConnectIntegration]
+          Fn::GetAtt: [SocketIntegrations,Outputs.ConnectIntegration]
         DisconnectIntegration:
-          Fn:GetAtt: [SocketIntegrations,Outputs.DisconnectIntegration]
+          Fn::GetAtt: [SocketIntegrations,Outputs.DisconnectIntegration]
         SendMessageIntegration:
-          Fn:GetAtt: [SocketIntegrations,Outputs.SendMessageIntegration]
+          Fn::GetAtt: [SocketIntegrations,Outputs.SendMessageIntegration]
 
 
 
