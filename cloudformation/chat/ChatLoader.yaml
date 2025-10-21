@@ -18,10 +18,24 @@ Resources:
       TemplateURL: !Sub "${S3Url}/cloudformation/chat/LambdaStarter.yaml"
 
 
-  WebApi:
+  WebSocketApi:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: !Sub "${S3Url}/cloudformation/chat/WebSocket.yaml"
+
+  SocketIntegrations:
+    Type: AWS::CloudFormation::Stack
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "${S3Url}/cloudformation/chat/SocketIntegrations.yaml"
+      Parameters:
+        SocketApi:
+          Fn::GetAtt: [WebSocketApi, Outputs.SocketApi]
+
+    DependsOn:
+      - WebSocketApi
+      - LambdaStack
+
 
 
 

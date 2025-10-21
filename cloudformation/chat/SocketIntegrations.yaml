@@ -1,0 +1,35 @@
+Parameters:
+  SocketApi:
+    Type: String
+    Description: WebSocketApi string arn
+
+
+Resources:
+
+
+  ConnectIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref SocketApi
+      #we need to change the connection type later.. not necessary for tests rn
+      ConnectionType: INTERNET
+      #ContentHandlingStrategy: String
+      #CredentialsArn: String
+      Description: String
+      IntegrationMethod: String
+      IntegrationSubtype: String
+      IntegrationType: String
+      IntegrationUri: String
+      PassthroughBehavior: String
+      PayloadFormatVersion: String
+      RequestParameters: 
+        Key: Value
+      RequestTemplates: 
+        Key: Value
+      ResponseParameters: 
+        Key: Value
+      TemplateSelectionExpression: String
+      TimeoutInMillis: Integer
+      TlsConfig: 
+        TlsConfig
+

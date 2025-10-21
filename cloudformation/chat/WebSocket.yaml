@@ -37,8 +37,15 @@ Resources:
       ApiId: !Ref MainGateway
       RouteKey: $disconnect
 
+
+  SendMessageRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref MainGateway
+      RouteKey: sendmessage
+
 Outputs:
-  MainGateWay:
+  SocketApi:
     Value: !Ref MainGateway
 
 

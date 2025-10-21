@@ -392,3 +392,6 @@ Resources:
       PolicyName: manageConnections7F91357B
       Roles:
         - Ref: SendMessageHandlerServiceRole5F523417
+
+Outputs:
+
