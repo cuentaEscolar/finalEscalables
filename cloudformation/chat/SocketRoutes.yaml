@@ -46,7 +46,7 @@ Resources:
       Target: !Join
         - /
         - - integrations
-          - !Ref    SendMessageRoute
+          - !Ref    SendMessageIntegration
 
 
   DefaultRoute:
@@ -57,6 +57,6 @@ Resources:
       Target: !Join
         - /
         - - integrations
-          - !Ref     DefaultRoute
+          - !Ref     DefaultIntegration
 
     
