@@ -2,33 +2,41 @@ Parameters:
   SocketApi:
     Type: String
     Description: WebSocketApi string arn
+  ConnectIntegration:
+    Type: String
+
 
 Resources:
-  DefaultRoute:
-    Type: AWS::ApiGatewayV2::Route
-    Properties:
-      ApiId: !Ref SocketApi
-      RouteKey: $default
-      #Target: !Sub integrations/${LambdaIntegration}
-    
 
-  ConnectRoute:
-    Type: AWS::ApiGatewayV2::Route
-    Properties:
-      ApiId: !Ref SocketApi
-      RouteKey: $connect
-      #Target: !Sub integrations/${LambdaIntegration}
+  #ConnectRoute:
+  #  Type: AWS::ApiGatewayV2::Route
+  #  Properties:
+  #    ApiId: !Ref SocketApi
+  #    RouteKey: $connect
+  #    #Target: !Sub integrations/${LambdaIntegration}
 
   DisconnectRoute:
     Type: AWS::ApiGatewayV2::Route
     Properties:
       ApiId: !Ref SocketApi
       RouteKey: $disconnect
+      AuthorizationType: NONE
+      Target: !Join
+        - /
+        - - integrations
+          - !Ref  ConnectIntegration
 
 
-  SendMessageRoute:
-    Type: AWS::ApiGatewayV2::Route
-    Properties:
-      ApiId: !Ref SocketApi
-      RouteKey: sendmessage
+  #SendMessageRoute:
+  #  Type: AWS::ApiGatewayV2::Route
+  #  Properties:
+  #    ApiId: !Ref SocketApi
+  #    RouteKey: sendmessage
 
+  #DefaultRoute:
+  #  Type: AWS::ApiGatewayV2::Route
+  #  Properties:
+  #    ApiId: !Ref SocketApi
+  #    RouteKey: $default
+  #    #Target: !Sub integrations/${LambdaIntegration}
+  #  
