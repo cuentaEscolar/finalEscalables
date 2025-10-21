@@ -32,8 +32,8 @@ Resources:
       Parameters:
         SocketApi:
           Fn::GetAtt: [WebSocketApi, Outputs.SocketApi]
-      ConnectLambda:
-          Fn::GetAtt: [LambdaStack, Outputs.SocketApi]
+        ConnectLambda:
+            Fn::GetAtt: [LambdaStack, Outputs.ConnectLambda]
 
     DependsOn:
       - WebSocketApi
