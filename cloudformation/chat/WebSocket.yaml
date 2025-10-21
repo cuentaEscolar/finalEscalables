@@ -6,12 +6,12 @@ Resources:
       #ApiKeySelectionExpression: String
       Description: kuik api test
       #enabled for test
-      DisableExecuteApiEndpoint: true
-      DisableSchemaValidation: false
+      #DisableExecuteApiEndpoint: true
+      #DisableSchemaValidation: false
       IpAddressType: ipv4
       Name: websocket-chat
       ProtocolType: WEBSOCKET
-      RouteSelectionExpression: request.body.action
+      RouteSelectionExpression: $request.body.action
       #Tags: 
       #  Key: Value
       Version: 1
