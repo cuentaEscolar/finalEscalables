@@ -28,6 +28,14 @@ Resources:
         - - integrations
           - !Ref  ConnectIntegration
 
+  ConnectAPIInvokeLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref MyLambdaFunction
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${SocketApi}/beta/$connect
+
   DisconnectRoute:
     Type: AWS::ApiGatewayV2::Route
     Properties:
