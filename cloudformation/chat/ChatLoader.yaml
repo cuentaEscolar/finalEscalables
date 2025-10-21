@@ -47,7 +47,7 @@ Resources:
         SocketApi:
           Fn::GetAtt: [WebSocketApi, Outputs.SocketApi]
         ConnectIntegration:
-          Fn::GetAtt: [SocketIntegrations, Outputs.SocketApi]
+          Fn::GetAtt: [SocketIntegrations, Outputs.ConnectIntegration]
 
 
 
