@@ -34,13 +34,13 @@ Resources:
           Fn::GetAtt: [WebSocketApi, Outputs.SocketApi]
 
         DefaultLambda:
-          Fn:SetAtt: [LambdaStack,Outputs.DefaultLambda]
+          Fn:GetAtt: [LambdaStack,Outputs.DefaultLambda]
         ConnectLambda:
-          Fn:SetAtt: [LambdaStack,Outputs.ConnectLambda]
+          Fn:GetAtt: [LambdaStack,Outputs.ConnectLambda]
         DisconnectLambda:
-          Fn:SetAtt: [LambdaStack,Outputs.DisconnectLambda]
+          Fn:GetAtt: [LambdaStack,Outputs.DisconnectLambda]
         SendMessageLambda:
-          Fn:SetAtt: [LambdaStack,Outputs.SendMessageLambda]
+          Fn:GetAtt: [LambdaStack,Outputs.SendMessageLambda]
 
     DependsOn:
       - WebSocketApi
@@ -54,13 +54,13 @@ Resources:
         SocketApi:
           Fn::GetAtt: [WebSocketApi, Outputs.SocketApi]
         DefaultIntegration:
-          Fn:SetAtt: [SocketIntegrations,Outputs.DefaultIntegration]
+          Fn:GetAtt: [SocketIntegrations,Outputs.DefaultIntegration]
         ConnectIntegration:
-          Fn:SetAtt: [SocketIntegrations,Outputs.ConnectIntegration]
+          Fn:GetAtt: [SocketIntegrations,Outputs.ConnectIntegration]
         DisconnectIntegration:
-          Fn:SetAtt: [SocketIntegrations,Outputs.DisconnectIntegration]
+          Fn:GetAtt: [SocketIntegrations,Outputs.DisconnectIntegration]
         SendMessageIntegration:
-          Fn:SetAtt: [SocketIntegrations,Outputs.SendMessageIntegration]
+          Fn:GetAtt: [SocketIntegrations,Outputs.SendMessageIntegration]
 
 
 
