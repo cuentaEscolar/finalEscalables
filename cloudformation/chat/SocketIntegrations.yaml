@@ -29,7 +29,9 @@ Resources:
       Description: DefaultRouteIntegration
       IntegrationMethod: POST #required by cloudformation
       IntegrationType: AWS_PROXY
-      IntegrationUri: !Ref DefaultLambda
+      IntegrationUri: 
+        Fn::Sub:
+            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DefaultLambda}/invocations
 
 
   ConnectIntegration:
@@ -43,7 +45,9 @@ Resources:
       Description: ConnectRouteIntegration
       IntegrationMethod: POST #required by cloudformation
       IntegrationType: AWS_PROXY
-      IntegrationUri: !Ref ConnectLambda
+      IntegrationUri: 
+        Fn::Sub:
+            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${ConnectLambda}/invocations
 
 
 

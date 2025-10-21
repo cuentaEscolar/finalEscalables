@@ -6,7 +6,7 @@ Resources:
       #ApiKeySelectionExpression: String
       Description: kuik api test
       #enabled for test
-      #DisableExecuteApiEndpoint: true
+      DisableExecuteApiEndpoint: false
       #DisableSchemaValidation: false
       IpAddressType: ipv4
       Name: websocket-chat
