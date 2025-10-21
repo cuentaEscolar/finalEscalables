@@ -4,13 +4,34 @@ Parameters:
     Type: String
     Description: WebSocketApi string arn
 
+  DefaultLambda:
+    Type: String
   ConnectLambda:
     Type: String
     Description: Lambda for the connect Route but I need an uri
+  DisconnectLambda:
+    Type: String
+  SendMessageLambda:
+    Type: String
 
 
 Resources:
 
+
+  DefaultIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref SocketApi
+      #we need to change the connection type later.. not necessary for tests rn
+      ConnectionType: INTERNET
+      #ContentHandlingStrategy: String
+      #CredentialsArn: String
+      Description: DefaultRouteIntegration
+      IntegrationMethod: POST #required by cloudformation
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !Ref DefaultLambda
+
+      PassthroughBehavior: String
 
   ConnectIntegration:
     Type: AWS::ApiGatewayV2::Integration
@@ -27,6 +48,40 @@ Resources:
 
       PassthroughBehavior: String
 
+
+  DisconnectIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref SocketApi
+      #we need to change the connection type later.. not necessary for tests rn
+      ConnectionType: INTERNET
+      #ContentHandlingStrategy: String
+      #CredentialsArn: String
+      Description: DisconnectRouteIntegration
+      IntegrationMethod: POST #required by cloudformation
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !Ref DisconnectLambda
+
+      PassthroughBehavior: String
+
+
+  SendMessageIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref SocketApi
+      #we need to change the connection type later.. not necessary for tests rn
+      ConnectionType: INTERNET
+      #ContentHandlingStrategy: String
+      #CredentialsArn: String
+      Description: SendMessageRouteIntegration
+      IntegrationMethod: POST #required by cloudformation
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !Ref SendMessageLambda
+      PassthroughBehavior: String
+
 Outputs:
   ConnectIntegration:
     Value: !Ref ConnectIntegration
+
+  DisconnectIntegration:
+    Value: !Ref DisconnectIntegration

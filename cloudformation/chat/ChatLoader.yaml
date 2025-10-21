@@ -32,8 +32,15 @@ Resources:
       Parameters:
         SocketApi:
           Fn::GetAtt: [WebSocketApi, Outputs.SocketApi]
+
+        DefaultLambda:
+          Fn:SetAtt: [LambdaStack,Outputs.DefaultLambda]
         ConnectLambda:
-            Fn::GetAtt: [LambdaStack, Outputs.ConnectLambda]
+          Fn:SetAtt: [LambdaStack,Outputs.ConnectLambda]
+        DisconnectLambda:
+          Fn:SetAtt: [LambdaStack,Outputs.DisconnectLambda]
+        SendMessageLambda:
+          Fn:SetAtt: [LambdaStack,Outputs.SendMessageLambda]
 
     DependsOn:
       - WebSocketApi
@@ -46,10 +53,14 @@ Resources:
       Parameters:
         SocketApi:
           Fn::GetAtt: [WebSocketApi, Outputs.SocketApi]
+        DefaultIntegration:
+          Fn:SetAtt: [SocketIntegrations,Outputs.DefaultIntegration]
         ConnectIntegration:
-          Fn::GetAtt: [SocketIntegrations, Outputs.ConnectIntegration]
-
-
+          Fn:SetAtt: [SocketIntegrations,Outputs.ConnectIntegration]
+        DisconnectIntegration:
+          Fn:SetAtt: [SocketIntegrations,Outputs.DisconnectIntegration]
+        SendMessageIntegration:
+          Fn:SetAtt: [SocketIntegrations,Outputs.SendMessageIntegration]
 
 
 

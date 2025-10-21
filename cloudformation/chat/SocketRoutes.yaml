@@ -2,41 +2,61 @@ Parameters:
   SocketApi:
     Type: String
     Description: WebSocketApi string arn
+
+  DefaultIntegration:
+    Type: String
   ConnectIntegration:
     Type: String
+    Description: Integration for the connect Route but I need an uri
+  DisconnectIntegration:
+    Type: String
+  SendMessageIntegration:
+    Type: String
+
 
 
 Resources:
 
-  #ConnectRoute:
-  #  Type: AWS::ApiGatewayV2::Route
-  #  Properties:
-  #    ApiId: !Ref SocketApi
-  #    RouteKey: $connect
-  #    #Target: !Sub integrations/${LambdaIntegration}
-
-  DisconnectRoute:
+  ConnectRoute:
     Type: AWS::ApiGatewayV2::Route
     Properties:
       ApiId: !Ref SocketApi
-      RouteKey: $disconnect
+      RouteKey: $connect
       AuthorizationType: NONE
       Target: !Join
         - /
         - - integrations
           - !Ref  ConnectIntegration
 
+  DisconnectRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref SocketApi
+      RouteKey: $disconnect
+      Target: !Join
+        - /
+        - - integrations
+          - !Ref   DisconnectIntegration
 
-  #SendMessageRoute:
-  #  Type: AWS::ApiGatewayV2::Route
-  #  Properties:
-  #    ApiId: !Ref SocketApi
-  #    RouteKey: sendmessage
+  SendMessageRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref SocketApi
+      RouteKey: sendmessage
+      Target: !Join
+        - /
+        - - integrations
+          - !Ref    SendMessageRoute
 
-  #DefaultRoute:
-  #  Type: AWS::ApiGatewayV2::Route
-  #  Properties:
-  #    ApiId: !Ref SocketApi
-  #    RouteKey: $default
-  #    #Target: !Sub integrations/${LambdaIntegration}
-  #  
+
+  DefaultRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref SocketApi
+      RouteKey: $default
+      Target: !Join
+        - /
+        - - integrations
+          - !Ref     DefaultRoute
+
+    

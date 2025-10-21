@@ -394,6 +394,8 @@ Resources:
         - Ref: SendMessageHandlerServiceRole5F523417
 
 Outputs:
+  DefaultLambda:
+    Value: !GetAtt DefaultHandler604DF7AC.Arn
   ConnectLambda:
     Value: !GetAtt ConnectHandler2FFD52D8.Arn
   DisconnectLambda:
