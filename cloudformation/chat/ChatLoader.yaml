@@ -51,6 +51,7 @@ Resources:
     Properties:
       TemplateURL: !Sub "${S3Url}/cloudformation/chat/SocketRoutes.yaml"
       Parameters:
+
         SocketApi:
           Fn::GetAtt: [WebSocketApi, Outputs.SocketApi]
         DefaultIntegration:
@@ -61,6 +62,16 @@ Resources:
           Fn::GetAtt: [SocketIntegrations,Outputs.DisconnectIntegration]
         SendMessageIntegration:
           Fn::GetAtt: [SocketIntegrations,Outputs.SendMessageIntegration]
+
+        DefaultLambda:
+          Fn::GetAtt: [LambdaStack,Outputs.DefaultLambda]
+        ConnectLambda:
+          Fn::GetAtt: [LambdaStack,Outputs.ConnectLambda]
+        DisconnectLambda:
+          Fn::GetAtt: [LambdaStack,Outputs.DisconnectLambda]
+        SendMessageLambda:
+          Fn::GetAtt: [LambdaStack,Outputs.SendMessageLambda]
+
 
   Deployment:
     DependsOn: SocketRoutes
