@@ -16,34 +16,6 @@ Resources:
       #  Key: Value
       Version: 1
 
-  DefaultRoute:
-    Type: AWS::ApiGatewayV2::Route
-    Properties:
-      ApiId: !Ref MainGateway
-      RouteKey: $default
-      #Target: !Sub integrations/${LambdaIntegration}
-    
-
-  ConnectRoute:
-    Type: AWS::ApiGatewayV2::Route
-    Properties:
-      ApiId: !Ref MainGateway
-      RouteKey: $connect
-      #Target: !Sub integrations/${LambdaIntegration}
-
-  DisconnectRoute:
-    Type: AWS::ApiGatewayV2::Route
-    Properties:
-      ApiId: !Ref MainGateway
-      RouteKey: $disconnect
-
-
-  SendMessageRoute:
-    Type: AWS::ApiGatewayV2::Route
-    Properties:
-      ApiId: !Ref MainGateway
-      RouteKey: sendmessage
-
 Outputs:
   SocketApi:
     Value: !Ref MainGateway

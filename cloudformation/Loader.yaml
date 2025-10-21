@@ -122,7 +122,6 @@ Resources:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: !Sub "${S3Url}/cloudformation/load_balancer.yaml"
-  
       Parameters:
         MainVPC: 
           Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
@@ -142,22 +141,21 @@ Resources:
           Fn::GetAtt: [AutoScalingGroup, Outputs.WebServerASG]
         IncomingTargetGroupFullName:
           Fn::GetAtt: [AutoScalingGroup, Outputs.IncomingTargetGroupFullName]
+    DependsOn: 
+      - NetworkStack
+      - SecurityGroups
+      - AutoScalingGroup
 
 
   ChatStacK:
     Type: AWS::CloudFormation::Stack
     Properties:
       TemplateURL: !Sub "${S3Url}/cloudformation/chat/ChatLoader.yaml"
-      S3Url:
-        !Ref : S3Url
-      PublicKey: !Ref PublicKey
-      
-          
-    DependsOn: 
-      - NetworkStack
-      - SecurityGroups
-      - AutoScalingGroup
+      Parameters:
+        S3Url: !Ref  S3Url
+        PublicKey: !Ref PublicKey
 
+          
 Outputs:
   ImportedKeyPair:
     Value: 

@@ -394,4 +394,9 @@ Resources:
         - Ref: SendMessageHandlerServiceRole5F523417
 
 Outputs:
-
+  ConnectLambda:
+    Value: !Ref ConnectHandler2FFD52D8
+  DisconnectLambda:
+    Value: !Ref DisconnectHandlerCB7ED6F7
+  SendMessageLambda:
+    Value: !Ref SendMessageHandlerDCEABF13
