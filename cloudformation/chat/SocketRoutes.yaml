@@ -13,9 +13,40 @@ Parameters:
   SendMessageIntegration:
     Type: String
 
+  DefaultLambda:
+    Type: String
+  ConnectLambda:
+    Type: String
+    Description: Lambda for the connect Route but I need an uri
+  DisconnectLambda:
+    Type: String
+  SendMessageLambda:
+    Type: String
+
+
 
 
 Resources:
+
+  DefaultRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref SocketApi
+      RouteKey: $default
+      Target: !Join
+        - /
+        - - integrations
+          - !Ref     DefaultIntegration
+
+
+  DefaultAPIInvokeLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref DefaultLambda
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${SocketApi}/beta/$default
+
 
   ConnectRoute:
     Type: AWS::ApiGatewayV2::Route
@@ -31,7 +62,7 @@ Resources:
   ConnectAPIInvokeLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
-      FunctionName: !Ref MyLambdaFunction
+      FunctionName: !Ref ConnectLambda
       Action: lambda:InvokeFunction
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${SocketApi}/beta/$connect
@@ -46,6 +77,15 @@ Resources:
         - - integrations
           - !Ref   DisconnectIntegration
 
+  DisconnectAPIInvokeLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref DisconnectLambda
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${SocketApi}/beta/$disconnect
+
+
   SendMessageRoute:
     Type: AWS::ApiGatewayV2::Route
     Properties:
@@ -56,15 +96,13 @@ Resources:
         - - integrations
           - !Ref    SendMessageIntegration
 
-
-  DefaultRoute:
-    Type: AWS::ApiGatewayV2::Route
+  SendMessageAPIInvokeLambdaPermission:
+    Type: AWS::Lambda::Permission
     Properties:
-      ApiId: !Ref SocketApi
-      RouteKey: $default
-      Target: !Join
-        - /
-        - - integrations
-          - !Ref     DefaultIntegration
+      FunctionName: !Ref SendMessageLambda
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${SocketApi}/beta/sendmessage
+
 
     
