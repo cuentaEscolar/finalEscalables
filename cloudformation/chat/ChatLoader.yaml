@@ -79,9 +79,6 @@ Resources:
       ApiId: 
           Fn::GetAtt: [WebSocketApi, Outputs.SocketApi]
 
-Outputs:
-  ConnectionURL:
-    Value: !Sub wss://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/dev
 
 
 
