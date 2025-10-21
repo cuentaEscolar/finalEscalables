@@ -83,8 +83,8 @@ Resources:
   Stage:
     Type: AWS::ApiGatewayV2::Stage
     Properties:
-      StageName: dev
-      Description: dev stage
+      StageName: beta
+      Description: beta stage
       DeploymentId: 
         !Ref Deployment
       ApiId: 
