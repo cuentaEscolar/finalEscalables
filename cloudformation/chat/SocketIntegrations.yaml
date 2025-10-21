@@ -85,3 +85,9 @@ Outputs:
 
   DisconnectIntegration:
     Value: !Ref DisconnectIntegration
+
+  DefaultIntegration:
+    Value: !Ref DefaultIntegration
+
+  SendMessageIntegration:
+    Value: !Ref SendMessageIntegration
