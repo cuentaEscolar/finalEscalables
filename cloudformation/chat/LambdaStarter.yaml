@@ -395,8 +395,8 @@ Resources:
 
 Outputs:
   ConnectLambda:
-    Value: !Ref ConnectHandler2FFD52D8
+    Value: !GetAtt ConnectHandler2FFD52D8.Arn
   DisconnectLambda:
-    Value: !Ref DisconnectHandlerCB7ED6F7
+    Value: !GetAtt DisconnectHandlerCB7ED6F7.Arn
   SendMessageLambda:
-    Value: !Ref SendMessageHandlerDCEABF13
+    Value: !GetAtt SendMessageHandlerDCEABF13.Arn

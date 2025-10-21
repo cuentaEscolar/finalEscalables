@@ -3,6 +3,7 @@ Parameters:
   SocketApi:
     Type: String
     Description: WebSocketApi string arn
+
   ConnectLambda:
     Type: String
     Description: Lambda for the connect Route but I need an uri
