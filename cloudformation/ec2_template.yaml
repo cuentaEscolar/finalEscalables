@@ -107,6 +107,7 @@ Resources:
               echo '<!DOCTYPE html><html><head><title>Health Check</title></head><body>OK</body></html>' > /var/www/html/health.html
               printf "DB_USER=$DB_USER\nDB_HOST=$DB_ENDPOINT\nDB_PASSWORD=$DB_PASS\nDB_NAME=speedColaDB" > /var/www/html/.env
               echo "CREATE DATABASE facturas;" |  mysql -h $DB_ENDPOINT -u "$DB_USER" -p"$DB_PASS" ;
+              echo "INSERT INTO categoria (descripcion) VALUES ('Hogar'), ('Reparación'), ('Belleza'), ('Tecnología'), ('Transporte'), ('Educación'), ('Eventos');"|  mysql -h $DB_ENDPOINT -u "$DB_USER" -p"$DB_PASS" ;
               git clone https://github.com/cuentaEscolar/finalEscalables /tmp/src/
 
               cat - /tmp/src/Tables.sql | mysql -h $DB_ENDPOINT -u "$DB_USER" -p"$DB_PASS" ;
