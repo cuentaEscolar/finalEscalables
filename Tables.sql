@@ -106,3 +106,12 @@ CREATE TABLE resenaProveedor (
     FOREIGN KEY (idProveedor) REFERENCES usuarios(idUsuario)
 );
 
+               
+
+INSERT INTO categoria (descripcion) VALUES ('Hogar'),
+ ('Reparación'),
+ ('Belleza'),
+ ('Tecnología'),
+ ('Transporte'),
+ ('Educación'),
+ ('Eventos');
