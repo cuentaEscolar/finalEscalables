@@ -21,7 +21,7 @@ Resources:
   NetworkStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "${S3Url}/cloudformation/network/NetworkLoader.yaml.yaml"
+      TemplateURL: !Sub "${S3Url}/cloudformation/network.yaml"
       Parameters:
         S3Url: !Ref S3Url
 
@@ -29,7 +29,7 @@ Resources:
   SecurityGroups:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "${S3Url}/cloudformation/ec2/security_groups.yaml"
+      TemplateURL: !Sub "${S3Url}/cloudformation/security_groups.yaml"
 
       Parameters:
         MainVPC: 
@@ -41,7 +41,7 @@ Resources:
     Properties:
       #Capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM
 
-      TemplateURL: !Sub "${S3Url}/cloudformation/ec2/ec2_template.yaml"
+      TemplateURL: !Sub "${S3Url}/cloudformation/ec2_template.yaml"
 
       Parameters:
         MainVPC: 
@@ -69,7 +69,7 @@ Resources:
   BastionHostStackAZ1:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "${S3Url}/cloudformation/ec2/bastion_host.yaml"
+      TemplateURL: !Sub "${S3Url}/cloudformation/bastion_host.yaml"
       Parameters:
         BastionInstanceType:
           t3.micro

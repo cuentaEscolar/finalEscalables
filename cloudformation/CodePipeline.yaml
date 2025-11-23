@@ -182,24 +182,6 @@ Resources:
                 - Name: SourceOutput
               Region: us-east-1
               Namespace: DeployVariables
-        - Name: DeployCloud
-          Actions:
-            - Name: DeployLambdas
-              ActionTypeId:
-                Category: Deploy
-                Owner: AWS
-                Provider: CloudFormation
-                Version: 1
-
-              Configuration:
-                StackName: ChatLambdas
-                TemplatePath: SourceOutput::cloudformation/lambda.yaml
-                Capabilities: CAPABILITY_IAM 
-                ActionMode: CREATE_UPDATE
-
-              InputArtifacts:
-                - Name: SourceOutput
-              RunOrder: 1
 
 Outputs:
   Pipeline:
