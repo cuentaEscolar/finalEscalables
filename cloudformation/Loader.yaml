@@ -9,7 +9,7 @@ Parameters:
     Type: String
   MaxMainInstances:
     Description: Max ec2 instances for the main app
-    Type:String
+    Type: String
 
 
 Resources:
