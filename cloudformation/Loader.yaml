@@ -13,8 +13,6 @@ Parameters:
 
 
 Resources:
-
-  
   SecretsStack:
     Type: AWS::CloudFormation::Stack
     Properties:

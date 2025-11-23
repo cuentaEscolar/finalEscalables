@@ -18,7 +18,7 @@ Resources:
   PipelineArtifactBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub "repo-bucket-${AWS::AccountId}-${AWS::Region}"
+      BucketName: !Sub "repo-bucket-dev-${AWS::AccountId}-${AWS::Region}"
 
   RepoBucketPolicy:
     Type: AWS::S3::BucketPolicy
@@ -55,8 +55,8 @@ Resources:
               - 's3:ListBucket'
             Resource:
 
-              - !Sub "arn:aws:s3:::repo-bucket-${AWS::AccountId}-${AWS::Region}"
-              - !Sub "arn:aws:s3:::repo-bucket-${AWS::AccountId}-${AWS::Region}/*"
+              - !Sub "arn:aws:s3:::repo-bucket-dev-${AWS::AccountId}-${AWS::Region}"
+              - !Sub "arn:aws:s3:::repo-bucket-dev-${AWS::AccountId}-${AWS::Region}/*"
           - Effect: Allow
             Action:
               - 'iam:PassRole'
@@ -74,7 +74,7 @@ Resources:
   PipelineRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: CodePipelineServiceRole
+      RoleName: CodePipelineServiceRoleDev
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -96,7 +96,7 @@ Resources:
   CodeBuildProject:
     Type: AWS::CodeBuild::Project
     Properties:
-      Name: UploadToS3
+      Name: UploadToS3Dev
       Source:
         Type: CODEPIPELINE
       Artifacts:
@@ -133,7 +133,7 @@ Resources:
             Resource: arn:aws:s3:::*/*
 
         Version: "2012-10-17"
-      PolicyName: S3PolicyTest
+      PolicyName: S3PolicyTestDev
       Roles:
         - Ref: S3Role 
 
@@ -174,7 +174,7 @@ Resources:
 
               RunOrder: 2
               Configuration:
-                BucketName: !Sub "repo-bucket-${AWS::AccountId}-${AWS::Region}"
+                BucketName: !Sub "repo-bucket-dev-${AWS::AccountId}-${AWS::Region}"
                 Extract: 'true'
                 ObjectKey: MyWebsite
               OutputArtifacts: []
@@ -190,7 +190,7 @@ Outputs:
 
   S3Bucket:
     Description: da bucket
-    Value: !Sub "repo-bucket-${AWS::AccountId}-${AWS::Region}"
+    Value: !Sub "repo-bucket-dev-${AWS::AccountId}-${AWS::Region}"
 
   S3Url:
     Description: Link with Repo

@@ -55,8 +55,8 @@ Resources:
               - 's3:ListBucket'
             Resource:
 
-              - !Sub "arn:aws:s3:::repo-dev-bucket-${AWS::AccountId}-${AWS::Region}"
-              - !Sub "arn:aws:s3:::repo-dev-bucket-${AWS::AccountId}-${AWS::Region}/*"
+              - !Sub "arn:aws:s3:::repo-bucket-${AWS::AccountId}-${AWS::Region}"
+              - !Sub "arn:aws:s3:::repo-bucket-${AWS::AccountId}-${AWS::Region}/*"
           - Effect: Allow
             Action:
               - 'iam:PassRole'
