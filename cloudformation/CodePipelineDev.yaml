@@ -55,8 +55,8 @@ Resources:
               - 's3:ListBucket'
             Resource:
 
-              - !Sub "arn:aws:s3:::repo-dev-bucket-${AWS::AccountId}-${AWS::Region}"
-              - !Sub "arn:aws:s3:::repo-dev-bucket-${AWS::AccountId}-${AWS::Region}/*"
+              - !Sub "arn:aws:s3:::repo-bucket-${AWS::AccountId}-${AWS::Region}"
+              - !Sub "arn:aws:s3:::repo-bucket-${AWS::AccountId}-${AWS::Region}/*"
           - Effect: Allow
             Action:
               - 'iam:PassRole'
@@ -159,7 +159,7 @@ Resources:
               Configuration:
                 ConnectionArn: arn:aws:codeconnections:us-east-1:013001369500:connection/749c9672-a6db-494c-b35c-a389e72e6e24
                 FullRepositoryId: cuentaEscolar/finalEscalables
-                BranchName: dev
+                BranchName: main
               RunOrder: 1
 
         - Name: LoadResources

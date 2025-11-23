@@ -12,6 +12,8 @@ Parameters:
     Type: String
   TargetSubnetB:
     Type: String
+  MaxSize:
+    Type: String
 
 Resources:
 #--------------------------------------Auto Scaling Group-------------------------------
@@ -49,7 +51,7 @@ Resources:
         LaunchTemplateId: !Ref LaunchTemplateEc2Micro
         Version: !Ref LatestTemplateVersion 
 
-      MaxSize: 3
+      MaxSize: !Ref MaxSize
       MinSize: 1
       NewInstancesProtectedFromScaleIn: false
       #PlacementGroup: String

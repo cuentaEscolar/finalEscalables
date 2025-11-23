@@ -7,6 +7,10 @@ Parameters:
   PublicKey:
     Description: Secret PublicKey
     Type: String
+  MaxMainInstances:
+    Description: Max ec2 instances for the main app
+    Type:String
+
 
 Resources:
 
@@ -21,7 +25,7 @@ Resources:
   NetworkStack:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "${S3Url}/cloudformation/network/NetworkLoader.yaml.yaml"
+      TemplateURL: !Sub "${S3Url}/cloudformation/network/NetworkLoader.yaml"
       Parameters:
         S3Url: !Ref S3Url
 
@@ -106,6 +110,7 @@ Resources:
     Properties:
       TemplateURL: !Sub "${S3Url}/cloudformation/auto_scaling_group.yaml"
       Parameters:
+
         MainVPC: 
           Fn::GetAtt: [NetworkStack, Outputs.MainVPC]
         LaunchTemplateEc2Micro:
@@ -117,6 +122,8 @@ Resources:
           Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetA] 
         TargetSubnetB:
           Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetB] 
+        MaxSize:
+          !Ref MaxMainInstances
 
   LoadBalancerAZ1:
     Type: AWS::CloudFormation::Stack
@@ -146,14 +153,6 @@ Resources:
       - SecurityGroups
       - AutoScalingGroup
 
-
-  ChatStacK:
-    Type: AWS::CloudFormation::Stack
-    Properties:
-      TemplateURL: !Sub "${S3Url}/cloudformation/chat/ChatLoader.yaml"
-      Parameters:
-        S3Url: !Ref  S3Url
-        PublicKey: !Ref PublicKey
 
           
 Outputs:
