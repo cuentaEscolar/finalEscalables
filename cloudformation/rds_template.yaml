@@ -31,7 +31,7 @@ Resources:
     DeletionPolicy: 'Delete'
     UpdateReplacePolicy: 'Delete'
     Properties:
-      DBInstanceIdentifier: countries
+      DBInstanceIdentifier: !Sub ${AWS::StackName}-main_app-db
       AllocatedStorage: 20
       DBInstanceClass: db.t3.micro
       Engine: mysql
