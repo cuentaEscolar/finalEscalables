@@ -102,7 +102,7 @@ Resources:
               sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
               sudo chmod +x /usr/local/bin/docker-compose
 
-              git clone https://github.com/danielarell/speedcola.git /var/www/html/
+              git clone -b dev https://github.com/danielarell/speedcola.git --single-branch /var/www/html/
 
               echo '<!DOCTYPE html><html><head><title>Health Check</title></head><body>OK</body></html>' > /var/www/html/health.html
               printf "DB_USER=$DB_USER\nDB_HOST=$DB_ENDPOINT\nDB_PASSWORD=$DB_PASS\nDB_NAME=speedColaDB" > /var/www/html/.env
