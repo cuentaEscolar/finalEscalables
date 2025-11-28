@@ -21,7 +21,7 @@ Resources:
     Properties:
       PolicyName: AllowSSMParameterAccess
       Roles:
-        - ${AWS::StackName}-main-app-db-ec2-role
+        - ${AWS::StackName}-dev-ec2-role
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
