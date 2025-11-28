@@ -12,6 +12,8 @@ Parameters:
     Type: String
   TargetSubnetB:
     Type: String
+  MinSize:
+    Type: String
   MaxSize:
     Type: String
 
@@ -52,7 +54,7 @@ Resources:
         Version: !Ref LatestTemplateVersion 
 
       MaxSize: !Ref MaxSize
-      MinSize: 1
+      MinSize: !Ref MinSize
       NewInstancesProtectedFromScaleIn: false
       #PlacementGroup: String
       #ServiceLinkedRoleARN: String

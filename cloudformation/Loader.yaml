@@ -10,6 +10,9 @@ Parameters:
   MaxMainInstances:
     Description: Max ec2 instances for the main app
     Type: String
+  MinMainInstances:
+    Description: Max ec2 instances for the main app
+    Type: String
 
 
 Resources:
@@ -31,7 +34,7 @@ Resources:
   SecurityGroups:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "${S3Url}/cloudformation/ec2/security_groups.yaml"
+      TemplateURL: !Sub "${S3Url}/cloudformation/main_app/security_groups.yaml"
 
       Parameters:
         MainVPC: 
@@ -43,7 +46,7 @@ Resources:
     Properties:
       #Capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM
 
-      TemplateURL: !Sub "${S3Url}/cloudformation/ec2/ec2_template.yaml"
+      TemplateURL: !Sub "${S3Url}/cloudformation/main_app/ec2_template.yaml"
 
       Parameters:
         MainVPC: 
@@ -71,7 +74,7 @@ Resources:
   BastionHostStackAZ1:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "${S3Url}/cloudformation/ec2/bastion_host.yaml"
+      TemplateURL: !Sub "${S3Url}/cloudformation/main_app/bastion_host.yaml"
       Parameters:
         BastionInstanceType:
           t3.micro
@@ -122,6 +125,9 @@ Resources:
           Fn::GetAtt: [NetworkStack, Outputs.FirstPublicSubnetB] 
         MaxSize:
           !Ref MaxMainInstances
+
+        MinSize:
+          !Ref  MinMainInstances
 
   LoadBalancerAZ1:
     Type: AWS::CloudFormation::Stack
