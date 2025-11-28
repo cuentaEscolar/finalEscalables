@@ -21,7 +21,7 @@ Resources:
     Properties:
       PolicyName: AllowSSMParameterAccess
       Roles:
-        - ${AWS::StackName}-dev-ec2-role
+        - ec2-main-dev
       PolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -39,7 +39,7 @@ Resources:
   EC2Role:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: ${AWS::StackName}-main-app-db-ec2-role
+      RoleName: ec2-main-dev
       AssumeRolePolicyDocument: 
         Statement:
           - Action: sts:AssumeRole
