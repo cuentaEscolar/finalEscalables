@@ -194,5 +194,5 @@ Outputs:
 
   S3Url:
     Description: Link with Repo
-    Value: !Sub "https://s3.amazonaws.com/repo-bucket-${AWS::AccountId}-${AWS::Region}/MyWebsite"
+    Value: !Sub "https://s3.amazonaws.com/repo-bucket-dev-${AWS::AccountId}-${AWS::Region}/MyWebsite"
 
