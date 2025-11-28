@@ -159,7 +159,7 @@ Resources:
               Configuration:
                 ConnectionArn: arn:aws:codeconnections:us-east-1:013001369500:connection/749c9672-a6db-494c-b35c-a389e72e6e24
                 FullRepositoryId: cuentaEscolar/finalEscalables
-                BranchName: main
+                BranchName: dev
               RunOrder: 1
 
         - Name: LoadResources
