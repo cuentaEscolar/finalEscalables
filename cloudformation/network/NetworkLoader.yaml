@@ -28,7 +28,7 @@ Resources:
   AZ1Network:
     Type: AWS::CloudFormation::Stack
     Properties: 
-      TemplateURL: !Sub "${S3Url}/cloudformation/network_az_1.yaml"
+      TemplateURL: !Sub "${S3Url}/cloudformation/network/network_az_1.yaml"
       Parameters:
         MainNestedVPC: 
           !Ref MainNestedVPC
@@ -41,7 +41,7 @@ Resources:
   AZ2Network:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "${S3Url}/cloudformation/network_az_1.yaml"
+      TemplateURL: !Sub "${S3Url}/cloudformation/network/network_az_1.yaml"
       Parameters:
         MainNestedVPC: 
           !Ref MainNestedVPC
