@@ -109,7 +109,7 @@ Resources:
   AutoScalingGroup:
     Type: AWS::CloudFormation::Stack
     Properties:
-      TemplateURL: !Sub "${S3Url}/cloudformation/auto_scaling_group.yaml"
+      TemplateURL: !Sub "${S3Url}/cloudformation/main_app/auto_scaling_group.yaml"
       Parameters:
 
         MainVPC: 
@@ -156,6 +156,14 @@ Resources:
       - NetworkStack
       - SecurityGroups
       - AutoScalingGroup
+
+  ChatStacK:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub "${S3Url}/cloudformation/chat/ChatLoader.yaml"
+      Parameters:
+        S3Url: !Ref  S3Url
+        PublicKey: !Ref PublicKey
 
 
           
